@@ -1,0 +1,389 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E18E2CB81DC95FD500BA02C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18E2CB71DC95FD500BA02C4 /* AppDelegate.swift */; };
+		E18E2CBA1DC95FD500BA02C4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18E2CB91DC95FD500BA02C4 /* ViewController.swift */; };
+		E18E2CBD1DC95FD500BA02C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E18E2CBB1DC95FD500BA02C4 /* Main.storyboard */; };
+		E18E2CBF1DC95FD500BA02C4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E18E2CBE1DC95FD500BA02C4 /* Assets.xcassets */; };
+		E18E2CC21DC95FD500BA02C4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E18E2CC01DC95FD500BA02C4 /* LaunchScreen.storyboard */; };
+		F704FCA419A24176385233FF /* Pods_Happiness.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 497F8C0D117519D30237A150 /* Pods_Happiness.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		497F8C0D117519D30237A150 /* Pods_Happiness.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Happiness.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5AE4C7038851B234F5ED6EEA /* Pods-Happiness.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Happiness.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Happiness/Pods-Happiness.debug.xcconfig"; sourceTree = "<group>"; };
+		7408CEF910F5ADEE5474CF54 /* Pods-Happiness.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Happiness.release.xcconfig"; path = "Pods/Target Support Files/Pods-Happiness/Pods-Happiness.release.xcconfig"; sourceTree = "<group>"; };
+		E18E2CB41DC95FD500BA02C4 /* Happiness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Happiness.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E18E2CB71DC95FD500BA02C4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E18E2CB91DC95FD500BA02C4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E18E2CBC1DC95FD500BA02C4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E18E2CBE1DC95FD500BA02C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E18E2CC11DC95FD500BA02C4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E18E2CC31DC95FD500BA02C4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E18E2CB11DC95FD500BA02C4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F704FCA419A24176385233FF /* Pods_Happiness.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C1D221DB2EFED65A9CBF78E2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5AE4C7038851B234F5ED6EEA /* Pods-Happiness.debug.xcconfig */,
+				7408CEF910F5ADEE5474CF54 /* Pods-Happiness.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		DF92817CB1144B545483B990 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				497F8C0D117519D30237A150 /* Pods_Happiness.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E18E2CAB1DC95FD500BA02C4 = {
+			isa = PBXGroup;
+			children = (
+				E18E2CB61DC95FD500BA02C4 /* Happiness */,
+				E18E2CB51DC95FD500BA02C4 /* Products */,
+				C1D221DB2EFED65A9CBF78E2 /* Pods */,
+				DF92817CB1144B545483B990 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		E18E2CB51DC95FD500BA02C4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E18E2CB41DC95FD500BA02C4 /* Happiness.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E18E2CB61DC95FD500BA02C4 /* Happiness */ = {
+			isa = PBXGroup;
+			children = (
+				E18E2CB71DC95FD500BA02C4 /* AppDelegate.swift */,
+				E18E2CB91DC95FD500BA02C4 /* ViewController.swift */,
+				E18E2CBB1DC95FD500BA02C4 /* Main.storyboard */,
+				E18E2CBE1DC95FD500BA02C4 /* Assets.xcassets */,
+				E18E2CC01DC95FD500BA02C4 /* LaunchScreen.storyboard */,
+				E18E2CC31DC95FD500BA02C4 /* Info.plist */,
+			);
+			path = Happiness;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E18E2CB31DC95FD500BA02C4 /* Happiness */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E18E2CC61DC95FD500BA02C4 /* Build configuration list for PBXNativeTarget "Happiness" */;
+			buildPhases = (
+				C225CAE589D90CF9F49264EE /* [CP] Check Pods Manifest.lock */,
+				E18E2CB01DC95FD500BA02C4 /* Sources */,
+				E18E2CB11DC95FD500BA02C4 /* Frameworks */,
+				E18E2CB21DC95FD500BA02C4 /* Resources */,
+				83E5BC053F3C5A7F1476E823 /* [CP] Embed Pods Frameworks */,
+				C2C9312D533074EF444F85A1 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Happiness;
+			productName = Happiness;
+			productReference = E18E2CB41DC95FD500BA02C4 /* Happiness.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E18E2CAC1DC95FD500BA02C4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0810;
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = "Team Happiness";
+				TargetAttributes = {
+					E18E2CB31DC95FD500BA02C4 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = EEV6AZHDW2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = E18E2CAF1DC95FD500BA02C4 /* Build configuration list for PBXProject "Happiness" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E18E2CAB1DC95FD500BA02C4;
+			productRefGroup = E18E2CB51DC95FD500BA02C4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E18E2CB31DC95FD500BA02C4 /* Happiness */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E18E2CB21DC95FD500BA02C4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E18E2CC21DC95FD500BA02C4 /* LaunchScreen.storyboard in Resources */,
+				E18E2CBF1DC95FD500BA02C4 /* Assets.xcassets in Resources */,
+				E18E2CBD1DC95FD500BA02C4 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		83E5BC053F3C5A7F1476E823 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Happiness/Pods-Happiness-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C225CAE589D90CF9F49264EE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		C2C9312D533074EF444F85A1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Happiness/Pods-Happiness-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E18E2CB01DC95FD500BA02C4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E18E2CBA1DC95FD500BA02C4 /* ViewController.swift in Sources */,
+				E18E2CB81DC95FD500BA02C4 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		E18E2CBB1DC95FD500BA02C4 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E18E2CBC1DC95FD500BA02C4 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		E18E2CC01DC95FD500BA02C4 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E18E2CC11DC95FD500BA02C4 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E18E2CC41DC95FD500BA02C4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		E18E2CC51DC95FD500BA02C4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E18E2CC71DC95FD500BA02C4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5AE4C7038851B234F5ED6EEA /* Pods-Happiness.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = EEV6AZHDW2;
+				INFOPLIST_FILE = Happiness/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.mobile.Happiness;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		E18E2CC81DC95FD500BA02C4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7408CEF910F5ADEE5474CF54 /* Pods-Happiness.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = EEV6AZHDW2;
+				INFOPLIST_FILE = Happiness/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.mobile.Happiness;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E18E2CAF1DC95FD500BA02C4 /* Build configuration list for PBXProject "Happiness" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E18E2CC41DC95FD500BA02C4 /* Debug */,
+				E18E2CC51DC95FD500BA02C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E18E2CC61DC95FD500BA02C4 /* Build configuration list for PBXNativeTarget "Happiness" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E18E2CC71DC95FD500BA02C4 /* Debug */,
+				E18E2CC81DC95FD500BA02C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E18E2CAC1DC95FD500BA02C4 /* Project object */;
+}
