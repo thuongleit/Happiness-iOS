@@ -18,7 +18,7 @@ The following **optional** features are nice to have:
 - [ ] View daily journal entries
    - [ ] Calendar view.
    
-## WireFrame
+## Wireframe
 https://drive.google.com/file/d/0B9UnjSLNJDDATzJjOWRSQ0N5NFU/view
 
 
