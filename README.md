@@ -19,6 +19,10 @@ The following **optional** features are nice to have:
    - [ ] Calendar view.
    
 ## Wireframe
-https://drive.google.com/file/d/0B9UnjSLNJDDATzJjOWRSQ0N5NFU/view
+
+<img src="https://github.com/TeamHappiness/Happiness-iOS/blob/master/smileFirstSprint.gif" alt="app wireframe"/>
+
+####PDF
+https://github.com/TeamHappiness/Happiness-iOS/blob/master/smileFirstSprint.pdf
 
 
