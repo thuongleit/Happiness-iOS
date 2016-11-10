@@ -6,6 +6,6 @@ target 'Happiness' do
   use_frameworks!
 
   # Pods for Happiness
-  pod 'Alamofire'
+  pod 'Parse'
 
 end
