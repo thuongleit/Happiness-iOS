@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UIConstants: NSObject {
+/*!!!class UIConstants: NSObject {
     
     // sample function
     static func getBottomTextSize() -> CGFloat {
@@ -18,4 +18,17 @@ class UIConstants: NSObject {
     
     
 
+}*/
+
+enum UIConstants
+{
+    enum CellReuseIdentifier
+    {
+        static let timelineCell = "TimelineCell"
+    }
+    
+    enum ClassName
+    {
+        static let timelineTableViewCellXib = "TimelineTableViewCell"
+    }
 }
