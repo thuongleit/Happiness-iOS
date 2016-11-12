@@ -6,6 +6,8 @@ target 'Happiness' do
   use_frameworks!
 
   # Pods for Happiness
+  pod 'AFNetworking'
+  pod 'MBProgressHUD'
   pod 'Parse'
 
 end

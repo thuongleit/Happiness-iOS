@@ -39,6 +39,7 @@
 		497F8C0D117519D30237A150 /* Pods_Happiness.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Happiness.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE4C7038851B234F5ED6EEA /* Pods-Happiness.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Happiness.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Happiness/Pods-Happiness.debug.xcconfig"; sourceTree = "<group>"; };
 		7408CEF910F5ADEE5474CF54 /* Pods-Happiness.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Happiness.release.xcconfig"; path = "Pods/Target Support Files/Pods-Happiness/Pods-Happiness.release.xcconfig"; sourceTree = "<group>"; };
+		CB1008FB1DD6A00200D2DD38 /* Happiness.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Happiness.entitlements; sourceTree = "<group>"; };
 		E17ACFAF1DD70E2200E826FE /* LoginSignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSignupViewController.swift; sourceTree = "<group>"; };
 		E17ACFB01DD70E2200E826FE /* LoginSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginSignupViewController.xib; sourceTree = "<group>"; };
 		CB1008FB1DD6A00200D2DD38 /* Happiness.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Happiness.entitlements; sourceTree = "<group>"; };
@@ -130,6 +131,7 @@
 		E18E2CB61DC95FD500BA02C4 /* Happiness */ = {
 			isa = PBXGroup;
 			children = (
+				CB1008FB1DD6A00200D2DD38 /* Happiness.entitlements */,
 				E17ACFAA1DD70ACD00E826FE /* Login/Signup View Controllers */,
 				CB1008FB1DD6A00200D2DD38 /* Happiness.entitlements */,
 				E1B6F6591DD4384E00B01B9E /* API */,

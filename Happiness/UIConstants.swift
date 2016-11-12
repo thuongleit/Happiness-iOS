@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UIConstants: NSObject {
+/*!!!class UIConstants: NSObject {
     
     // MARK : - Colors
     static let primaryThemeColor = UIColor(red: 123/255, green: 104/255, blue: 238/255, alpha: 1)
@@ -46,4 +46,17 @@ class UIConstants: NSObject {
     
     
 
+}*/
+
+enum UIConstants
+{
+    enum CellReuseIdentifier
+    {
+        static let timelineCell = "TimelineCell"
+    }
+    
+    enum ClassName
+    {
+        static let timelineTableViewCellXib = "TimelineTableViewCell"
+    }
 }
