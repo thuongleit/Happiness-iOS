@@ -19,7 +19,7 @@ class User: NSObject {
     
     init(obj :AnyObject) {
         id = obj.value(forKey: "objectId") as? String
-        name = obj.object(forKey: "username") as? String
+        name = obj.object(forKey: "name") as? String
         email = obj.object(forKey: "email") as? String
         createdDate = obj.value(forKey: "createdAt") as? Date
     }

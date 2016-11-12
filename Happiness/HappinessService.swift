@@ -17,17 +17,22 @@ class HappinessService: NSObject {
     let parseClientKey = "sENDA3tgrescOEbnZywnmJ5lFcoFgVLWd3Ka26tQ"
     
     var loginSuccess:((User) -> ())?
-    var loginFailure:((Error) -> ())?
+    var callFailure:((Error) -> ())?
     
+    var createEntrySuccess:((Entry) -> ())?
+    var getEntriesSuccess:(([Entry]) -> ())?
     
-    func login(username: String, password: String, success: @escaping (_ user: User) -> (), failure: @escaping (Error) -> ()) {
+    func login(email: String, password: String, success: @escaping (_ user: User) -> (), failure: @escaping (Error) -> ()) {
         
         loginSuccess = success
-        loginFailure = failure
+        callFailure = failure
+        
+        //email used as username in the app
+        let username = email
         
         PFUser.logInWithUsername(inBackground: username, password: password, block: { (user: PFUser?, error: Error?) -> Void in
             if let error = error {
-                self.loginFailure!(error)
+                self.callFailure!(error)
                 print("User login failed.")
                 print(error.localizedDescription)
             } else {
@@ -36,11 +41,11 @@ class HappinessService: NSObject {
                 let pfCurrentUser = PFUser.current()
                 
                 let query = PFUser.query() //cant query user table using PFQuery, use PFUser
-                query?.whereKey("username", equalTo: (pfCurrentUser?.username)!)
+                query?.whereKey("objectId", equalTo: (pfCurrentUser?.objectId)!)
                 
                 query?.findObjectsInBackground(block: { (objects: [PFObject]?, error:Error?) in
                     if let error = error {
-                        self.loginFailure!(error)
+                        self.callFailure!(error)
                         print(error.localizedDescription)
                     }
                     else {
@@ -54,10 +59,13 @@ class HappinessService: NSObject {
         })
     }
     
-    func signup(username: String, password: String, email: String, success: @escaping (_ user: User) -> (), failure: @escaping (Error) -> ()) {
+    func signup(email: String, password: String, name: String, success: @escaping (_ user: User) -> (), failure: @escaping (Error) -> ()) {
         
         loginSuccess = success
-        loginFailure = failure
+        callFailure = failure
+        
+        //email used as username in the app
+        let username = email
         
         if(username != "" && password != ""){
             let newUser = PFUser()
@@ -65,11 +73,12 @@ class HappinessService: NSObject {
             newUser.username = username
             newUser.password = password
             newUser.email = email
+            newUser.setObject(name, forKey: "name")//custom field
             
             newUser.signUpInBackground {
                 (succeeded: Bool, error: Error?) -> Void in
                 if let error = error {
-                    self.loginFailure!(error)
+                    self.callFailure!(error)
                     print(error.localizedDescription)
                 } else {
                     let pfCurrentUser = PFUser.current()
@@ -79,7 +88,7 @@ class HappinessService: NSObject {
                     
                     query?.findObjectsInBackground(block: { (objects: [PFObject]?, error:Error?) in
                         if let error = error {
-                            self.loginFailure!(error)
+                            self.callFailure!(error)
                             print(error.localizedDescription)
                         }
                         else {
@@ -95,7 +104,7 @@ class HappinessService: NSObject {
     }
     
     
-    func create(entry: Entry, images: [UIImage]?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {
+    func create(params: [String: Any], images: [UIImage]?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {
         
     }
     
