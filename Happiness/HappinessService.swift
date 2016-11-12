@@ -104,8 +104,52 @@ class HappinessService: NSObject {
     }
     
     
-    func create(params: [String: Any], images: [UIImage]?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {
+    func create(text: String, images: [UIImage]?, happinessLevel: Int?, location: [String: Any]?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {
         
+        createEntrySuccess = success
+        callFailure = failure
+        
+        let entryObj = PFObject(className: "Entry")
+        if((images?.count)! > 0){
+            entryObj["media"] = getPFFileFromImage(image: images?[0]) // PFFile column type
+        }
+        entryObj["author"] = PFUser.current() // Pointer column type that points to PFUser
+        entryObj["text"] = text
+        entryObj["happinessLevel"] = happinessLevel
+        entryObj["location"] = location
+        
+        // Save object (following function will save the object in Parse asynchronously)
+        entryObj.saveInBackground { (succeeded: Bool, error: Error?) in
+            if let error = error {
+                self.callFailure!(error)
+                print(error.localizedDescription)
+            } else {
+                
+                let query = PFQuery(className: "Entry")
+                query.includeKey("author")
+                
+                query.getObjectInBackground(withId: entryObj.objectId!, block: { (object:PFObject?, error: Error?) in
+                    if error == nil && object != nil {
+                        
+                        self.createEntrySuccess!(Entry.init(entryObject: object!))
+                        
+                    } else {
+                        self.callFailure!(error!)
+                    }
+                })
+            }
+        }
+    }
+    
+    func getPFFileFromImage(image: UIImage?) -> PFFile? {
+        // check if image is not nil
+        if let image = image {
+            // get image data and check if that is not nil
+            if let imageData = UIImagePNGRepresentation(image) {
+                return PFFile(name: "image.png", data: imageData)
+            }
+        }
+        return nil
     }
     
     func update(entry: Entry, images: [UIImage]?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {

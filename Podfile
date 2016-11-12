@@ -7,5 +7,6 @@ target 'Happiness' do
 
   # Pods for Happiness
   pod 'Parse'
+  pod 'ParseUI'
 
 end

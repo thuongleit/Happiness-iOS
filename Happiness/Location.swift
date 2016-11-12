@@ -10,13 +10,24 @@ import UIKit
 
 class Location: NSObject {
     
+    var name: String?
     var latitude: Float?
     var longitude: Float?
-    var name: String?
-
-    init(dictionary: Dictionary<String, AnyObject>) {
-        
+    
+    init(locationObject: AnyObject) {
+        name = locationObject.object(forKey: "name") as? String
+        latitude = locationObject.object(forKey: "lat") as? Float
+        longitude = locationObject.object(forKey: "longi") as? Float
     }
     
+    class func createLocationObject(locName: String?, locLat: Float, locLong: Float ) -> [String: Any] {
+        var lName = ""
+        if let locName = locName{
+            lName = locName
+        }
+      
+        let jsonLocationObj = ["name": lName, "lat" : locLat, "longi" : locLong] as [String : Any]
+        return jsonLocationObj
+    }
     
 }
