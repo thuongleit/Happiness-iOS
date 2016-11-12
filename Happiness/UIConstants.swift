@@ -35,14 +35,11 @@ class UIConstants: NSObject {
         textField.placeholder = placeholder
     }
     
-
-    enum CellReuseIdentifier
-    {
+    class CellReuseIdentifier {
         static let timelineCell = "TimelineCell"
     }
     
-    enum ClassName
-    {
+    class ClassName {
         static let timelineTableViewCellXib = "TimelineTableViewCell"
     }
     
