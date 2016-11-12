@@ -16,12 +16,12 @@
                 <outlet property="emailTextField" destination="Kbg-6j-ow3" id="lg9-Uo-nnQ"/>
                 <outlet property="emailView" destination="d2N-ET-2HN" id="YPp-iR-eFr"/>
                 <outlet property="loginSignupButton" destination="kc0-4v-KX8" id="WVC-yD-ZMi"/>
+                <outlet property="nameLabel" destination="jVo-Ml-9cF" id="B3x-BQ-L7U"/>
+                <outlet property="nameTextField" destination="xW9-bI-uz3" id="oAl-i8-bq8"/>
+                <outlet property="nameView" destination="uFD-Iz-G2k" id="g3t-NT-FI0"/>
                 <outlet property="passwordLabel" destination="ZCN-Vg-3tI" id="c7V-xc-Kr7"/>
                 <outlet property="passwordTextField" destination="ezC-Fb-MEL" id="kYh-t4-iPz"/>
                 <outlet property="passwordView" destination="F8D-Mj-v6f" id="Ubv-jy-k1c"/>
-                <outlet property="usernameLabel" destination="jVo-Ml-9cF" id="aVt-qo-fBj"/>
-                <outlet property="usernameTextField" destination="xW9-bI-uz3" id="eRd-EH-XoK"/>
-                <outlet property="usernameView" destination="uFD-Iz-G2k" id="DLs-hw-eHU"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -30,10 +30,10 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uFD-Iz-G2k" userLabel="Username View">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uFD-Iz-G2k" userLabel="Name View">
                     <rect key="frame" x="20" y="120" width="335" height="50"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jVo-Ml-9cF">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jVo-Ml-9cF">
                             <rect key="frame" x="8" y="0.0" width="80" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="80" id="EM2-sA-uN8"/>
@@ -64,7 +64,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F8D-Mj-v6f">
                     <rect key="frame" x="20" y="260" width="335" height="50"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZCN-Vg-3tI">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZCN-Vg-3tI">
                             <rect key="frame" x="8" y="0.0" width="80" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="80" id="vHT-0T-ND4"/>
@@ -95,7 +95,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d2N-ET-2HN">
                     <rect key="frame" x="20" y="190" width="335" height="50"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GZx-JH-EY8">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GZx-JH-EY8">
                             <rect key="frame" x="8" y="0.0" width="80" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="80" id="RHK-B7-g5I"/>

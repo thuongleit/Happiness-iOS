@@ -10,9 +10,9 @@ import UIKit
 
 class LoginSignupViewController: UIViewController {
     
-    @IBOutlet weak var usernameView: UIView!
-    @IBOutlet weak var usernameLabel: UILabel!
-    @IBOutlet weak var usernameTextField: UITextField!
+    @IBOutlet weak var nameView: UIView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var nameTextField: UITextField!
     
     @IBOutlet weak var emailView: UIView!
     @IBOutlet weak var emailLabel: UILabel!
@@ -32,7 +32,7 @@ class LoginSignupViewController: UIViewController {
         super.viewDidLoad()
         
         if (!isSignup) {
-            usernameView.isHidden = true
+            nameView.isHidden = true
             loginSignupButton.setTitle("Log In", for: .normal)
         }
         
@@ -46,26 +46,25 @@ class LoginSignupViewController: UIViewController {
     }
     
     func setupContainerView() {
-        for view in [usernameView, emailView, passwordView] {
+        for view in [nameView, emailView, passwordView] {
             UIConstants.setupLoginSignupContainerView(view: view!)
         }
     }
     
     func setupTextLabel() {
-        for textlabel in [usernameLabel, emailLabel, passwordLabel] {
+        for textlabel in [nameLabel, emailLabel, passwordLabel] {
             textlabel?.textColor = UIConstants.secondaryThemeColor
             textlabel?.font = UIFont(name: UIConstants.textFontName, size: 17)
         }
     }
     
     func setupTextField() {
-        UIConstants.setupLoginSignupTextField(textField: usernameTextField, withPlaceholder: "Name")
-        UIConstants.setupLoginSignupTextField(textField: emailTextField, withPlaceholder: "Email Address")
+        UIConstants.setupLoginSignupTextField(textField: nameTextField, withPlaceholder: "Name")
+        UIConstants.setupLoginSignupTextField(textField: emailTextField, withPlaceholder: "Email")
         UIConstants.setupLoginSignupTextField(textField: passwordTextField, withPlaceholder: "Password")
     }
     
     func setupButton() {
-        
         for button in [backButton, loginSignupButton] {
             button?.titleLabel?.font = UIFont(name: UIConstants.textFontName, size: 16)
             button?.layer.cornerRadius = 5
@@ -88,8 +87,4 @@ class LoginSignupViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
-
-
 }

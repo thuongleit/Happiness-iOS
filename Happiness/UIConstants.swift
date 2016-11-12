@@ -32,6 +32,7 @@ class UIConstants: NSObject {
         textField.textColor = UIConstants.secondaryThemeColor
         textField.font = UIFont(name: UIConstants.textFontName, size: 17)
         textField.autocorrectionType = .no
+        textField.placeholder = placeholder
     }
     
     
