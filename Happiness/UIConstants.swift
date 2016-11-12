@@ -8,7 +8,7 @@
 
 import UIKit
 
-/*!!!class UIConstants: NSObject {
+class UIConstants: NSObject {
     
     // MARK : - Colors
     static let primaryThemeColor = UIColor(red: 123/255, green: 104/255, blue: 238/255, alpha: 1)
@@ -35,28 +35,13 @@ import UIKit
         textField.placeholder = placeholder
     }
     
-    
-    // sample function
-    static func getBottomTextSize() -> CGFloat {
-        return 20
-    }
-    
-    
-    
-    
-    
-
-}*/
-
-enum UIConstants
-{
-    enum CellReuseIdentifier
-    {
+    class CellReuseIdentifier {
+        
         static let timelineCell = "TimelineCell"
     }
     
-    enum ClassName
-    {
+    class ClassName {
+        
         static let timelineTableViewCellXib = "TimelineTableViewCell"
     }
 }
