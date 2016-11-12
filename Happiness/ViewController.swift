@@ -48,7 +48,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func onLogin(_ sender: Any) {
-        
         HappinessService.sharedInstance.login(email: emailField.text!, password: passwordField.text!, success: {(user: User) in
             print(user.name!)
         }, failure: { (error: Error) in
@@ -58,7 +57,6 @@ class ViewController: UIViewController {
     
     
     @IBAction func onSignup(_ sender: Any) {
-        
         HappinessService.sharedInstance.signup(email: emailField.text!, password: passwordField.text!, name: nameTextField.text!, success: {(user: User) in
             print(user.name!)
         }, failure: {(error: Error) in
