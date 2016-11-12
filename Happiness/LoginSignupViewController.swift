@@ -80,6 +80,17 @@ class LoginSignupViewController: UIViewController {
     
     func onLoginSignup() {
         
+        if (!isSignup) {
+            HappinessService.sharedInstance.login(username: emailTextField.text!, password: passwordTextField.text!, success: { (user: User) in
+                print("success login user: \(user.email)")
+            }, failure: { (error: Error) in
+                print("failure with error \(error)")
+            })
+        } else {
+            
+            
+            
+        }
         
     }
     

@@ -214,12 +214,12 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: UIConstants.CellReuseIdentifier.timelineCell) as! TimelineTableViewCell
+//        let cell = tableView.dequeueReusableCell(withIdentifier: UIConstants.CellReuseIdentifier.timelineCell) as! TimelineTableViewCell
+//        
+//        // Set the cell contents.
+//        cell.setData(entry: sections[indexPath.section].entries[indexPath.row])
         
-        // Set the cell contents.
-        cell.setData(entry: sections[indexPath.section].entries[indexPath.row])
-        
-        return cell
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
