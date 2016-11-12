@@ -47,21 +47,21 @@ class ViewController: UIViewController {
     
     @IBAction func onLogin(_ sender: Any) {
         
-        HappinessService.sharedInstance.login(username: usernameField.text!, password: passwordField.text!, success: {(user: User) in
-            print(user.name!)
-        }, failure: { (error: Error) in
-            print(error.localizedDescription)
-        })
+//        HappinessService.sharedInstance.login(email: usernameField.text!, password: passwordField.text!, success: {(user: User) in
+//            print(user.name!)
+//        }, failure: { (error: Error) in
+//            print(error.localizedDescription)
+//        })
     }
     
     
     @IBAction func onSignup(_ sender: Any) {
         
-        HappinessService.sharedInstance.signup(username: usernameField.text!, password: passwordField.text!, email: emailField.text!, success: {(user: User) in
-            print(user.name!)
-        }, failure: {(error: Error) in
-            print(error.localizedDescription)
-        })
+//        HappinessService.sharedInstance.signup(password: passwordField.text!, username: usernameField.text!, email: emailField.text!, success: {(user: User) in
+//            print(user.name!)
+//        }, failure: {(error: Error) in
+//            print(error.localizedDescription)
+//        })
     }
     
     
