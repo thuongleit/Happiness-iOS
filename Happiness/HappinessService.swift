@@ -242,7 +242,7 @@ class HappinessService: NSObject {
         
         let query = PFQuery(className: "Entry")
         query.order(byDescending: "createdAt")
-        query.includeKey("author")
+        query.whereKey("author", equalTo: PFUser.current()!)
         query.limit = 20
         //query.skip = skipCount//for paging
         
