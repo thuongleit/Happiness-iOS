@@ -10,15 +10,52 @@ import UIKit
 
 class UIConstants: NSObject {
     
-    // MARK : - Colors
+    // MARK: - Colors
     static let primaryThemeColor = UIColor(red: 123/255, green: 104/255, blue: 238/255, alpha: 1)
     
     static let secondaryThemeColor = UIColor(red: 0/255, green: 255/255, blue: 127/255, alpha: 1)
     
-    // MARK : - Text
+    static func happinessLevelColor(_ happinessLevel: HappinessLevel) -> UIColor {
+        switch happinessLevel {
+        // TODO(cboo): Pick colors for each level. All the same right now.
+        case .angry:
+            return UIColor.init(colorLiteralRed: 25.0/255.0, green: 207.0/255.0, blue: 134.0/255.0, alpha: 1.0)
+        case .bothered:
+            return UIColor.init(colorLiteralRed: 25.0/255.0, green: 207.0/255.0, blue: 134.0/255.0, alpha: 1.0)
+        case .sad:
+            return UIColor.init(colorLiteralRed: 25.0/255.0, green: 207.0/255.0, blue: 134.0/255.0, alpha: 1.0)
+        case .happy:
+            return UIColor.init(colorLiteralRed: 25.0/255.0, green: 207.0/255.0, blue: 134.0/255.0, alpha: 1.0)
+        case .excited:
+            return UIColor.init(colorLiteralRed: 25.0/255.0, green: 207.0/255.0, blue: 134.0/255.0, alpha: 1.0)
+        case .superExcited:
+            return UIColor.init(colorLiteralRed: 25.0/255.0, green: 207.0/255.0, blue: 134.0/255.0, alpha: 1.0)
+        }
+    }
+
+    // MARK: - Images
+
+    static func happinessLevelImage(_ happinessLevel: HappinessLevel) -> UIImage {
+        switch happinessLevel {
+        case .angry:
+            return UIImage(named: "angry")!
+        case .bothered:
+            return UIImage(named: "bothered")!
+        case .sad:
+            return UIImage(named: "sad")!
+        case .happy:
+            return UIImage(named: "happy")!
+        case .excited:
+            return UIImage(named: "really_happy")!
+        case .superExcited:
+            return UIImage(named: "super_excited")!
+        }
+    }
+
+    // MARK: - Text
     static let textFontName = "Avenir-Medium"
     
-    // MARK : - Login/Signup
+    // MARK: - Login/Signup
     static func setupLoginSignupContainerView(view: UIView) {
         view.backgroundColor = UIConstants.primaryThemeColor
         view.layer.cornerRadius = 5
