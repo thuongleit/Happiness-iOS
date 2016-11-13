@@ -15,12 +15,16 @@ class TimelineTableViewCell: UITableViewCell {
     @IBOutlet weak var dayNameLabel: UILabel!
     @IBOutlet weak var dayNumberLabel: UILabel!
     @IBOutlet weak var happinessImageView: UIImageView!
+    @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var locationImageView: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var entryImageView: UIImageView!
+    @IBOutlet weak var questionLabelTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var textViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var locationLabelTrailingConstraint: NSLayoutConstraint!
     
-    let dayNames = ["Sat", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri"]
+    let dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     
     override func awakeFromNib() {
         
@@ -36,10 +40,10 @@ class TimelineTableViewCell: UITableViewCell {
     // Set the cell contents based on the specified parameters.
     func setData(entry: Entry) {
         
-        // Use real values!!!
+        // Use real colors!!!
         // magic strings!!!
-        if let happinessLevel = entry.happinessLevel
-        {
+        if let happinessLevel = entry.happinessLevel {
+        
             switch happinessLevel {
                 
             case .sad:
@@ -53,8 +57,8 @@ class TimelineTableViewCell: UITableViewCell {
                 happinessImageView.image = UIImage(named: "excited-240")?.withRenderingMode(.alwaysTemplate)
             }
         }
-        else
-        {
+        else {
+        
             happinessColorView.backgroundColor = happinessColorView.superview?.backgroundColor
             happinessImageView.image = nil
         }
@@ -62,29 +66,49 @@ class TimelineTableViewCell: UITableViewCell {
         if let createdDate = entry.createdDate {
             
             let weekday = Calendar.current.component(.weekday, from: createdDate)
-            dayNameLabel.text = dayNames[weekday]
+            dayNameLabel.text = dayNames[weekday-1]
             
             let day = Calendar.current.component(.day, from: createdDate)
             dayNumberLabel.text = String(format: "%02d", day)
         }
-        else
-        {
+        else {
+        
             dayNameLabel.text = nil
             dayNumberLabel.text = nil
         }
+        
+        questionLabel.text = entry.question?.text
         
         textView.text = entry.text?.string // attributed?!!!
         
         locationLabel.text = entry.location?.name
         
+        let hasImage: Bool
         if let imageUrls = entry.imageUrls,
             imageUrls.count > 0 {
             
             setImage(imageView: entryImageView, imageUrl: imageUrls[0])
+            hasImage = true
         }
         else {
             
             entryImageView.image = nil
+            hasImage = false
+        }
+
+        // Adjust constraints.
+        let defaultMiddleTrailingConstraint: CGFloat = -8
+        if hasImage {
+            
+            questionLabelTrailingConstraint.constant = defaultMiddleTrailingConstraint
+            textViewTrailingConstraint.constant = defaultMiddleTrailingConstraint
+            locationLabelTrailingConstraint.constant = defaultMiddleTrailingConstraint
+        }
+        else {
+
+            questionLabelTrailingConstraint.constant = defaultMiddleTrailingConstraint + entryImageView.bounds.width
+            textViewTrailingConstraint.constant = defaultMiddleTrailingConstraint + entryImageView.bounds.width
+            locationLabelTrailingConstraint.constant = defaultMiddleTrailingConstraint + entryImageView.bounds.width
         }
     }
     
