@@ -79,5 +79,7 @@ class UIConstants: NSObject {
         static let timelineTableViewCellXib = "TimelineTableViewCell"
     }
     
-
+    class ImageName {
+        static let composeButton = "compose-22"
+    }
 }
