@@ -61,6 +61,9 @@ class TimelineTableViewCell: UITableViewCell {
             case .excited:
                 happinessColorView.backgroundColor = UIColor.orange
                 happinessImageView.image = UIImage(named: "excited-240")?.withRenderingMode(.alwaysTemplate)
+            default:
+                happinessColorView.backgroundColor = UIColor.orange
+                happinessImageView.image = UIImage(named: "excited-240")?.withRenderingMode(.alwaysTemplate)
             }
         }
         else {

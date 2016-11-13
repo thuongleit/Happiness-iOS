@@ -89,9 +89,8 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     func saveEntry() {
         let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
         print("locations = \(locationCoordinate.latitude) \(locationCoordinate.longitude)")
-        
-        // TODO(cboo,deeksha): Change to latitude and longitude instead of lat/longi. Pass in a Location object instead of dictionary.
-        HappinessService.sharedInstance.create(text: textView.text, images: nil, happinessLevel: Int(feelingSlider.value), location: ["name": locationTextField.text ?? "", "lat": locationCoordinate.latitude, "longi": locationCoordinate.longitude], success: { (entry: Entry) in
+
+        HappinessService.sharedInstance.create(text: textView.text, images: nil, happinessLevel: Int(feelingSlider.value), location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
             self.dismiss(animated: true, completion: {})
         }) { (error: Error) in
             let alertController = UIAlertController(title: "Error saving entry", message:
@@ -156,8 +155,8 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     
     // MARK - CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        var locValue:CLLocationCoordinate2D = manager.location!.coordinate
-        print("locations = \(locValue.latitude) \(locValue.longitude)")
+//        var locValue:CLLocationCoordinate2D = manager.location!.coordinate
+//        print("locations = \(locValue.latitude) \(locValue.longitude)")
     }
     
     /*
