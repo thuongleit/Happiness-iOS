@@ -32,6 +32,8 @@ class BaseViewController: UIViewController, TabBarViewDelegate {
         timelineViewController = TimelineViewController(nibName: "TimelineViewController", bundle: nil)
         calendarViewController = CalendarViewController(nibName: "CalendarViewController", bundle: nil)
         
+        self.switchToViewController(viewController: timelineViewController)
+        
         if let timelineTab = Bundle.main.loadNibNamed("TabBarView", owner: self, options: nil)?.first as? TabBarView {
             timelineTab.frame = self.timelineTabContainerView.bounds
             timelineTab.delegate = self
@@ -49,6 +51,11 @@ class BaseViewController: UIViewController, TabBarViewDelegate {
             calendarTab.markUnselected()
             self.calendarTabContainerView.addSubview(calendarTab)
         }
+        
+        let doubleTap = UITapGestureRecognizer()
+        doubleTap.numberOfTapsRequired = 2
+        doubleTap.addTarget(self, action: #selector(logout))
+        self.calendarTabContainerView.addGestureRecognizer(doubleTap)
         
     }
     
@@ -81,6 +88,9 @@ class BaseViewController: UIViewController, TabBarViewDelegate {
         selectedViewController = viewController
     }
     
+    func logout() {
+        NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogout.notification, object: nil)
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
