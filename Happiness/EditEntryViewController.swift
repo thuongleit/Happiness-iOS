@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextViewDelegate, CLLocationManagerDelegate {
+class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextViewDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var questionLabel: UILabel!
@@ -89,8 +89,13 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     func saveEntry() {
         let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
         print("locations = \(locationCoordinate.latitude) \(locationCoordinate.longitude)")
-
-        HappinessService.sharedInstance.create(text: textView.text, images: nil, happinessLevel: Int(feelingSlider.value), location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
+        
+        var entryMedia: [UIImage] = []
+        if uploadImageButton.image(for: .normal) != UIImage.init(named: "image_placeholder") {
+            entryMedia.append(uploadImageButton.image(for: .normal)!)
+        }
+        
+        HappinessService.sharedInstance.create(text: textView.text, images: entryMedia, happinessLevel: Int(feelingSlider.value), location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
             self.dismiss(animated: true, completion: {})
         }) { (error: Error) in
             let alertController = UIAlertController(title: "Error saving entry", message:
@@ -103,6 +108,28 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             }))
             self.present(alertController, animated: true, completion: nil)
         }
+    }
+    
+    
+    @IBAction func onUploadButton(_ sender: Any) {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.allowsEditing = true
+        picker.sourceType = .photoLibrary
+        present(picker, animated: true)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage //2
+        //cameraImageView.contentMode = .scaleAspectFit //3
+        //cameraImageView.image = chosenImage //4
+        uploadImageButton.imageView?.contentMode = .scaleAspectFit
+        uploadImageButton.setImage(chosenImage, for: .normal)
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Notifications

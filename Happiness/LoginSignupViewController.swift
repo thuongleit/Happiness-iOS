@@ -9,7 +9,7 @@
 import UIKit
 import MBProgressHUD
 
-class LoginSignupViewController: UIViewController {
+class LoginSignupViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var nameView: UIView!
     @IBOutlet weak var nameLabel: UILabel!
@@ -51,6 +51,12 @@ class LoginSignupViewController: UIViewController {
         
         backButton.addTarget(self, action: #selector(onBack), for: .touchUpInside)
         loginSignupButton.addTarget(self, action: #selector(onLoginSignup), for: .touchUpInside)
+        
+        let tapBackground = UITapGestureRecognizer()
+        tapBackground.numberOfTapsRequired = 1
+        tapBackground.addTarget(self, action: #selector(dismissKeyboard))
+        self.view.addGestureRecognizer(tapBackground)
+        
     }
     
     func setupContainerView() {
@@ -74,6 +80,12 @@ class LoginSignupViewController: UIViewController {
         emailTextField.keyboardType = .emailAddress
         passwordTextField.isSecureTextEntry = true
         confirmTextField.isSecureTextEntry = true
+        
+        // delegate
+        nameTextField.delegate = self
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        confirmTextField.delegate = self
     }
     
     func setupButton() {
@@ -117,6 +129,20 @@ class LoginSignupViewController: UIViewController {
                 print("sign up fail with error: \(error)")
             })
         }
+    }
+    
+    func dismissKeyboard() {
+        for textField in [nameTextField, emailTextField, passwordTextField, confirmTextField] {
+            if (textField?.isFirstResponder)! {
+                textField?.resignFirstResponder()
+            }
+        }
+    }
+    
+    // MARK: - Text field delegate
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
     override func didReceiveMemoryWarning() {
