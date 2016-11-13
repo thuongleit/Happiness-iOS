@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class LoginSignupViewController: UIViewController {
     
@@ -70,6 +71,7 @@ class LoginSignupViewController: UIViewController {
         UIConstants.setupLoginSignupTextField(textField: emailTextField, withPlaceholder: "Email")
         UIConstants.setupLoginSignupTextField(textField: passwordTextField, withPlaceholder: "Password")
         UIConstants.setupLoginSignupTextField(textField: confirmTextField, withPlaceholder: "Confirm Password")
+        emailTextField.keyboardType = .emailAddress
         passwordTextField.isSecureTextEntry = true
         confirmTextField.isSecureTextEntry = true
     }
@@ -90,12 +92,16 @@ class LoginSignupViewController: UIViewController {
     
     func onLoginSignup() {
         
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        
         if (!isSignup) {
             
             HappinessService.sharedInstance.login(email: emailTextField.text!, password: passwordTextField.text!, success: { (user: User) in
+                MBProgressHUD.hide(for: self.view, animated: true)
                 print("log in success with name \(user.name)")
                 NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogin.notification, object: nil)
             }, failure: { (error: Error) in
+                MBProgressHUD.hide(for: self.view, animated: true)
                 print("login fail with error: \(error)")
             })
             
@@ -103,14 +109,14 @@ class LoginSignupViewController: UIViewController {
         } else {
             
             HappinessService.sharedInstance.signup(email: emailTextField.text!, password: passwordTextField.text!, name: nameTextField.text!, success: { (user: User) in
+                MBProgressHUD.hide(for: self.view, animated: true)
                 print("sign up success with name \(user.name)")
                 NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogin.notification, object: nil)
             }, failure: { (error: Error) in
+                MBProgressHUD.hide(for: self.view, animated: true)
                 print("sign up fail with error: \(error)")
             })
-            
         }
-        
     }
     
     override func didReceiveMemoryWarning() {
