@@ -83,7 +83,7 @@ class TimelineViewController: UIViewController {
         getEntries()
     }
 
-    // When the compose is pressed, preset the EditEntryViewController modally.
+    // When the compose is pressed, present the EditEntryViewController modally.
     @IBAction func onComposeButton(_ sender: UIBarButtonItem)
     {
         let editEntryViewController = EditEntryViewController(nibName: nil, bundle: nil)
@@ -225,7 +225,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
       
-        return 30 //!!!
+        return 30 // magic number!!!
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -252,18 +252,17 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // Perform a segue to the ViewEntryViewController.
-        /*
+        // Push the ViewEntryViewController.
         let viewEntryViewController = ViewEntryViewController(nibName: nil, bundle: nil)
-        let navigationController = UINavigationController(rootViewController: viewEntryViewController)
-        self.present(navigationController, animated: true, completion: nil)*/
+        //viewEntryViewController.entry = sections[indexPath.section].entries[indexPath.row]
+        navigationController?.pushViewController(viewEntryViewController, animated: true)
         
         // Do not leave rows selected.
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     // test function!!!
-    func getDummyEntries() -> [Entry]
+    /*func getDummyEntries() -> [Entry]
     {
         var entries = [Entry]()
         let entry0 = Entry()
@@ -330,7 +329,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         entries.append(entry4)
 
         return entries
-    }
+    }*/
 }
 
 /*!!!
