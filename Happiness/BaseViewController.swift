@@ -57,6 +57,10 @@ class BaseViewController: UIViewController, TabBarViewDelegate {
         doubleTap.addTarget(self, action: #selector(logout))
         self.calendarTabContainerView.addGestureRecognizer(doubleTap)
         
+        let doubleTapTimeline = UITapGestureRecognizer()
+        doubleTapTimeline.numberOfTapsRequired = 2
+        doubleTapTimeline.addTarget(self, action: #selector(bringEditView))
+        self.timelineTabContainerView.addGestureRecognizer(doubleTapTimeline)
     }
     
     func tabBarView(didTapButton tabBarView: TabBarView) {
@@ -86,6 +90,11 @@ class BaseViewController: UIViewController, TabBarViewDelegate {
         self.contentView.addSubview(viewController.view)
         viewController.didMove(toParentViewController: self)
         selectedViewController = viewController
+    }
+    
+    func bringEditView() {
+        let editVC = EditEntryViewController(nibName: "EditEntryViewController", bundle: nil)
+        present(editVC, animated: true, completion: nil)
     }
     
     func logout() {
