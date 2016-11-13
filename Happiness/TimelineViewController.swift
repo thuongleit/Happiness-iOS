@@ -75,6 +75,13 @@ class TimelineViewController: UIViewController {
     func getEntries(refreshControl: UIRefreshControl? = nil) {
         
         let happinessService = HappinessService.sharedInstance
+        
+        /* test code!!!
+        let entries = getDummyEntries()
+        setupSections(entries: entries)
+        tableView.reloadData()
+        return
+        */
 
         willRequest()
             
@@ -225,10 +232,83 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Perform a segue to the ViewEntryViewController.
-        //!!!performSegue(withIdentifier: Constants.SegueName.viewEntrySegue, sender: self)
+        /*
+        let viewEntryViewController = ViewEntryViewController(nibName: nil, bundle: nil)
+        let navigationController = UINavigationController(rootViewController: viewEntryViewController)
+        self.present(navigationController, animated: true, completion: nil)*/
         
         // Do not leave rows selected.
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    // test function!!!
+    func getDummyEntries() -> [Entry]
+    {
+        var entries = [Entry]()
+        let entry0 = Entry()
+        entry0.question = nil
+        entry0.text = "Feeling grateful as I watch the sun rise over the rim of the Grand Canyon."
+        entry0.imageUrls = [URL(string: "https://i.imgur.com/m9KiEJs.jpg")!]
+        entry0.location = Location(locationObject: [:] as AnyObject)
+        entry0.location?.name = "Grand Canyon National Park, Arizona"
+        entry0.createdDate = Date() // today
+        entry0.happinessLevel = .happy
+        entries.append(entry0)
+        
+        let entry1 = Entry()
+        entry1.question = nil
+        entry1.text = "Such a happy day in Paris today. The Eiffel Tower was lit up with the colors of the South African flag in honour of Nelson Mandela."
+        entry1.imageUrls = [URL(string: "https://i.imgur.com/e25gpSJ.jpg")!]
+        entry1.location = Location(locationObject: [:] as AnyObject)
+        entry1.location?.name = "Paris, France"
+        var dateComponents = DateComponents()
+        dateComponents.day = 6
+        dateComponents.month = 12
+        dateComponents.year = 2015
+        entry1.createdDate = Calendar.current.date(from: dateComponents)
+        entry1.happinessLevel = .happy
+        entries.append(entry1)
+        
+        let entry2 = Entry()
+        entry2.question = nil
+        entry2.text = "Having kind of a down day. Made some cranberry and white chocolate chip cookies to cheer myself up."
+        entry2.imageUrls = [URL(string: "https://i.imgur.com/CEKaBVb.jpg")!]
+        entry2.location = Location(locationObject: [:] as AnyObject)
+        entry2.location?.name = "Menlo Park, CA"
+        dateComponents.day = 29
+        dateComponents.month = 1
+        dateComponents.year = 2015
+        entry2.createdDate = Calendar.current.date(from: dateComponents)
+        entry2.happinessLevel = .sad
+        entries.append(entry2)
+        
+        let entry3 = Entry()
+        entry3.question = nil
+        entry3.text = "Just landed in Bali for this year's rafting trip. Last year was a blast! I can't wait to get out there. So grateful to meet up with good friends in such a wonderful country. John is already here, and Lisa is arriving tomorrow."
+        entry3.imageUrls = [URL(string: "https://i.imgur.com/MW8zU.jpg")!]
+        entry3.location = Location(locationObject: [:] as AnyObject)
+        entry3.location?.name = "Badung, Bali, Indonesia"
+        dateComponents.day = 5
+        dateComponents.month = 1
+        dateComponents.year = 2015
+        entry3.createdDate = Calendar.current.date(from: dateComponents)
+        entry3.happinessLevel = .excited
+        entries.append(entry3)
+        
+        let entry4 = Entry()
+        entry4.question = nil
+        entry4.text = "San Francisco lit up city hall quite nicely with their green and red color-changing display. It took forever to get zero people in the shot, but it was worth the wait."
+        entry4.imageUrls = [URL(string: "https://i.imgur.com/I6nM7wb.jpg")!]
+        entry4.location = Location(locationObject: [:] as AnyObject)
+        entry4.location?.name = "San Francisco, CA"
+        dateComponents.day = 24
+        dateComponents.month = 12
+        dateComponents.year = 2014
+        entry4.createdDate = Calendar.current.date(from: dateComponents)
+        entry4.happinessLevel = .happy
+        entries.append(entry4)
+
+        return entries
     }
 }
 
@@ -241,72 +321,4 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
  self.window = UIWindow(frame: UIScreen.main.bounds)
  self.window?.rootViewController = navigationController
  self.window?.makeKeyAndVisible()
- 
- Test entries:
- 
- var entries = [Entry]()
- let entry0 = Entry(dictionary: [:])
- entry0.question = nil
- entry0.text = NSAttributedString(string: "Feeling grateful as I watch the sun rise over the rim of the Grand Canyon.")
- entry0.imageUrls = [URL(string: "https://i.imgur.com/m9KiEJs.jpg")!]
- entry0.location = Location(dictionary: [:])
- entry0.location?.name = "Grand Canyon National Park, Arizona"
- entry0.createdDate = Date() // today
- entry0.happinessLevel = .happy
- entries.append(entry0)
- 
- let entry1 = Entry(dictionary: [:])
- entry1.question = nil
- entry1.text = NSAttributedString(string: "Such a happy day in Paris today. The Eiffel Tower was lit up with the colors of the South African flag in honour of Nelson Mandela.")
- entry1.imageUrls = [URL(string: "https://i.imgur.com/e25gpSJ.jpg")!]
- entry1.location = Location(dictionary: [:])
- entry1.location?.name = "Paris, France"
- var dateComponents = DateComponents()
- dateComponents.day = 6
- dateComponents.month = 12
- dateComponents.year = 2015
- entry1.createdDate = Calendar.current.date(from: dateComponents)
- entry1.happinessLevel = .happy
- entries.append(entry1)
- 
- let entry2 = Entry(dictionary: [:])
- entry2.question = nil
- entry2.text = NSAttributedString(string: "Having kind of a down day. Made some cranberry and white chocolate chip cookies to cheer myself up.")
- entry2.imageUrls = [URL(string: "https://i.imgur.com/CEKaBVb.jpg")!]
- entry2.location = Location(dictionary: [:])
- entry2.location?.name = "Menlo Park, CA"
- dateComponents.day = 29
- dateComponents.month = 1
- dateComponents.year = 2015
- entry2.createdDate = Calendar.current.date(from: dateComponents)
- entry2.happinessLevel = .sad
- entries.append(entry2)
- 
- let entry3 = Entry(dictionary: [:])
- entry3.question = nil
- entry3.text = NSAttributedString(string: "Just landed in Bali for this year's rafting trip. Last year was a blast! I can't wait to get out there. So grateful to meet up with good friends in such a wonderful country. John is already here, and Lisa is arriving tomorrow.")
- entry3.imageUrls = [URL(string: "https://i.imgur.com/MW8zU.jpg")!]
- entry3.location = Location(dictionary: [:])
- entry3.location?.name = "Badung, Bali, Indonesia"
- dateComponents.day = 5
- dateComponents.month = 1
- dateComponents.year = 2015
- entry3.createdDate = Calendar.current.date(from: dateComponents)
- entry3.happinessLevel = .excited
- entries.append(entry3)
- 
- let entry4 = Entry(dictionary: [:])
- entry4.question = nil
- entry4.text = NSAttributedString(string: "San Francisco lit up city hall quite nicely with their green and red color-changing display. It took forever to get zero people in the shot, but it was worth the wait.")
- entry4.imageUrls = [URL(string: "https://i.imgur.com/I6nM7wb.jpg")!]
- entry4.location = Location(dictionary: [:])
- entry4.location?.name = "San Francisco, CA"
- dateComponents.day = 24
- dateComponents.month = 12
- dateComponents.year = 2014
- entry4.createdDate = Calendar.current.date(from: dateComponents)
- entry4.happinessLevel = .happy
- entries.append(entry4)
- 
- success(entries)
- */
+*/
