@@ -10,9 +10,12 @@ import UIKit
 import Parse
 
 enum HappinessLevel: Int {
-    case sad=0
-    case happy=5
-    case excited=10
+    case angry // 0-1
+    case bothered // 2- 3
+    case sad     // 4 -5
+    case happy  //6-7
+    case excited //8-9
+    case superExcited //10
 }
 
 class Entry: NSObject {
@@ -49,10 +52,33 @@ class Entry: NSObject {
             }
             
             if(entryObject.value(forKey: "happinessLevel") != nil){
-                happinessLevel = HappinessLevel(rawValue: (entryObject.value(forKey: "happinessLevel") as? Int)!)
+                let happinessLevelValue = entryObject.value(forKey: "happinessLevel") as? Int
+                happinessLevel = Entry.getHappinessLevel(happinessLevelRaw: happinessLevelValue!)
             }
         }
     }
+    
+    class func getHappinessLevel(happinessLevelRaw: Int) -> HappinessLevel{
+        var happyLevel = HappinessLevel.happy
+        switch happinessLevelRaw {
+        case 0,1:
+            happyLevel = HappinessLevel.angry
+        case 2,3:
+            happyLevel = HappinessLevel.bothered
+        case 4,5:
+            happyLevel = HappinessLevel.sad
+        case 6,7:
+            happyLevel = HappinessLevel.happy
+        case 8,9:
+            happyLevel = HappinessLevel.excited
+        case 10:
+            happyLevel = HappinessLevel.superExcited
+        default:
+            happyLevel = HappinessLevel.happy
+        }
+        return happyLevel
+    }
+    
     
     // Creates an Entry with current date and current question.
     override init() {
