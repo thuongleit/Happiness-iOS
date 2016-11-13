@@ -73,7 +73,7 @@ class TimelineTableViewCell: UITableViewCell {
             dayNumberLabel.text = nil
         }
         
-        textView.text = entry.text?.string // attributed?!!!
+        textView.text = entry.text // attributed?!!!
         
         locationLabel.text = entry.location?.name
         
