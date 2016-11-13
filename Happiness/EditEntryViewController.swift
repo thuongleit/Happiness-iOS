@@ -64,10 +64,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             entry = Entry()
         }
         if let date = entry?.createdDate {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MMM d y" // "EEE MMM d HH:mm:ss Z y"
-            let dateString = formatter.string(from: date)
-            dateLabel.text = dateString
+            dateLabel.text = UIConstants.dateString(from: date)
         }
         if let question = entry?.question {
             questionLabel.text = question.text

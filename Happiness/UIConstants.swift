@@ -50,6 +50,14 @@ class UIConstants: NSObject {
             return UIImage(named: "super_excited")!
         }
     }
+    
+    // MARK: - Date
+    static func dateString(from date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d y" // Nov 12, 2016  "EEE MMM d HH:mm:ss Z y"
+        let dateString = formatter.string(from: date)
+        return dateString
+    }
 
     // MARK: - Text
     static let textFontName = "Avenir-Medium"

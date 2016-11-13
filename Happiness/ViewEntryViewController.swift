@@ -7,13 +7,47 @@
 //
 
 import UIKit
+import ParseUI
 
 class ViewEntryViewController: UIViewController {
+    
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var questionLabel: UILabel!
+    @IBOutlet weak var textLabel: UILabel!
+
+    @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var feelingImageView: UIImageView!
+
+    @IBOutlet weak var photoImageView: PFImageView!
+
+
+    var entry: Entry!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        if let entry = entry {
+            if let date = entry.createdDate {
+                dateLabel.text = UIConstants.dateString(from: date)
+            }
+            if let question = entry.question {
+                questionLabel.text = question.text
+            }
+            if let text = entry.text {
+                textLabel.text = text
+            }
+            if let location = entry.location {
+                locationLabel.text = location.name ?? "\(entry.location?.latitude), \(entry.location?.longitude)"
+            }
+            if let happinessLevel = entry.happinessLevel {
+                feelingImageView.image = UIConstants.happinessLevelImage(happinessLevel)
+            }
+            if let photoFile = entry.media {
+                photoImageView.file = photoFile
+                photoImageView.loadInBackground()
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
