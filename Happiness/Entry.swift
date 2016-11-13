@@ -29,17 +29,29 @@ class Entry: NSObject {
     var image: UIImage?
     
     // Creates an Entry from the server data.
-    init(entryObject: AnyObject) {
-        id = entryObject.value(forKey: "objectId") as? String
-        author = User.init(obj: entryObject.object(forKey: "author") as AnyObject)
-        if(entryObject.object(forKey: "question") != nil){
-            question = Question.init(questionObject: entryObject.object(forKey: "question") as AnyObject)
+    init(entryObject: AnyObject?) {
+        if let entryObject = entryObject {
+            id = entryObject.value(forKey: "objectId") as? String
+            author = User.init(obj: entryObject.object(forKey: "author") as AnyObject)
+            text = entryObject.object(forKey: "text") as? String // on db side it is only string not NSAttributedString
+            createdDate = entryObject.value(forKey: "createdAt") as? Date
+            
+            if(entryObject.object(forKey: "question") != nil){
+                question = Question.init(questionObject: entryObject.object(forKey: "question") as AnyObject)
+            }
+            
+            if(entryObject.object(forKey: "media") != nil){
+                media = entryObject.object(forKey: "media") as? PFFile
+            }
+            
+            if(entryObject.object(forKey: "location") != nil){
+                location = Location.init(locationObject: entryObject.object(forKey: "location") as AnyObject)
+            }
+            
+            if(entryObject.value(forKey: "happinessLevel") != nil){
+                happinessLevel = HappinessLevel(rawValue: (entryObject.value(forKey: "happinessLevel") as? Int)!)
+            }
         }
-        text = entryObject.object(forKey: "text") as? String // on db side it is only string not NSAttributedString
-        media = entryObject.object(forKey: "media") as? PFFile        
-        location = Location.init(locationObject: entryObject.object(forKey: "location") as AnyObject)
-        createdDate = entryObject.value(forKey: "createdAt") as? Date
-        happinessLevel = HappinessLevel(rawValue: (entryObject.value(forKey: "happinessLevel") as? Int)!)
     }
     
     // Creates an Entry with current date and current question.
