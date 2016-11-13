@@ -79,7 +79,7 @@ class TimelineTableViewCell: UITableViewCell {
         
         questionLabel.text = entry.question?.text
         
-        textView.text = entry.text?.string // attributed?!!!
+        textView.text = entry.text
         
         locationLabel.text = entry.location?.name
         
