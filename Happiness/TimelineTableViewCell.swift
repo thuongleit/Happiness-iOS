@@ -15,12 +15,16 @@ class TimelineTableViewCell: UITableViewCell {
     @IBOutlet weak var dayNameLabel: UILabel!
     @IBOutlet weak var dayNumberLabel: UILabel!
     @IBOutlet weak var happinessImageView: UIImageView!
+    @IBOutlet weak var questionImageView: UIImageView!
     @IBOutlet weak var questionLabel: UILabel!
+    @IBOutlet weak var answerImageView: UIImageView!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var locationImageView: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var entryImageView: UIImageView!
+    @IBOutlet weak var questionLabelLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var questionLabelTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var textViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var textViewTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var locationLabelTrailingConstraint: NSLayoutConstraint!
     
@@ -31,6 +35,8 @@ class TimelineTableViewCell: UITableViewCell {
         super.awakeFromNib()
         
         // Initialization code
+        questionImageView.image = questionImageView.image?.withRenderingMode(.alwaysTemplate)
+        answerImageView.image = answerImageView.image?.withRenderingMode(.alwaysTemplate)
         textView.textContainer.lineBreakMode = .byTruncatingTail
         locationImageView.image = locationImageView.image?.withRenderingMode(.alwaysTemplate)
         entryImageView.layer.cornerRadius = 3
@@ -97,6 +103,26 @@ class TimelineTableViewCell: UITableViewCell {
         }
 
         // Adjust constraints.
+        let defaultQuestionLabelLeadingConstraint: CGFloat = 70
+        let defaultTextViewLeadingConstraint: CGFloat = 65
+        let noQAImagesLeadingAdjustment: CGFloat = -12
+        if questionLabel.text != nil {
+            
+            questionImageView.isHidden = false
+            answerImageView.isHidden = false
+            questionLabelLeadingConstraint.constant = defaultQuestionLabelLeadingConstraint
+            textViewLeadingConstraint.constant = defaultTextViewLeadingConstraint
+        }
+        else {
+            
+            questionImageView.isHidden = true
+            answerImageView.isHidden = true
+            questionLabelLeadingConstraint.constant =
+                defaultQuestionLabelLeadingConstraint + noQAImagesLeadingAdjustment
+            textViewLeadingConstraint.constant =
+                defaultTextViewLeadingConstraint + noQAImagesLeadingAdjustment
+        }
+        
         let defaultMiddleTrailingConstraint: CGFloat = -8
         if hasImage {
             
