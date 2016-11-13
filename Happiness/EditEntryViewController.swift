@@ -7,13 +7,71 @@
 //
 
 import UIKit
+import CoreLocation
 
-class EditEntryViewController: UIViewController {
+class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextViewDelegate, CLLocationManagerDelegate {
+    
+    @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var questionLabel: UILabel!
+    @IBOutlet weak var textView: UITextView!
+    
+    @IBOutlet weak var locationTextField: UITextField!
+    
+    @IBOutlet weak var feelingImageView: UIImageView!
+    @IBOutlet weak var feelingSlider: UISlider!
+    
+    @IBOutlet weak var uploadImageButton: UIButton!
+
+    let locationManager = CLLocationManager()
+    
+    var entry: Entry?
+    
+    var textViewPlaceholderText = "I'm grateful for..."
+    
+    // The view y right before keyboard is shown
+    var topY: CGFloat = 0
+    var keyboardHeight: CGFloat = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        // Ask for location permission
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
+        
+        // Hide keyboard on tap outside of text fields
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(EditEntryViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        
+        // Scroll up view on keyboard showing
+        // TODO(cboo): Buggy, need to fix.
+//        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        // Placeholder entry text
+        textView.text = textViewPlaceholderText
+        textView.textColor = UIColor.lightGray
+        textView.delegate = self
+        
+        // If editing an existing entry, show values of that entry.
+        // Else create an entry with current date and current question.
+        if entry == nil {
+            entry = Entry()
+        }
+        if let date = entry?.createdDate {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMM d y" // "EEE MMM d HH:mm:ss Z y"
+            let dateString = formatter.string(from: date)
+            dateLabel.text = dateString
+        }
+        if let question = entry?.question {
+            questionLabel.text = question.text
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -21,7 +79,87 @@ class EditEntryViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - User Action
+    
+    @IBAction func onSaveButton(_ sender: Any) {
+        // Call HappinessService to save entry
+        saveEntry()
+    }
+    
+    func saveEntry() {
+        let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
+        print("locations = \(locationCoordinate.latitude) \(locationCoordinate.longitude)")
+        
+        // TODO(cboo,deeksha): Change to latitude and longitude instead of lat/longi. Pass in a Location object instead of dictionary.
+        HappinessService.sharedInstance.create(text: textView.text, images: nil, happinessLevel: Int(feelingSlider.value), location: ["name": locationTextField.text ?? "", "lat": locationCoordinate.latitude, "longi": locationCoordinate.longitude], success: { (entry: Entry) in
+            self.dismiss(animated: true, completion: {})
+        }) { (error: Error) in
+            let alertController = UIAlertController(title: "Error saving entry", message:
+                "Happiness monster hugged our server just a little too hard...", preferredStyle: UIAlertControllerStyle.alert)
+            alertController.addAction(UIAlertAction(title: "Delete entry", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
+                self.dismiss(animated: true, completion: {})
+            }))
+            alertController.addAction(UIAlertAction(title: "Try saving again", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
+                self.saveEntry()
+            }))
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    // MARK: - Notifications
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if (keyboardSize.height > 0) {
+                keyboardHeight = keyboardSize.height
+                if topY == 0 {
+                    topY = self.view.frame.origin.y
+                }
+                if self.view.frame.origin.y != (topY - keyboardHeight) {
+                    self.view.frame.origin.y = topY - keyboardHeight
+                }
+            }
+        }
+        
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if keyboardSize.height > 0 {
+                if (self.view.frame.origin.y != topY) {
+                    self.view.frame.origin.y = topY
+                }
+            }
+        }
+    }
+    
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
 
+    // MARK: - UITextViewDelegate
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray {
+            textView.text = nil
+            textView.textColor = UIColor.black
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = textViewPlaceholderText
+            textView.textColor = UIColor.lightGray
+        }
+    }
+    
+    // MARK - CLLocationManagerDelegate
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        var locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
+    }
+    
     /*
     // MARK: - Navigation
 

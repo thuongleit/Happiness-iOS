@@ -115,13 +115,17 @@ class HappinessService: NSObject {
         callFailure = failure
         
         let entryObj = PFObject(className: "Entry")
-        if((images?.count)! > 0){
-            entryObj["media"] = getPFFileFromImage(image: images?[0]) // PFFile column type
+        if let images = images {
+            if(images.count > 0){
+                entryObj["media"] = getPFFileFromImage(image: images[0]) // PFFile column type
+            }
         }
         entryObj["author"] = PFUser.current() // Pointer column type that points to PFUser
         entryObj["text"] = text
         entryObj["happinessLevel"] = happinessLevel
-        entryObj["location"] = location
+        if let location = location {
+            entryObj["location"] = location
+        }
         
         // Save object (following function will save the object in Parse asynchronously)
         entryObj.saveInBackground { (succeeded: Bool, error: Error?) in
