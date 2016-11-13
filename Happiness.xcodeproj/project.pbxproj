@@ -32,6 +32,8 @@
 		E1B6F66F1DD43FF800B01B9E /* EditEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1B6F66D1DD43FF800B01B9E /* EditEntryViewController.xib */; };
 		E1B6F6721DD4403E00B01B9E /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B6F6701DD4403E00B01B9E /* CalendarViewController.swift */; };
 		E1B6F6731DD4403E00B01B9E /* CalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1B6F6711DD4403E00B01B9E /* CalendarViewController.xib */; };
+		E1E579C71DD7F36D0032570C /* TabBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1E579C61DD7F36D0032570C /* TabBarView.xib */; };
+		E1E579C91DD7F39D0032570C /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E579C81DD7F39D0032570C /* TabBarView.swift */; };
 		F704FCA419A24176385233FF /* Pods_Happiness.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 497F8C0D117519D30237A150 /* Pods_Happiness.framework */; };
 		FCEAD6C51DD7BBCA002ADFC2 /* TimelineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEAD6C41DD7BBCA002ADFC2 /* TimelineTableViewCell.swift */; };
 		FCEAD6C71DD7BCBA002ADFC2 /* TimelineTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCEAD6C61DD7BCBA002ADFC2 /* TimelineTableViewCell.xib */; };
@@ -69,6 +71,8 @@
 		E1B6F66D1DD43FF800B01B9E /* EditEntryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditEntryViewController.xib; sourceTree = "<group>"; };
 		E1B6F6701DD4403E00B01B9E /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		E1B6F6711DD4403E00B01B9E /* CalendarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarViewController.xib; sourceTree = "<group>"; };
+		E1E579C61DD7F36D0032570C /* TabBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TabBarView.xib; sourceTree = "<group>"; };
+		E1E579C81DD7F39D0032570C /* TabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		FCEAD6C41DD7BBCA002ADFC2 /* TimelineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewCell.swift; sourceTree = "<group>"; };
 		FCEAD6C61DD7BCBA002ADFC2 /* TimelineTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -184,6 +188,8 @@
 				E1B6F6521DD434AF00B01B9E /* UIConstants.swift */,
 				FCEAD6C41DD7BBCA002ADFC2 /* TimelineTableViewCell.swift */,
 				FCEAD6C61DD7BCBA002ADFC2 /* TimelineTableViewCell.xib */,
+				E1E579C61DD7F36D0032570C /* TabBarView.xib */,
+				E1E579C81DD7F39D0032570C /* TabBarView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -231,7 +237,7 @@
 				TargetAttributes = {
 					E18E2CB31DC95FD500BA02C4 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = SCUP57ZH8V;
+						DevelopmentTeam = EEV6AZHDW2;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -270,6 +276,7 @@
 				E1B6F6731DD4403E00B01B9E /* CalendarViewController.xib in Resources */,
 				FCEAD6C71DD7BCBA002ADFC2 /* TimelineTableViewCell.xib in Resources */,
 				E1B6F6571DD4380700B01B9E /* BaseViewController.xib in Resources */,
+				E1E579C71DD7F36D0032570C /* TabBarView.xib in Resources */,
 				E1B6F66F1DD43FF800B01B9E /* EditEntryViewController.xib in Resources */,
 				E1B6F65F1DD43ED700B01B9E /* InitialViewController.xib in Resources */,
 				E1B6F6631DD43F2100B01B9E /* TimelineViewController.xib in Resources */,
@@ -333,6 +340,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1E579C91DD7F39D0032570C /* TabBarView.swift in Sources */,
 				FCEAD6C51DD7BBCA002ADFC2 /* TimelineTableViewCell.swift in Sources */,
 				E1B6F64D1DD4135500B01B9E /* Question.swift in Sources */,
 				E1B6F6621DD43F2100B01B9E /* TimelineViewController.swift in Sources */,
@@ -474,7 +482,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Happiness/Happiness.entitlements;
-				DEVELOPMENT_TEAM = SCUP57ZH8V;
+				DEVELOPMENT_TEAM = EEV6AZHDW2;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.mobile.Happiness;
@@ -490,7 +498,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Happiness/Happiness.entitlements;
-				DEVELOPMENT_TEAM = SCUP57ZH8V;
+				DEVELOPMENT_TEAM = EEV6AZHDW2;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.mobile.Happiness;

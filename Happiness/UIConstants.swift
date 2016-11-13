@@ -36,12 +36,12 @@ class UIConstants: NSObject {
     }
     
     class CellReuseIdentifier {
-        
         static let timelineCell = "TimelineCell"
     }
     
     class ClassName {
-        
         static let timelineTableViewCellXib = "TimelineTableViewCell"
     }
+    
+
 }

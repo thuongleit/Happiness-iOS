@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 enum HappinessLevel: Int {
     case sad=0
@@ -15,18 +16,29 @@ enum HappinessLevel: Int {
 }
 
 class Entry: NSObject {
-
-    var id: Int?
+    
+    var id: String?
     var author: User?
     var question: Question?
-    var text: NSAttributedString?
+    var text: String?
     var imageUrls: [URL]?
+    var media:PFFile?
     var location: Location?
     var createdDate: Date?
     var happinessLevel: HappinessLevel?
+    var image: UIImage?
     
-    init(dictionary: Dictionary<String, AnyObject>) {
-        
+    init(entryObject: AnyObject) {
+        id = entryObject.value(forKey: "objectId") as? String
+        author = User.init(obj: entryObject.object(forKey: "author") as AnyObject)
+        if(entryObject.object(forKey: "question") != nil){
+            question = Question.init(questionObject: entryObject.object(forKey: "question") as AnyObject)
+        }
+        text = entryObject.object(forKey: "text") as? String // on db side it is only string not NSAttributedString
+        media = entryObject.object(forKey: "media") as? PFFile        
+        location = Location.init(locationObject: entryObject.object(forKey: "location") as AnyObject)
+        createdDate = entryObject.value(forKey: "createdAt") as? Date
+        happinessLevel = HappinessLevel(rawValue: (entryObject.value(forKey: "happinessLevel") as? Int)!)
     }
     
 }

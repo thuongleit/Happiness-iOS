@@ -9,5 +9,6 @@ target 'Happiness' do
   pod 'AFNetworking'
   pod 'MBProgressHUD'
   pod 'Parse'
+  pod 'ParseUI'
 
 end

@@ -10,12 +10,11 @@ import UIKit
 
 class Question: NSObject {
     
-    var id: Int?
+    var id: String?
     var text: String?
     
-    init(dictionary: Dictionary<String, AnyObject>) {
-        
+    init(questionObject: AnyObject) {
+        id = questionObject.object(forKey: "objectId") as? String
+        text = questionObject.object(forKey: "text") as? String
     }
-    
-    
 }
