@@ -17,19 +17,18 @@ class UIConstants: NSObject {
     
     static func happinessLevelColor(_ happinessLevel: HappinessLevel) -> UIColor {
         switch happinessLevel {
-        // TODO(cboo): Pick colors for each level. All the same right now.
-        case .angry:
-            return UIColor.init(colorLiteralRed: 25.0/255.0, green: 207.0/255.0, blue: 134.0/255.0, alpha: 1.0)
-        case .bothered:
-            return UIColor.init(colorLiteralRed: 25.0/255.0, green: 207.0/255.0, blue: 134.0/255.0, alpha: 1.0)
-        case .sad:
-            return UIColor.init(colorLiteralRed: 25.0/255.0, green: 207.0/255.0, blue: 134.0/255.0, alpha: 1.0)
-        case .happy:
-            return UIColor.init(colorLiteralRed: 25.0/255.0, green: 207.0/255.0, blue: 134.0/255.0, alpha: 1.0)
-        case .excited:
-            return UIColor.init(colorLiteralRed: 25.0/255.0, green: 207.0/255.0, blue: 134.0/255.0, alpha: 1.0)
-        case .superExcited:
-            return UIColor.init(colorLiteralRed: 25.0/255.0, green: 207.0/255.0, blue: 134.0/255.0, alpha: 1.0)
+        case .angry: // deep red
+            return UIColor.init(colorLiteralRed: 205/255.0, green: 45/255.0, blue: 34/255.0, alpha: 1.0)
+        case .bothered: // light red
+            return UIColor.init(colorLiteralRed: 254/255.0, green: 110/255.0, blue: 75/255.0, alpha: 1.0)
+        case .sad: // light blue
+            return UIColor.init(colorLiteralRed: 117/255.0, green: 201/255.0, blue: 177/255.0, alpha: 1.0)
+        case .happy: // yellow
+            return UIColor.init(colorLiteralRed: 255/255.0, green: 212/255.0, blue: 84/255.0, alpha: 1.0)
+        case .excited: // turquoise
+            return UIColor.init(colorLiteralRed: 123/255.0, green: 209/255.0, blue: 134/255.0, alpha: 1.0)
+        case .superExcited: // bright turquiose
+            return UIColor.init(colorLiteralRed: 25/255.0, green: 207/255.0, blue: 134/255.0, alpha: 1.0)
         }
     }
 
