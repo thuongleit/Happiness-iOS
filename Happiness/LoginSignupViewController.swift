@@ -22,9 +22,14 @@ class LoginSignupViewController: UIViewController {
     @IBOutlet weak var passwordLabel: UILabel!
     @IBOutlet weak var passwordTextField: UITextField!
     
+    @IBOutlet weak var confirmView: UIView!
+    @IBOutlet weak var confirmLabel: UILabel!
+    @IBOutlet weak var confirmTextField: UITextField!
+    
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var loginSignupButton: UIButton!
     
+    @IBOutlet weak var buttonsTopConstraint: NSLayoutConstraint!
     
     var isSignup: Bool!
 
@@ -34,6 +39,8 @@ class LoginSignupViewController: UIViewController {
         if (!isSignup) {
             nameView.isHidden = true
             loginSignupButton.setTitle("Log In", for: .normal)
+            confirmView.isHidden = true
+            buttonsTopConstraint.constant = buttonsTopConstraint.constant - confirmView.bounds.height
         }
         
         setupContainerView()
@@ -46,13 +53,13 @@ class LoginSignupViewController: UIViewController {
     }
     
     func setupContainerView() {
-        for view in [nameView, emailView, passwordView] {
+        for view in [nameView, emailView, passwordView, confirmView] {
             UIConstants.setupLoginSignupContainerView(view: view!)
         }
     }
     
     func setupTextLabel() {
-        for textlabel in [nameLabel, emailLabel, passwordLabel] {
+        for textlabel in [nameLabel, emailLabel, passwordLabel, confirmLabel] {
             textlabel?.textColor = UIConstants.secondaryThemeColor
             textlabel?.font = UIFont(name: UIConstants.textFontName, size: 17)
         }
@@ -62,6 +69,9 @@ class LoginSignupViewController: UIViewController {
         UIConstants.setupLoginSignupTextField(textField: nameTextField, withPlaceholder: "Name")
         UIConstants.setupLoginSignupTextField(textField: emailTextField, withPlaceholder: "Email")
         UIConstants.setupLoginSignupTextField(textField: passwordTextField, withPlaceholder: "Password")
+        UIConstants.setupLoginSignupTextField(textField: confirmTextField, withPlaceholder: "Confirm Password")
+        passwordTextField.isSecureTextEntry = true
+        confirmTextField.isSecureTextEntry = true
     }
     
     func setupButton() {
