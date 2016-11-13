@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import CoreLocation
 
-class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextViewDelegate {
+class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextViewDelegate, CLLocationManagerDelegate {
     
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var questionLabel: UILabel!
@@ -21,6 +22,8 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     
     @IBOutlet weak var uploadImageButton: UIButton!
 
+    let locationManager = CLLocationManager()
+    
     var entry: Entry?
     
     var textViewPlaceholderText = "I'm grateful for..."
@@ -31,6 +34,15 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Ask for location permission
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
         
         // Hide keyboard on tap outside of text fields
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(EditEntryViewController.dismissKeyboard))
@@ -75,7 +87,11 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     }
     
     func saveEntry() {
-        HappinessService.sharedInstance.create(text: textView.text, images: nil, happinessLevel: Int(feelingSlider.value), location: ["name": locationTextField.text ?? ""], success: { (entry: Entry) in
+        let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
+        print("locations = \(locationCoordinate.latitude) \(locationCoordinate.longitude)")
+        
+        // TODO(cboo,deeksha): Change to latitude and longitude instead of lat/longi. Pass in a Location object instead of dictionary.
+        HappinessService.sharedInstance.create(text: textView.text, images: nil, happinessLevel: Int(feelingSlider.value), location: ["name": locationTextField.text ?? "", "lat": locationCoordinate.latitude, "longi": locationCoordinate.longitude], success: { (entry: Entry) in
             self.dismiss(animated: true, completion: {})
         }) { (error: Error) in
             let alertController = UIAlertController(title: "Error saving entry", message:
@@ -136,6 +152,12 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             textView.text = textViewPlaceholderText
             textView.textColor = UIColor.lightGray
         }
+    }
+    
+    // MARK - CLLocationManagerDelegate
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        var locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        print("locations = \(locValue.latitude) \(locValue.longitude)")
     }
     
     /*
