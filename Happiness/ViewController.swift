@@ -22,6 +22,15 @@ class ViewController: UIViewController {
     @IBOutlet weak var entryPFImageView: PFImageView!
     @IBOutlet weak var entryLabel: UILabel!
     
+    
+    @IBOutlet weak var latestCreatedEntryImageView: PFImageView!
+    @IBOutlet weak var latestCreatedEntryLabel: UILabel!
+    var lastAddedEntry:Entry?
+    
+    @IBOutlet weak var lastEditedEntryImageView: PFImageView!
+    
+    @IBOutlet weak var lastEditedEntryLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loginButton.layer.cornerRadius = 5
@@ -76,6 +85,7 @@ class ViewController: UIViewController {
             
             self.entryPFImageView.file = entry.media
             self.entryPFImageView.loadInBackground()
+            self.lastAddedEntry = entry
             
         }, failure: {(error: Error) in
             print(error.localizedDescription)
@@ -83,14 +93,66 @@ class ViewController: UIViewController {
         
     }
     
+    @IBAction func onUpdateEntry(_ sender: Any) {
+        
+        if lastAddedEntry != nil {
+            
+            lastAddedEntry!.text = "test entry edited"
+            let img = UIImage(named: "heartRed")
+            //37.425113, -122.094305
+            lastAddedEntry?.location?.name = "Google West Campus 5"
+            lastAddedEntry?.location?.latitude = 37.425113
+            lastAddedEntry?.location?.longitude = -122.094305
+            
+            HappinessService.sharedInstance.update(entry: lastAddedEntry!, images: [img!], success: { (entry:Entry) in
+                
+                self.lastEditedEntryLabel.attributedText = NSAttributedString.init(string: entry.text!)
+                self.lastEditedEntryImageView.file = entry.media
+                self.lastEditedEntryImageView.loadInBackground()
+                
+            }, failure: { (error:Error) in
+                
+            })
+        }
+        
+    }
+    
+    
+    @IBAction func onDeleteEntry(_ sender: Any) {
+        
+         if lastAddedEntry != nil {
+            
+            HappinessService.sharedInstance.delete(entry: lastAddedEntry!, success: { 
+                print("entry deleted")
+            }, failure: { (error:Error) in
+                
+            })
+            
+        }
+    }
+    
+    @IBAction func onGetUserEntries(_ sender: Any) {
+        
+        HappinessService.sharedInstance.getEntries(success: { (entries: [Entry]) in
+            
+            if(entries.count > 0){
+                let entryObj = entries[0]
+                self.latestCreatedEntryLabel.attributedText = NSAttributedString(string: entryObj.text!)
+                self.latestCreatedEntryImageView.file = entryObj.media
+                self.latestCreatedEntryImageView.loadInBackground()
+                self.lastAddedEntry = entryObj
+            }
+            
+        }, failure: {(error: Error) in
+            print(error.localizedDescription)
+        })
+    
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
-    
     
 }
 
