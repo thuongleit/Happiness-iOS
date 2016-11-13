@@ -20,19 +20,22 @@ class BaseViewController: UIViewController, TabBarViewDelegate {
     
     @IBOutlet weak var calendarTabContainerView: UIView!
     
-    var timelineViewController: TimelineViewController!
+    var timelineNavigationController: UINavigationController!
     
-    var calendarViewController: CalendarViewController!
+    var calendarNavigationController: UINavigationController!
     
     var selectedViewController: UIViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        timelineViewController = TimelineViewController(nibName: "TimelineViewController", bundle: nil)
-        calendarViewController = CalendarViewController(nibName: "CalendarViewController", bundle: nil)
+        let timelineViewController = TimelineViewController(nibName: "TimelineViewController", bundle: nil)
+        timelineNavigationController = UINavigationController(rootViewController: timelineViewController)
         
-        self.switchToViewController(viewController: timelineViewController)
+        let calendarViewController = CalendarViewController(nibName: "CalendarViewController", bundle: nil)
+        calendarNavigationController = UINavigationController(rootViewController: calendarViewController)
+        
+        self.switchToViewController(viewController: timelineNavigationController)
         
         if let timelineTab = Bundle.main.loadNibNamed("TabBarView", owner: self, options: nil)?.first as? TabBarView {
             timelineTab.frame = self.timelineTabContainerView.bounds
@@ -66,10 +69,10 @@ class BaseViewController: UIViewController, TabBarViewDelegate {
     func tabBarView(didTapButton tabBarView: TabBarView) {
         switch tabBarView.tag {
         case TabSelection.timeline.rawValue:
-            self.switchToViewController(viewController: timelineViewController)
+            self.switchToViewController(viewController: timelineNavigationController)
             break
         case TabSelection.calendar.rawValue:
-            self.switchToViewController(viewController: calendarViewController)
+            self.switchToViewController(viewController: calendarNavigationController)
             break
         default:
             break
