@@ -50,7 +50,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func presentLoggedInScreens() {
         let baseViewController = BaseViewController(nibName: "BaseViewController", bundle: nil)
-        window?.rootViewController = baseViewController
+        let baseNavigationController = UINavigationController(rootViewController: baseViewController)
+        baseNavigationController.navigationBar.isTranslucent = false;
+        window?.rootViewController = baseNavigationController
     }
     
     func userDidLogOut() {
