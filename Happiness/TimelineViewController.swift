@@ -242,7 +242,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     // test function!!!
-    /*func getDummyEntries() -> [Entry]
+    func getDummyEntries() -> [Entry]
     {
         var entries = [Entry]()
         let entry0 = Entry()
@@ -309,7 +309,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         entries.append(entry4)
 
         return entries
-    }*/
+    }
 }
 
 /*!!!

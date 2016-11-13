@@ -46,25 +46,10 @@ class TimelineTableViewCell: UITableViewCell {
     // Set the cell contents based on the specified parameters.
     func setData(entry: Entry) {
         
-        // Use real colors!!!
-        // magic strings!!!
         if let happinessLevel = entry.happinessLevel {
         
-            switch happinessLevel {
-                
-            case .sad:
-                happinessColorView.backgroundColor = UIColor.blue
-                happinessImageView.image = UIImage(named: "sad-240")?.withRenderingMode(.alwaysTemplate)
-            case .happy:
-                happinessColorView.backgroundColor = UIColor.green
-                happinessImageView.image = UIImage(named: "happy-240")?.withRenderingMode(.alwaysTemplate)
-            case .excited:
-                happinessColorView.backgroundColor = UIColor.orange
-                happinessImageView.image = UIImage(named: "excited-240")?.withRenderingMode(.alwaysTemplate)
-            default:
-                happinessColorView.backgroundColor = UIColor.orange
-                happinessImageView.image = UIImage(named: "excited-240")?.withRenderingMode(.alwaysTemplate)
-            }
+            happinessColorView.backgroundColor = UIConstants.happinessLevelColor(happinessLevel)
+            happinessImageView.image = UIConstants.happinessLevelImage(happinessLevel)
         }
         else {
         
@@ -106,8 +91,8 @@ class TimelineTableViewCell: UITableViewCell {
         }
 
         // Adjust constraints.
-        let defaultQuestionLabelLeadingConstraint: CGFloat = 70
-        let defaultTextViewLeadingConstraint: CGFloat = 65
+        let defaultQuestionLabelLeadingConstraint: CGFloat = 66
+        let defaultTextViewLeadingConstraint: CGFloat = 61
         let noQAImagesLeadingAdjustment: CGFloat = -12
         if questionLabel.text != nil {
             
