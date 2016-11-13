@@ -35,6 +35,13 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set the navigation bar title.
+        navigationItem.title = "New Entry"
+        
+        // Add the compose button.
+        let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(EditEntryViewController.saveEntry))
+        navigationItem.rightBarButtonItem = saveButton
+        
         // Ask for location permission
         self.locationManager.requestWhenInUseAuthorization()
         
