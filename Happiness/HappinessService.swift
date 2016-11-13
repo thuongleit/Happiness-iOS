@@ -108,8 +108,16 @@ class HappinessService: NSObject {
         PFUser.logOut()
     }
     
+    // Convert Location to be stored on server. Helper for service create() and update() methods.
+    func createLocationObject(location: Location) -> [String: Any] {
+        let name = location.name ?? ""
+        let latitude = location.latitude ?? 0.0
+        let longitude = location.longitude ?? 0.0
+        let jsonLocationObj = ["name": name, "lat" : latitude, "longi" : longitude] as [String : Any]
+        return jsonLocationObj
+    }
     
-    func create(text: String, images: [UIImage]?, happinessLevel: Int?, location: [String: Any]?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {
+    func create(text: String, images: [UIImage]?, happinessLevel: Int?, location: Location?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {
         
         createUpdateEntrySuccess = success
         callFailure = failure
@@ -124,7 +132,8 @@ class HappinessService: NSObject {
         entryObj["text"] = text
         entryObj["happinessLevel"] = happinessLevel
         if let location = location {
-            entryObj["location"] = location
+            // Convert Location to dictionary format to be stored on server
+            entryObj["location"] = createLocationObject(location: location)
         }
         
         // Save object (following function will save the object in Parse asynchronously)
@@ -177,7 +186,7 @@ class HappinessService: NSObject {
                 entryObj?.setObject(PFUser.current()!, forKey: "author")
                 entryObj?.setObject(entry.text!, forKey: "text")
                 entryObj?.setObject(entry.happinessLevel?.rawValue ?? 10, forKey: "happinessLevel")
-                entryObj?.setObject(Location.createLocationObject(locName: entry.location?.name, locLat: (entry.location?.latitude)!, locLong: (entry.location?.longitude)!), forKey: "location")
+                entryObj?.setObject(self.createLocationObject(location: entry.location!), forKey: "location")
                 
                 entryObj?.saveInBackground(block: { (succeded: Bool, error:Error?) in
                     if(succeded)

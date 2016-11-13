@@ -77,7 +77,7 @@ class ViewController: UIViewController {
         
         let str = "test entry"
         let img = UIImage(named: "placeholder")
-        let loc = Location.createLocationObject(locName: "Google West Campus 2", locLat: 37.424219, locLong: -122.092481)
+        let loc = Location(name: "Google West Campus 2", latitude: 37.424219, longitude: -122.092481)
         
        
         HappinessService.sharedInstance.create(text: str, images: [img!], happinessLevel: HappinessLevel.excited.rawValue, location: loc,  success: {(entry: Entry) in
