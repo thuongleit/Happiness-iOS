@@ -84,6 +84,7 @@ class LoginSignupViewController: UIViewController {
             
             HappinessService.sharedInstance.login(email: emailTextField.text!, password: passwordTextField.text!, success: { (user: User) in
                 print("log in success with name \(user.name)")
+                NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogin.notification, object: nil)
             }, failure: { (error: Error) in
                 print("login fail with error: \(error)")
             })
@@ -93,6 +94,7 @@ class LoginSignupViewController: UIViewController {
             
             HappinessService.sharedInstance.signup(email: emailTextField.text!, password: passwordTextField.text!, name: nameTextField.text!, success: { (user: User) in
                 print("sign up success with name \(user.name)")
+                NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogin.notification, object: nil)
             }, failure: { (error: Error) in
                 print("sign up fail with error: \(error)")
             })
