@@ -8,28 +8,101 @@
 
 import UIKit
 
-class BaseViewController: UIViewController {
+class BaseViewController: UIViewController, TabBarViewDelegate {
+    
+    enum TabSelection: Int {
+        case timeline = 0, calendar
+    }
+    
+    @IBOutlet weak var contentView: UIView!
+    
+    @IBOutlet weak var timelineTabContainerView: UIView!
+    
+    @IBOutlet weak var calendarTabContainerView: UIView!
+    
+    var timelineViewController: TimelineViewController!
+    
+    var calendarViewController: CalendarViewController!
+    
+    var selectedViewController: UIViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        timelineViewController = TimelineViewController(nibName: "TimelineViewController", bundle: nil)
+        calendarViewController = CalendarViewController(nibName: "CalendarViewController", bundle: nil)
+        
+        self.switchToViewController(viewController: timelineViewController)
+        
+        if let timelineTab = Bundle.main.loadNibNamed("TabBarView", owner: self, options: nil)?.first as? TabBarView {
+            timelineTab.frame = self.timelineTabContainerView.bounds
+            timelineTab.delegate = self
+            timelineTab.tag = TabSelection.timeline.rawValue
+            timelineTab.setTabName(name: "Timeline")
+            timelineTab.markSelected()
+            self.timelineTabContainerView.addSubview(timelineTab)
+        }
+        
+        if let calendarTab = Bundle.main.loadNibNamed("TabBarView", owner: self, options: nil)?.first as? TabBarView {
+            calendarTab.frame = self.calendarTabContainerView.bounds
+            calendarTab.delegate = self
+            calendarTab.tag = TabSelection.calendar.rawValue
+            calendarTab.setTabName(name: "Calendar")
+            calendarTab.markUnselected()
+            self.calendarTabContainerView.addSubview(calendarTab)
+        }
+        
+        let doubleTap = UITapGestureRecognizer()
+        doubleTap.numberOfTapsRequired = 2
+        doubleTap.addTarget(self, action: #selector(logout))
+        self.calendarTabContainerView.addGestureRecognizer(doubleTap)
+        
+        let doubleTapTimeline = UITapGestureRecognizer()
+        doubleTapTimeline.numberOfTapsRequired = 2
+        doubleTapTimeline.addTarget(self, action: #selector(bringEditView))
+        self.timelineTabContainerView.addGestureRecognizer(doubleTapTimeline)
     }
+    
+    func tabBarView(didTapButton tabBarView: TabBarView) {
+        switch tabBarView.tag {
+        case TabSelection.timeline.rawValue:
+            self.switchToViewController(viewController: timelineViewController)
+            break
+        case TabSelection.calendar.rawValue:
+            self.switchToViewController(viewController: calendarViewController)
+            break
+        default:
+            break
+        }
+    }
+    
+    func switchToViewController(viewController: UIViewController) {
+        
+        if let oldViewController = selectedViewController {
+            oldViewController.willMove(toParentViewController: nil)
+            oldViewController.view.removeFromSuperview()
+            oldViewController.removeFromParentViewController()
+        }
 
+        self.addChildViewController(viewController)
+        viewController.view.frame = self.contentView.bounds
+        viewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        self.contentView.addSubview(viewController.view)
+        viewController.didMove(toParentViewController: self)
+        selectedViewController = viewController
+    }
+    
+    func bringEditView() {
+        let editVC = EditEntryViewController(nibName: "EditEntryViewController", bundle: nil)
+        present(editVC, animated: true, completion: nil)
+    }
+    
+    func logout() {
+        NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogout.notification, object: nil)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
