@@ -37,8 +37,9 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         view.addGestureRecognizer(tap)
         
         // Scroll up view on keyboard showing
-        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        // TODO(cboo): Buggy, need to fix.
+//        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         // Placeholder entry text
         textView.text = textViewPlaceholderText
@@ -48,7 +49,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         // If editing an existing entry, show values of that entry.
         // Else create an entry with current date and current question.
         if entry == nil {
-            entry = Entry.newEntry()
+            entry = Entry()
         }
         if let date = entry?.createdDate {
             let formatter = DateFormatter()
@@ -70,6 +71,23 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     
     @IBAction func onSaveButton(_ sender: Any) {
         // Call HappinessService to save entry
+        saveEntry()
+    }
+    
+    func saveEntry() {
+        HappinessService.sharedInstance.create(text: textView.text, images: nil, happinessLevel: Int(feelingSlider.value), location: ["name": locationTextField.text ?? ""], success: { (entry: Entry) in
+            self.dismiss(animated: true, completion: {})
+        }) { (error: Error) in
+            let alertController = UIAlertController(title: "Error saving entry", message:
+                "Happiness monster hugged our server just a little too hard...", preferredStyle: UIAlertControllerStyle.alert)
+            alertController.addAction(UIAlertAction(title: "Delete entry", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
+                self.dismiss(animated: true, completion: {})
+            }))
+            alertController.addAction(UIAlertAction(title: "Try saving again", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
+                self.saveEntry()
+            }))
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
     
     // MARK: - Notifications

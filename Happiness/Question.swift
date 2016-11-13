@@ -13,7 +13,7 @@ class Question: NSObject {
     var id: String?
     var text: String?
     
-    // For creating a Question from the server data
+    // Creates a Question from the server data.
     init(questionObject: AnyObject) {
         if let id = questionObject.object(forKey: "objectId") as? String {
             self.id = id
@@ -23,7 +23,7 @@ class Question: NSObject {
         }
     }
     
-    // For creating a Question on the client side
+    // Creates a Question on the client side.
     init(text: String?) {
         if let text = text {
             self.text = text

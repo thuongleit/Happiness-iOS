@@ -28,6 +28,7 @@ class Entry: NSObject {
     var happinessLevel: HappinessLevel?
     var image: UIImage?
     
+    // Creates an Entry from the server data.
     init(entryObject: AnyObject) {
         id = entryObject.value(forKey: "objectId") as? String
         author = User.init(obj: entryObject.object(forKey: "author") as AnyObject)
@@ -39,6 +40,14 @@ class Entry: NSObject {
         location = Location.init(locationObject: entryObject.object(forKey: "location") as AnyObject)
         createdDate = entryObject.value(forKey: "createdAt") as? Date
         happinessLevel = HappinessLevel(rawValue: (entryObject.value(forKey: "happinessLevel") as? Int)!)
+    }
+    
+    // Creates an Entry with current date and current question.
+    override init() {
+        // Set current date
+        createdDate = Date()
+        // Set current question
+        question = QuestionsList.getCurrentQuestion()
     }
     
 }

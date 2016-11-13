@@ -38,7 +38,7 @@
                     <color key="textColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="3" minValue="0.0" maxValue="4" translatesAutoresizingMaskIntoConstraints="NO" id="TAf-qY-uqt">
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="7" minValue="0.0" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="TAf-qY-uqt">
                     <rect key="frame" x="90" y="460.5" width="271" height="31"/>
                     <color key="minimumTrackTintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="maximumTrackTintColor" red="0.99607843139999996" green="0.80000000000000004" blue="0.1019607843" alpha="1" colorSpace="calibratedRGB"/>
@@ -73,7 +73,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="100" id="d0O-Mm-P2X"/>
                     </constraints>
-                    <state key="normal" title="Button" image="image_placeholder"/>
+                    <state key="normal" image="image_placeholder"/>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X0v-Yz-Jxg">
                     <rect key="frame" x="16" y="35" width="34" height="30"/>
