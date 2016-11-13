@@ -40,15 +40,27 @@ class TimelineViewController: UIViewController {
         
         super.viewDidLoad()
 
-        // Set the navigationBar color.
+        // Set up the navigation bar.
         if let navigationController = navigationController {
 
+            // Set the navigation bar color.
             navigationController.navigationBar.barTintColor = UIColor(red: 0xFB/255.0, green: 0xF8/255.0, blue: 0xF4/255.0, alpha: 1.0) // magic numbers!!!
+            
+            // Set the navigation bar title.
+            navigationItem.title = "Timeline"
+            
+            // Add the compose button.
+            let composeButton = UIBarButtonItem(
+                image: UIImage(named: UIConstants.ImageName.composeButton),
+                style: .plain,
+                target: self,
+                action: #selector(onComposeButton))
+            navigationItem.rightBarButtonItem  = composeButton
+
+            // Render the bar button images using the correct color.
+            navigationItem.leftBarButtonItem?.image = navigationItem.leftBarButtonItem?.image?.withRenderingMode(.alwaysOriginal)
+            navigationItem.rightBarButtonItem?.image = navigationItem.rightBarButtonItem?.image?.withRenderingMode(.alwaysOriginal)
         }
-        
-        // Render the bar button images using the correct color.
-        navigationItem.leftBarButtonItem?.image = navigationItem.leftBarButtonItem?.image?.withRenderingMode(.alwaysOriginal)
-        navigationItem.rightBarButtonItem?.image = navigationItem.rightBarButtonItem?.image?.withRenderingMode(.alwaysOriginal)
         
         // Hide the error banner.
         //!!!errorBannerView.isHidden = true
@@ -69,6 +81,15 @@ class TimelineViewController: UIViewController {
         
         // Get entries when the view controller loads.
         getEntries()
+    }
+
+    // When the compose is pressed, preset the EditEntryViewController modally.
+    @IBAction func onComposeButton(_ sender: UIBarButtonItem)
+    {
+        let editEntryViewController = EditEntryViewController(nibName: nil, bundle: nil)
+        let navigationController = UINavigationController(rootViewController: editEntryViewController)
+        navigationController.navigationBar.isTranslucent = false
+        present(navigationController, animated: true, completion: nil)
     }
 
     // Get a collection of entries for the authenticating user.
