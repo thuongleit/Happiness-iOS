@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditEntryViewController" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditEntryViewController" customModule="Happiness" customModuleProvider="target">
             <connections>
+                <outlet property="dateLabel" destination="m5P-5u-iH2" id="s7l-Va-lPg"/>
+                <outlet property="feelingImageView" destination="3K2-G8-PqW" id="mOJ-xl-079"/>
+                <outlet property="feelingSlider" destination="TAf-qY-uqt" id="QCK-pF-OeK"/>
+                <outlet property="locationTextField" destination="BvK-ia-fF4" id="Odj-3j-BRb"/>
+                <outlet property="questionLabel" destination="78N-YF-fYe" id="8L6-rI-9Fp"/>
+                <outlet property="textView" destination="29J-UZ-9Wf" id="qrK-xP-vg0"/>
+                <outlet property="uploadImageButton" destination="W3h-yQ-BdT" id="ReG-6o-tfW"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -14,7 +25,108 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What are you grateful for today?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="78N-YF-fYe">
+                    <rect key="frame" x="16" y="81" width="343" height="29"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                    <color key="textColor" red="1" green="0.50256161160000001" blue="0.4588075774" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nov 12, 2016" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m5P-5u-iH2">
+                    <rect key="frame" x="259" y="40" width="100" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="3" minValue="0.0" maxValue="4" translatesAutoresizingMaskIntoConstraints="NO" id="TAf-qY-uqt">
+                    <rect key="frame" x="90" y="460.5" width="271" height="31"/>
+                    <color key="minimumTrackTintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="maximumTrackTintColor" red="0.99607843139999996" green="0.80000000000000004" blue="0.1019607843" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="thumbTintColor" red="0.99607843137254903" green="0.80000000000000004" blue="0.10196078431372549" alpha="1" colorSpace="calibratedRGB"/>
+                </slider>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="really_happy" translatesAutoresizingMaskIntoConstraints="NO" id="3K2-G8-PqW">
+                    <rect key="frame" x="16" y="445.5" width="60" height="60"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="HWS-7G-5nw"/>
+                        <constraint firstAttribute="width" constant="60" id="LCH-zU-gjT"/>
+                    </constraints>
+                </imageView>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="29J-UZ-9Wf">
+                    <rect key="frame" x="16" y="130" width="343" height="250"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="250" id="IiX-kV-P8n"/>
+                    </constraints>
+                    <attributedString key="attributedText">
+                        <fragment>
+                            <string key="content">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                            <attributes>
+                                <font key="NSFont" size="17" name="HelveticaNeue"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.2" tighteningFactorForTruncation="0.0" allowsDefaultTighteningForTruncation="NO"/>
+                            </attributes>
+                        </fragment>
+                    </attributedString>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W3h-yQ-BdT">
+                    <rect key="frame" x="16" y="525.5" width="343" height="100"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="100" id="d0O-Mm-P2X"/>
+                    </constraints>
+                    <state key="normal" title="Button" image="image_placeholder"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X0v-Yz-Jxg">
+                    <rect key="frame" x="16" y="35" width="34" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Save"/>
+                    <connections>
+                        <action selector="onSaveButton:" destination="-1" eventType="touchUpInside" id="NAc-n6-GXe"/>
+                    </connections>
+                </button>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="On the grass at Seven Seas Park" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BvK-ia-fF4">
+                    <rect key="frame" x="90" y="400" width="269" height="30"/>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="leD-hC-SmF">
+                    <rect key="frame" x="16" y="404.5" width="66" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.94901960784313721" green="0.94509803921568625" blue="0.92549019607843142" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="78N-YF-fYe" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="03a-AQ-eEe"/>
+                <constraint firstItem="TAf-qY-uqt" firstAttribute="leading" secondItem="3K2-G8-PqW" secondAttribute="trailing" constant="16" id="0Sr-qN-1hk"/>
+                <constraint firstItem="W3h-yQ-BdT" firstAttribute="top" secondItem="3K2-G8-PqW" secondAttribute="bottom" constant="20" id="3wZ-zW-gTl"/>
+                <constraint firstItem="leD-hC-SmF" firstAttribute="centerY" secondItem="BvK-ia-fF4" secondAttribute="centerY" id="4gL-f7-aVV"/>
+                <constraint firstAttribute="trailing" secondItem="TAf-qY-uqt" secondAttribute="trailing" constant="16" id="56l-5Y-n5S"/>
+                <constraint firstItem="BvK-ia-fF4" firstAttribute="leading" secondItem="leD-hC-SmF" secondAttribute="trailing" constant="8" id="7L9-8H-p8j"/>
+                <constraint firstItem="3K2-G8-PqW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="7um-mN-EYd"/>
+                <constraint firstItem="W3h-yQ-BdT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="AUS-ej-KTd"/>
+                <constraint firstAttribute="trailing" secondItem="29J-UZ-9Wf" secondAttribute="trailing" constant="16" id="Gp2-YT-YTO"/>
+                <constraint firstAttribute="trailing" secondItem="BvK-ia-fF4" secondAttribute="trailing" constant="16" id="IDf-PC-m44"/>
+                <constraint firstItem="m5P-5u-iH2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="40" id="Loh-Vt-OoA"/>
+                <constraint firstAttribute="trailing" secondItem="78N-YF-fYe" secondAttribute="trailing" constant="16" id="QAI-B6-IQo"/>
+                <constraint firstAttribute="trailing" secondItem="m5P-5u-iH2" secondAttribute="trailing" constant="16" id="TtI-8g-4OL"/>
+                <constraint firstItem="29J-UZ-9Wf" firstAttribute="top" secondItem="78N-YF-fYe" secondAttribute="bottom" constant="20" id="WW7-Jr-V5d"/>
+                <constraint firstAttribute="trailing" secondItem="W3h-yQ-BdT" secondAttribute="trailing" constant="16" id="Xr5-yC-GL7"/>
+                <constraint firstItem="leD-hC-SmF" firstAttribute="top" relation="greaterThanOrEqual" secondItem="29J-UZ-9Wf" secondAttribute="bottom" constant="20" id="XuK-aQ-Abv"/>
+                <constraint firstItem="78N-YF-fYe" firstAttribute="top" secondItem="m5P-5u-iH2" secondAttribute="bottom" constant="20" id="fjs-MP-JWe"/>
+                <constraint firstItem="TAf-qY-uqt" firstAttribute="centerY" secondItem="3K2-G8-PqW" secondAttribute="centerY" id="kJ4-NN-R3t"/>
+                <constraint firstItem="3K2-G8-PqW" firstAttribute="top" secondItem="leD-hC-SmF" secondAttribute="bottom" constant="20" id="mAx-ha-B6x"/>
+                <constraint firstItem="29J-UZ-9Wf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="s7W-Nf-rhr"/>
+                <constraint firstItem="leD-hC-SmF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="wt7-4g-10C"/>
+                <constraint firstItem="BvK-ia-fF4" firstAttribute="top" secondItem="29J-UZ-9Wf" secondAttribute="bottom" constant="20" id="ybO-Bn-92W"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <point key="canvasLocation" x="34.5" y="54.5"/>
         </view>
     </objects>
+    <resources>
+        <image name="image_placeholder" width="1000" height="315"/>
+        <image name="really_happy" width="60" height="60"/>
+    </resources>
 </document>
