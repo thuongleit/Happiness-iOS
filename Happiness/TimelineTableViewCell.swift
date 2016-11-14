@@ -8,6 +8,7 @@
 
 import UIKit
 import AFNetworking
+import ParseUI
 
 class TimelineTableViewCell: UITableViewCell {
 
@@ -21,7 +22,7 @@ class TimelineTableViewCell: UITableViewCell {
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var locationImageView: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
-    @IBOutlet weak var entryImageView: UIImageView!
+    @IBOutlet weak var entryImageView: PFImageView!
     @IBOutlet weak var questionLabelLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var questionLabelTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var textViewLeadingConstraint: NSLayoutConstraint!
@@ -75,21 +76,22 @@ class TimelineTableViewCell: UITableViewCell {
         
         textView.text = entry.text
         
-        locationLabel.text = entry.location?.name
+        if let location = entry.location {
+            locationLabel.text = UIConstants.locationString(from: location)
+        }
         
         let hasImage: Bool
-        if let imageUrls = entry.imageUrls,
-            imageUrls.count > 0 {
-            
-            setImage(imageView: entryImageView, imageUrl: imageUrls[0])
+        if let entryImageFile = entry.media {
             hasImage = true
+            entryImageView.file = entryImageFile
+            entryImageView.loadInBackground()
         }
-        else {
-            
-            entryImageView.image = nil
+        else{
             hasImage = false
+            entryImageView.file = nil
+            entryImageView.image = nil
         }
-
+        
         // Adjust constraints.
         let defaultQuestionLabelLeadingConstraint: CGFloat = 66
         let defaultTextViewLeadingConstraint: CGFloat = 61
@@ -124,47 +126,5 @@ class TimelineTableViewCell: UITableViewCell {
             textViewTrailingConstraint.constant = defaultMiddleTrailingConstraint + entryImageView.bounds.width
             locationLabelTrailingConstraint.constant = defaultMiddleTrailingConstraint + entryImageView.bounds.width
         }
-    }
-    
-    // Fade in the specified image if it is not cached, or simply update
-    // the image if it was cached.
-    func setImage(imageView: UIImageView, imageUrl: URL) {
-        
-        imageView.image = nil
-        let imageRequest = URLRequest(url: imageUrl)
-        imageView.setImageWith(
-            imageRequest,
-            placeholderImage: nil,
-            success: { (request: URLRequest, response: HTTPURLResponse?, image: UIImage) in
-                
-                DispatchQueue.main.async {
-                    
-                    let imageIsCached = response == nil
-                    if !imageIsCached {
-                        
-                        imageView.alpha = 0.0
-                        imageView.image = image
-                        UIView.animate(
-                            withDuration: 0.3,
-                            animations: { () -> Void in
-                                
-                                imageView.alpha = 1.0
-                            }
-                        )
-                    }
-                    else {
-                        
-                        imageView.image = image
-                    }
-                }
-            },
-            failure: { (request: URLRequest, response: HTTPURLResponse?, error: Error) in
-                
-                DispatchQueue.main.async {
-                    
-                    imageView.image = nil
-                }
-            }
-        )
     }
 }

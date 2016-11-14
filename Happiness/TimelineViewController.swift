@@ -254,7 +254,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         
         // Push the ViewEntryViewController.
         let viewEntryViewController = ViewEntryViewController(nibName: nil, bundle: nil)
-        //viewEntryViewController.entry = sections[indexPath.section].entries[indexPath.row]
+        viewEntryViewController.entry = sections[indexPath.section].entries[indexPath.row]
         navigationController?.pushViewController(viewEntryViewController, animated: true)
         
         // Do not leave rows selected.
