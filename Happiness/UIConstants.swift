@@ -35,10 +35,12 @@ class UIConstants: NSObject {
     // MARK: - Views
     static func presentError(message: String, inView view: UIView) {
         
+        view.layer.removeAllAnimations()
+        
         let errorBanner = UIView()
         let errorMessage = UILabel()
         let errorBannerWidth = UIScreen.main.bounds.width
-        let errorBannerHeight: CGFloat = 50
+        let errorBannerHeight: CGFloat = 60
         errorBanner.frame = CGRect(x: 0, y: -errorBannerHeight, width: errorBannerWidth, height: errorBannerHeight)
         errorMessage.frame = errorBanner.bounds
         
