@@ -16,15 +16,18 @@ The following **required** functionality is completed:
    - [x] Save to the database.
 - [x] List View for user journal entries
    - [x] Autolayout constraints for the view
+- [x] Custom tab bar controller
 
 The following **optional** features are nice to have:
 
 - [x] Upload image to entry from Photo library.
 - [x] User's current location tagged to the entry.
 - [x] Edit and Delete entry database calls completed.
+- [x] Login/Signup user input validations.
+- [x] Global error message banner.
 - [ ] View daily journal entries.
    - [ ] Calendar view.
-   
+
 ## Wireframe
 
 <img src="https://github.com/TeamHappiness/Happiness-iOS/blob/master/smileFirstSprint.gif" alt="app wireframe"/>
