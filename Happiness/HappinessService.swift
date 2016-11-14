@@ -190,8 +190,7 @@ class HappinessService: NSObject {
                 entryObj?.setObject(PFUser.current()!, forKey: "author")
                 entryObj?.setObject(entry.text!, forKey: "text")
                 if let happinessInt = entry.happinessLevel?.rawValue {
-                    // TODO(cboo): Fix to convert back to int.
-                    entryObj?.setObject(happinessInt*2, forKey: "happinessLevel")
+                    entryObj?.setObject(happinessInt, forKey: "happinessLevel")
                 }
                 entryObj?.setObject(self.createLocationObject(location: entry.location!), forKey: "location")
                 

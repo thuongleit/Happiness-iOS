@@ -43,7 +43,11 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         super.viewDidLoad()
         
         // Navigation bar title.
-        navigationItem.title = "New Entry"
+        if entry == nil {
+            navigationItem.title = "New Entry"
+        } else {
+            navigationItem.title = "Edit Entry"
+        }
         
         // Navigation bar save button.
         let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(EditEntryViewController.saveEntry))
@@ -71,8 +75,8 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
 //        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-        // If editing an existing entry, show values of that entry.
-        // Else create an entry with current date and current question.
+        
+        // If new entry, use current date and current day's question.
         if entry == nil {
             dateLabel.text = UIConstants.dateString(from: Date())
             questionLabel.text = QuestionsList.getCurrentQuestion().text
@@ -81,15 +85,15 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             textView.text = textViewPlaceholderText
             textView.textColor = UIColor.lightGray
             textView.delegate = self
+            
             let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
             let address = UIConstants.getAddressForLatLng(latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude))
             
-            
-            if let placeOfInterest = address{
+            if let placeOfInterest = address {
                 locationTextField.placeholder = placeOfInterest
             }
         }
-        // Set entry data
+        // If editing an existing entry, show values of that entry.
         if let entry = entry {
             if let date = entry.createdDate {
                 dateLabel.text = UIConstants.dateString(from: date)
@@ -105,6 +109,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             }
             if let happinessLevel = entry.happinessLevel {
                 feelingImageView.image = UIConstants.happinessLevelImage(happinessLevel)
+                feelingSlider.value = Float(Entry.getHappinessLevelInt(happinessLevel: happinessLevel))
             }
             if let photoFile = entry.media {
                 photoFile.getDataInBackground(block: { (imageData: Data?, error: Error?) in
@@ -166,7 +171,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         // Update entry
         entry?.text = textView.text
         entry?.location?.name = locationTextField.text
-        entry?.happinessLevel = Entry.getHappinessLevel(happinessLevelRaw: Int(feelingSlider.value))
+        entry?.happinessLevel = Entry.getHappinessLevel(happinessLevelInt: Int(feelingSlider.value))
         
         HappinessService.sharedInstance.update(entry: entry!, images: entryMedia, success: { (entry: Entry) in
             self.dismiss(animated: true, completion: {})

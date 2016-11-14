@@ -53,32 +53,10 @@ class Entry: NSObject {
             
             if(entryObject.value(forKey: "happinessLevel") != nil){
                 let happinessLevelValue = entryObject.value(forKey: "happinessLevel") as? Int
-                happinessLevel = Entry.getHappinessLevel(happinessLevelRaw: happinessLevelValue!)
+                happinessLevel = Entry.getHappinessLevel(happinessLevelInt: happinessLevelValue!)
             }
         }
     }
-    
-    class func getHappinessLevel(happinessLevelRaw: Int) -> HappinessLevel{
-        var happyLevel = HappinessLevel.happy
-        switch happinessLevelRaw {
-        case 0,1:
-            happyLevel = HappinessLevel.angry
-        case 2,3:
-            happyLevel = HappinessLevel.bothered
-        case 4,5:
-            happyLevel = HappinessLevel.sad
-        case 6,7:
-            happyLevel = HappinessLevel.happy
-        case 8,9:
-            happyLevel = HappinessLevel.excited
-        case 10:
-            happyLevel = HappinessLevel.superExcited
-        default:
-            happyLevel = HappinessLevel.happy
-        }
-        return happyLevel
-    }
-    
     
     // Creates an Entry with current date and current question.
     override init() {
@@ -88,4 +66,44 @@ class Entry: NSObject {
         question = QuestionsList.getCurrentQuestion()
     }
     
+    class func getHappinessLevel(happinessLevelInt: Int) -> HappinessLevel {
+        var happyLevel = HappinessLevel.happy
+        switch happinessLevelInt {
+        case 0:
+            happyLevel = HappinessLevel.angry
+        case 1:
+            happyLevel = HappinessLevel.bothered
+        case 2:
+            happyLevel = HappinessLevel.sad
+        case 3:
+            happyLevel = HappinessLevel.happy
+        case 4:
+            happyLevel = HappinessLevel.excited
+        case 5:
+            happyLevel = HappinessLevel.superExcited
+        default:
+            happyLevel = HappinessLevel.happy
+        }
+        return happyLevel
+    }
+    
+    class func getHappinessLevelInt(happinessLevel: HappinessLevel) -> Int {
+        switch happinessLevel {
+        case .angry:
+            return 0
+        case .bothered:
+            return 1
+        case .sad:
+            return 2
+        case .happy:
+            return 3
+        case .excited:
+            return 4
+        case .superExcited:
+            return 5
+        default:
+            return 3
+        }
+        return 3
+    }
 }
