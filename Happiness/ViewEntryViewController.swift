@@ -38,7 +38,7 @@ class ViewEntryViewController: UIViewController {
                 textLabel.text = text
             }
             if let location = entry.location {
-                locationLabel.text = location.name ?? "\(entry.location?.latitude), \(entry.location?.longitude)"
+                locationLabel.text = UIConstants.locationString(from: location)
             }
             if let happinessLevel = entry.happinessLevel {
                 feelingImageView.image = UIConstants.happinessLevelImage(happinessLevel)
@@ -46,6 +46,8 @@ class ViewEntryViewController: UIViewController {
             if let photoFile = entry.media {
                 photoImageView.file = photoFile
                 photoImageView.loadInBackground()
+            } else {
+                photoImageView.image = nil
             }
         }
     }

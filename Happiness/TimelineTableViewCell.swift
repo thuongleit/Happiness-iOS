@@ -76,7 +76,9 @@ class TimelineTableViewCell: UITableViewCell {
         
         textView.text = entry.text
         
-        locationLabel.text = entry.location?.name
+        if let location = entry.location {
+            locationLabel.text = UIConstants.locationString(from: location)
+        }
         
         let hasImage: Bool
         if let entryImageFile = entry.media {
@@ -86,6 +88,8 @@ class TimelineTableViewCell: UITableViewCell {
         }
         else{
             hasImage = false
+            entryImageView.file = nil
+            entryImageView.image = nil
         }
         
         // Adjust constraints.

@@ -58,6 +58,20 @@ class UIConstants: NSObject {
         let dateString = formatter.string(from: date)
         return dateString
     }
+    
+    // MARK: - Location
+    static func locationString(from location: Location) -> String {
+        if let name = location.name {
+            if name.characters.count > 0 {
+                return name
+            }
+        }
+        // TODO(cboo): Need to figure out why if let = doesn't work with CGFloat. Not an object?
+        if (location.latitude != nil), (location.longitude != nil) {
+            return "\(location.latitude!), \(location.longitude!)"
+        }
+        return ""
+    }
 
     // MARK: - Text
     static let textFontName = "Avenir-Medium"

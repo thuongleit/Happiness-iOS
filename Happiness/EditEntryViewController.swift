@@ -38,9 +38,13 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         // Set the navigation bar title.
         navigationItem.title = "New Entry"
         
-        // Add the compose button.
+        // Add save button.
         let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(EditEntryViewController.saveEntry))
         navigationItem.rightBarButtonItem = saveButton
+        
+        // Add cancel button.
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(EditEntryViewController.cancelEntry))
+        navigationItem.leftBarButtonItem = cancelButton
         
         // Ask for location permission
         self.locationManager.requestWhenInUseAuthorization()
@@ -83,11 +87,10 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - User Action
+    // MARK: - HappinessService
     
-    @IBAction func onSaveButton(_ sender: Any) {
-        // Call HappinessService to save entry
-        saveEntry()
+    func cancelEntry() {
+        self.dismiss(animated: true, completion: {})
     }
     
     func saveEntry() {
@@ -105,7 +108,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             let alertController = UIAlertController(title: "Error saving entry", message:
                 "Happiness monster hugged our server just a little too hard...", preferredStyle: UIAlertControllerStyle.alert)
             alertController.addAction(UIAlertAction(title: "Delete entry", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
-                self.dismiss(animated: true, completion: {})
+                self.cancelEntry()
             }))
             alertController.addAction(UIAlertAction(title: "Try saving again", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
                 self.saveEntry()
@@ -114,6 +117,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         }
     }
     
+    // MARK: - User Action
     
     @IBAction func onUploadButton(_ sender: Any) {
         let picker = UIImagePickerController()
