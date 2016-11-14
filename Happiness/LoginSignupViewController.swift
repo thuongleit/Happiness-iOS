@@ -37,7 +37,7 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if (!isSignup) {
+        if (isLoginFlow()) {
             nameView.isHidden = true
             loginSignupButton.setTitle("Log In", for: .normal)
             confirmView.isHidden = true
@@ -56,7 +56,6 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate {
         tapBackground.numberOfTapsRequired = 1
         tapBackground.addTarget(self, action: #selector(dismissKeyboard))
         self.view.addGestureRecognizer(tapBackground)
-        
     }
     
     func setupContainerView() {
@@ -104,9 +103,33 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate {
     
     func onLoginSignup() {
         
+        if (isSignupFlow()) {
+            if nameTextField.text?.characters.count == 0 {
+                UIConstants.presentError(message: "Please enter your name", inView: self.view)
+                return
+            }
+        }
+        
+        if (!isValidEmail(testStr: emailTextField.text!)) {
+            UIConstants.presentError(message: "Please enter a valid e-mail address", inView: self.view)
+            return
+        }
+        
+        if passwordTextField.text?.characters.count == 0 {
+            UIConstants.presentError(message: "Please enter a password", inView: self.view)
+            return
+        }
+        
+        if (isSignupFlow()) {
+            if passwordTextField.text != confirmTextField.text {
+                UIConstants.presentError(message: "The passwords you typed do not match", inView: self.view)
+                return
+            }
+        }
+        
         MBProgressHUD.showAdded(to: self.view, animated: true)
         
-        if (!isSignup) {
+        if (isLoginFlow()) {
             
             HappinessService.sharedInstance.login(email: emailTextField.text!, password: passwordTextField.text!, success: { (user: User) in
                 MBProgressHUD.hide(for: self.view, animated: true)
@@ -114,6 +137,7 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate {
                 NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogin.notification, object: nil)
             }, failure: { (error: Error) in
                 MBProgressHUD.hide(for: self.view, animated: true)
+                UIConstants.presentError(message: "Incorrect email and password.", inView: self.view)
                 print("login fail with error: \(error)")
             })
             
@@ -137,6 +161,22 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate {
                 textField?.resignFirstResponder()
             }
         }
+    }
+    
+    func isValidEmail(testStr:String) -> Bool {
+        // print("validate calendar: \(testStr)")
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: testStr)
+    }
+    
+    func isSignupFlow() -> Bool {
+        return isSignup
+    }
+    
+    func isLoginFlow() -> Bool {
+        return !isSignup
     }
     
     // MARK: - Text field delegate

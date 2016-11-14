@@ -31,6 +31,45 @@ class UIConstants: NSObject {
             return UIColor.init(colorLiteralRed: 25/255.0, green: 207/255.0, blue: 134/255.0, alpha: 1.0)
         }
     }
+    
+    // MARK: - Views
+    static func presentError(message: String, inView view: UIView) {
+        
+        view.layer.removeAllAnimations()
+        
+        let errorBanner = UIView()
+        let errorMessage = UILabel()
+        let errorBannerWidth = UIScreen.main.bounds.width
+        let errorBannerHeight: CGFloat = 60
+        errorBanner.frame = CGRect(x: 0, y: -errorBannerHeight, width: errorBannerWidth, height: errorBannerHeight)
+        errorMessage.frame = errorBanner.bounds
+        
+        errorBanner.backgroundColor = primaryThemeColor
+        
+        errorMessage.text = message
+        errorMessage.textColor = secondaryThemeColor
+        errorMessage.font = UIFont(name: textFontName, size: 16)
+        errorMessage.textAlignment = .center
+        
+        errorBanner.addSubview(errorMessage)
+        view.addSubview(errorBanner)
+        
+        UIView.animate(withDuration: 1, animations: {
+            
+            errorBanner.center.y = errorBanner.center.y + errorBannerHeight
+            
+        }, completion: {(value: Bool) in
+            
+            UIView.animate(withDuration: 1, delay: 2, options: [], animations: { 
+                
+                errorBanner.center.y = errorBanner.center.y - errorBannerHeight
+                
+            }, completion: { (value: Bool) in
+    
+                errorBanner.removeFromSuperview()
+            })
+        })
+    }
 
     // MARK: - Images
 
@@ -49,6 +88,28 @@ class UIConstants: NSObject {
         case .superExcited:
             return UIImage(named: "super_excited")!
         }
+    }
+    
+    // MARK: - Date
+    static func dateString(from date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d y" // Nov 12, 2016  "EEE MMM d HH:mm:ss Z y"
+        let dateString = formatter.string(from: date)
+        return dateString
+    }
+    
+    // MARK: - Location
+    static func locationString(from location: Location) -> String {
+        if let name = location.name {
+            if name.characters.count > 0 {
+                return name
+            }
+        }
+        // TODO(cboo): Need to figure out why if let = doesn't work with CGFloat. Not an object?
+        if (location.latitude != nil), (location.longitude != nil) {
+            return "\(location.latitude!), \(location.longitude!)"
+        }
+        return ""
     }
 
     // MARK: - Text
