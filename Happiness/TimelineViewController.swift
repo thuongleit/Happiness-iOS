@@ -261,6 +261,40 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        // Swipe to delete
+        if editingStyle == .delete
+        {
+            let happinessService = HappinessService.sharedInstance
+            
+            willRequest()
+            
+            happinessService.delete(
+                entry: sections[indexPath.section].entries[indexPath.row],
+                success: { () in
+                    
+                    // Remove the entry from the section. To simplify the
+                    // tableView reloading code, we currently do not remove
+                    // a section with zero entries.
+                    self.sections[indexPath.section].entries.remove(at: indexPath.row)
+
+                    self.requestDidSucceed(true, refreshControl: nil)
+                    
+                    DispatchQueue.main.async {
+                        
+                        self.tableView.reloadSections(IndexSet(integer: indexPath.section), with: .fade)
+                    }
+                },
+                failure: { (Error) in
+                    
+                    self.requestDidSucceed(false, refreshControl: nil)
+                }
+            )
+
+        }
+    }
+    
     // test function!!!
     /*func getDummyEntries() -> [Entry]
     {
