@@ -132,7 +132,7 @@ class TimelineViewController: UIViewController {
                 }
             }
 
-        // When an entry is created, add it to the table.
+        // When an entry is updated, update it in the table.
         NotificationCenter.default.addObserver(
             forName: AppDelegate.GlobalEventEnum.updateEntryNotification.notification,
             object: nil,
