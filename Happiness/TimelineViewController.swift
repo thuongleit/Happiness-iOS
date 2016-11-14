@@ -36,6 +36,10 @@ class TimelineViewController: UIViewController {
 
     let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
+    override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.unhideBottomTabBars.notification))
+    }
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -255,6 +259,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         // Push the ViewEntryViewController.
         let viewEntryViewController = ViewEntryViewController(nibName: nil, bundle: nil)
         viewEntryViewController.entry = sections[indexPath.section].entries[indexPath.row]
+        NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.hideBottomTabBars.notification))
         navigationController?.pushViewController(viewEntryViewController, animated: true)
         
         // Do not leave rows selected.

@@ -17,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     enum GlobalEventEnum: String {
         case didLogin = "userDidLoginNotification"
         case didLogout = "userDidLogoutNotification"
+        case hideBottomTabBars = "hideBottomTabBars"
+        case unhideBottomTabBars = "unhideBottomTabBars"
         case newEntryNotification = "newEntryCreated"
         case updateEntryNotification = "entryUpdated"
         
