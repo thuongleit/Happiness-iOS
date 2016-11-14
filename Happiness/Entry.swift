@@ -57,7 +57,7 @@ class Entry: NSObject {
             }
         }
     }
-    
+    static let newEntryNotification = "NewEntryCreated"
     class func getHappinessLevel(happinessLevelRaw: Int) -> HappinessLevel{
         var happyLevel = HappinessLevel.happy
         switch happinessLevelRaw {

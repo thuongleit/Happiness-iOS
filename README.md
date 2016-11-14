@@ -5,17 +5,24 @@
 
 The following **required** functionality is completed:
 
-- [ ] Log in / Sign up
-   - [ ] Through Parse.
-- [ ] Daily journal entry
-   - [ ] Contains text input and image picker
-   - [ ] Ability to categorize the entry as sad, happy or super excited
-- [ ] 
-   - [ ] List View
+- [x] Parse
+   - [x] Log in
+   - [x] Sign up
+   - [x] Logout
+   - [x] Current user persisted across restarts.
+- [x] Create daily journal entry
+   - [x] Contains text input.
+   - [x] Ability to categorize the entry as angry, bothered, sad, happy, excited or super excited.
+   - [x] Save to the database.
+- [x] List View for user journal entries
+   - [x] Autolayout constraints for the view
 
 The following **optional** features are nice to have:
 
-- [ ] View daily journal entries
+- [x] Upload image to entry from Photo library.
+- [x] User's current location tagged to the entry.
+- [x] Edit and Delete entry database calls completed.
+- [ ] View daily journal entries.
    - [ ] Calendar view.
    
 ## Wireframe
