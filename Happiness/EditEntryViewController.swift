@@ -74,7 +74,8 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         // If editing an existing entry, show values of that entry.
         // Else create an entry with current date and current question.
         if entry == nil {
-            entry = Entry()
+            dateLabel.text = UIConstants.dateString(from: Date())
+            questionLabel.text = QuestionsList.getCurrentQuestion().text
             
             // Placeholder entry text
             textView.text = textViewPlaceholderText
