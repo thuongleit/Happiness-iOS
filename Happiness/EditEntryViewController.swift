@@ -81,6 +81,13 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             textView.text = textViewPlaceholderText
             textView.textColor = UIColor.lightGray
             textView.delegate = self
+            let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
+            let address = UIConstants.getAddressForLatLng(latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude))
+            
+            
+            if let placeOfInterest = address{
+                locationTextField.placeholder = placeOfInterest
+            }
         }
         // Set entry data
         if let entry = entry {

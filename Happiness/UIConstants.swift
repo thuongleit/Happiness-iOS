@@ -105,8 +105,9 @@ class UIConstants: NSObject {
                 return name
             }
         }
-        // TODO(cboo): Need to figure out why if let = doesn't work with CGFloat. Not an object?
+        
         let address = UIConstants.getAddressForLatLng(latitude: location.latitude!, longitude: location.longitude!)
+        
         if (location.latitude != nil), (location.longitude != nil) {
             if(address != nil){
                 return address!
@@ -117,7 +118,7 @@ class UIConstants: NSObject {
         }
         return ""
     }
-    
+       
     static func getAddressForLatLng(latitude: Float, longitude: Float) -> String?{
         var address:String?
         let url = NSURL(string: "\(HappinessService.sharedInstance.googleMapsBaseURL)latlng=\(latitude),\(longitude)&key=\(HappinessService.sharedInstance.googleMapsAPIKey)")
