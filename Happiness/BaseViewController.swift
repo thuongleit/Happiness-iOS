@@ -10,6 +10,8 @@ import UIKit
 
 class BaseViewController: UIViewController, TabBarViewDelegate {
     
+    let tabBarHeight: CGFloat = 60
+    
     enum TabSelection: Int {
         case timeline = 0, calendar
     }
@@ -25,9 +27,14 @@ class BaseViewController: UIViewController, TabBarViewDelegate {
     var calendarNavigationController: UINavigationController!
     
     var selectedViewController: UIViewController?
+    
+    @IBOutlet weak var tabBarsBottomConstraint: NSLayoutConstraint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(hideTabBars), name: AppDelegate.GlobalEventEnum.hideBottomTabBars.notification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(unhideTabBars), name: AppDelegate.GlobalEventEnum.unhideBottomTabBars.notification, object: nil)
         
         let timelineViewController = TimelineViewController(nibName: "TimelineViewController", bundle: nil)
         timelineNavigationController = UINavigationController(rootViewController: timelineViewController)
@@ -92,6 +99,14 @@ class BaseViewController: UIViewController, TabBarViewDelegate {
     
     func logout() {
         NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogout.notification, object: nil)
+    }
+    
+    func hideTabBars() {
+       tabBarsBottomConstraint.constant = tabBarsBottomConstraint.constant - tabBarHeight
+    }
+    
+    func unhideTabBars() {
+        tabBarsBottomConstraint.constant = 0
     }
     
     override func didReceiveMemoryWarning() {
