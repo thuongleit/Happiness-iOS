@@ -106,10 +106,10 @@ class UIConstants: NSObject {
             }
         }
         
-        let address = UIConstants.getAddressForLatLng(latitude: location.latitude!, longitude: location.longitude!)
-        
         if (location.latitude != nil), (location.longitude != nil) {
-            if(address != nil){
+            let address = UIConstants.getAddressForLatLng(latitude: location.latitude!, longitude: location.longitude!)
+            
+            if (address != nil) {
                 return address!
             }
             else{
@@ -119,14 +119,16 @@ class UIConstants: NSObject {
         return ""
     }
        
-    static func getAddressForLatLng(latitude: Float, longitude: Float) -> String?{
+    static func getAddressForLatLng(latitude: Float, longitude: Float) -> String? {
         var address:String?
         let url = NSURL(string: "\(HappinessService.sharedInstance.googleMapsBaseURL)latlng=\(latitude),\(longitude)&key=\(HappinessService.sharedInstance.googleMapsAPIKey)")
         let data = NSData(contentsOf: url! as URL)
-        let json = try! JSONSerialization.jsonObject(with: data! as Data, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
-        if let result = json["results"] as? NSArray {
-            if let addressArray = result[0] as? NSDictionary {
-                address = addressArray["formatted_address"] as? String
+        if let data = data  {
+            let json = try! JSONSerialization.jsonObject(with: data as Data, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
+            if let result = json["results"] as? NSArray {
+                if let addressArray = result[0] as? NSDictionary {
+                    address = addressArray["formatted_address"] as? String
+                }
             }
         }
         return address
