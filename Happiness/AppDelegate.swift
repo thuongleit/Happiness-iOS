@@ -17,7 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     enum GlobalEventEnum: String {
         case didLogin = "userDidLoginNotification"
         case didLogout = "userDidLogoutNotification"
-        case newEntryNotification = "NewEntryCreated"
+        case newEntryNotification = "newEntryCreated"
+        case updateEntryNotification = "entryUpdated"
         
         var notification : Notification.Name {
             return Notification.Name(rawValue: self.rawValue)
