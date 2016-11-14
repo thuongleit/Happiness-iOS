@@ -16,6 +16,9 @@ class HappinessService: NSObject {
     let parseApplicationID = "4Lp3DZTydiCTjsmftoTctwTo0Edb1hTVe4wgqxOM"
     let parseClientKey = "sENDA3tgrescOEbnZywnmJ5lFcoFgVLWd3Ka26tQ"
     
+    let googleMapsBaseURL = "https://maps.googleapis.com/maps/api/geocode/json?"
+    let googleMapsAPIKey = "AIzaSyC0SxpBokzPt8_s-Jf6q1yzzt7WPibKHZc"
+    
     var loginSuccess:((User) -> ())?
     var callFailure:((Error) -> ())?
     

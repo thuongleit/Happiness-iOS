@@ -60,19 +60,19 @@ class UIConstants: NSObject {
             
         }, completion: {(value: Bool) in
             
-            UIView.animate(withDuration: 1, delay: 2, options: [], animations: { 
+            UIView.animate(withDuration: 1, delay: 2, options: [], animations: {
                 
                 errorBanner.center.y = errorBanner.center.y - errorBannerHeight
                 
             }, completion: { (value: Bool) in
-    
+                
                 errorBanner.removeFromSuperview()
             })
         })
     }
-
+    
     // MARK: - Images
-
+    
     static func happinessLevelImage(_ happinessLevel: HappinessLevel) -> UIImage {
         switch happinessLevel {
         case .angry:
@@ -106,12 +106,31 @@ class UIConstants: NSObject {
             }
         }
         // TODO(cboo): Need to figure out why if let = doesn't work with CGFloat. Not an object?
+        let address = UIConstants.getAddressForLatLng(latitude: location.latitude!, longitude: location.longitude!)
         if (location.latitude != nil), (location.longitude != nil) {
-            return "\(location.latitude!), \(location.longitude!)"
+            if(address != nil){
+                return address!
+            }
+            else{
+                return "\(location.latitude!), \(location.longitude!)"
+            }
         }
         return ""
     }
-
+    
+    static func getAddressForLatLng(latitude: Float, longitude: Float) -> String?{
+        var address:String?
+        let url = NSURL(string: "\(HappinessService.sharedInstance.googleMapsBaseURL)latlng=\(latitude),\(longitude)&key=\(HappinessService.sharedInstance.googleMapsAPIKey)")
+        let data = NSData(contentsOf: url! as URL)
+        let json = try! JSONSerialization.jsonObject(with: data! as Data, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
+        if let result = json["results"] as? NSArray {
+            if let addressArray = result[0] as? NSDictionary {
+                address = addressArray["formatted_address"] as? String
+            }
+        }
+        return address
+    }
+    
     // MARK: - Text
     static let textFontName = "Avenir-Medium"
     
