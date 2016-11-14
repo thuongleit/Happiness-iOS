@@ -11,15 +11,19 @@ The following **required** functionality is completed:
    - [x] Logout
    - [x] Current user persisted across restarts.
 - [x] Log in/Sign up
-   - [x] user input validations.
-   - [x] present error message banner
-   - [x] log out
+   - [x] User input validations.
+   - [x] Present error message banner
+   - [x] Log out
 - [x] Create daily journal entry
    - [x] Contains text input.
    - [x] Ability to categorize the entry as angry, bothered, sad, happy, excited or super excited.
    - [x] Save to the database.
 - [x] List View for user journal entries
+   - [x] Table sections grouped by month
    - [x] Autolayout constraints for the view
+   - [x] Swipe to delete
+   - [x] User sees loading state while waiting for Parse API
+   - [x] Present error message banner
 - [x] Custom tab bar controller
 
 The following **optional** features are nice to have:
