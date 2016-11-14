@@ -16,6 +16,9 @@ class HappinessService: NSObject {
     let parseApplicationID = "4Lp3DZTydiCTjsmftoTctwTo0Edb1hTVe4wgqxOM"
     let parseClientKey = "sENDA3tgrescOEbnZywnmJ5lFcoFgVLWd3Ka26tQ"
     
+    let googleMapsBaseURL = "https://maps.googleapis.com/maps/api/geocode/json?"
+    let googleMapsAPIKey = "AIzaSyC0SxpBokzPt8_s-Jf6q1yzzt7WPibKHZc"
+    
     var loginSuccess:((User) -> ())?
     var callFailure:((Error) -> ())?
     
@@ -186,7 +189,10 @@ class HappinessService: NSObject {
                 }
                 entryObj?.setObject(PFUser.current()!, forKey: "author")
                 entryObj?.setObject(entry.text!, forKey: "text")
-                entryObj?.setObject(entry.happinessLevel?.rawValue ?? 10, forKey: "happinessLevel")
+                if let happinessInt = entry.happinessLevel?.rawValue {
+                    // TODO(cboo): Fix to convert back to int.
+                    entryObj?.setObject(happinessInt*2, forKey: "happinessLevel")
+                }
                 entryObj?.setObject(self.createLocationObject(location: entry.location!), forKey: "location")
                 
                 entryObj?.saveInBackground(block: { (succeded: Bool, error:Error?) in

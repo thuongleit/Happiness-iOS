@@ -27,6 +27,15 @@ class ViewEntryViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        // Naviation bar
+        navigationController?.navigationBar.isTranslucent = false
+        
+        // Navigation bar edit entry
+        let editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(ViewEntryViewController.editEntry))
+        navigationItem.rightBarButtonItem = editButton
+        
+        // Set entry data
         if let entry = entry {
             if let date = entry.createdDate {
                 dateLabel.text = UIConstants.dateString(from: date)
@@ -57,6 +66,15 @@ class ViewEntryViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - 
+    func editEntry() {
+        // Show the EditEntryViewController modally.
+        let editEntryViewController = EditEntryViewController(nibName: nil, bundle: nil)
+        editEntryViewController.entry = entry
+        let navigationController = UINavigationController(rootViewController: editEntryViewController)
+        navigationController.navigationBar.isTranslucent = false
+        present(navigationController, animated: true, completion: nil)
+    }
 
     /*
     // MARK: - Navigation

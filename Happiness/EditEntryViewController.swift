@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import ParseUI
 
 class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextViewDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
@@ -24,7 +25,13 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
 
     let locationManager = CLLocationManager()
     
-    var entry: Entry?
+    var entry: Entry? {
+        didSet {
+            entryExisting = true
+        }
+    }
+    // Whether this entry is already saved to the database. If true, update instead of create entry.
+    var entryExisting: Bool = false
     
     var textViewPlaceholderText = "I'm grateful for..."
     
@@ -35,14 +42,14 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set the navigation bar title.
+        // Navigation bar title.
         navigationItem.title = "New Entry"
         
-        // Add save button.
+        // Navigation bar save button.
         let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(EditEntryViewController.saveEntry))
         navigationItem.rightBarButtonItem = saveButton
         
-        // Add cancel button.
+        // Navigation bar cancel button.
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(EditEntryViewController.cancelEntry))
         navigationItem.leftBarButtonItem = cancelButton
         
@@ -64,21 +71,42 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
 //        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-        // Placeholder entry text
-        textView.text = textViewPlaceholderText
-        textView.textColor = UIColor.lightGray
-        textView.delegate = self
-        
         // If editing an existing entry, show values of that entry.
         // Else create an entry with current date and current question.
         if entry == nil {
-            entry = Entry()
+            dateLabel.text = UIConstants.dateString(from: Date())
+            questionLabel.text = QuestionsList.getCurrentQuestion().text
+            
+            // Placeholder entry text
+            textView.text = textViewPlaceholderText
+            textView.textColor = UIColor.lightGray
+            textView.delegate = self
         }
-        if let date = entry?.createdDate {
-            dateLabel.text = UIConstants.dateString(from: date)
-        }
-        if let question = entry?.question {
-            questionLabel.text = question.text
+        // Set entry data
+        if let entry = entry {
+            if let date = entry.createdDate {
+                dateLabel.text = UIConstants.dateString(from: date)
+            }
+            if let question = entry.question {
+                questionLabel.text = question.text
+            }
+            if let text = entry.text {
+                textView.text = text
+            }
+            if let locationName = entry.location?.name {
+                locationTextField.text = locationName
+            }
+            if let happinessLevel = entry.happinessLevel {
+                feelingImageView.image = UIConstants.happinessLevelImage(happinessLevel)
+            }
+            if let photoFile = entry.media {
+                photoFile.getDataInBackground(block: { (imageData: Data?, error: Error?) in
+                    if error == nil {
+                        let photo = UIImage(data: imageData!)
+                        self.uploadImageButton.setImage(photo, for: .normal)
+                    }
+                })
+            }
         }
     }
 
@@ -94,15 +122,46 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     }
     
     func saveEntry() {
-        let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
-        print("locations = \(locationCoordinate.latitude) \(locationCoordinate.longitude)")
-        
+        if (entryExisting) {
+            updateEntry()
+        } else {
+            let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
+            
+            var entryMedia: [UIImage] = []
+            if uploadImageButton.image(for: .normal) != UIImage.init(named: "image_placeholder") {
+                entryMedia.append(uploadImageButton.image(for: .normal)!)
+            }
+            
+            HappinessService.sharedInstance.create(text: textView.text, images: entryMedia, happinessLevel: Int(feelingSlider.value), location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
+                self.dismiss(animated: true, completion: {})
+            }) { (error: Error) in
+                let alertController = UIAlertController(title: "Error saving entry", message:
+                    "Happiness monster hugged our server just a little too hard...", preferredStyle: UIAlertControllerStyle.alert)
+                alertController.addAction(UIAlertAction(title: "Delete entry", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
+                    self.cancelEntry()
+                }))
+                alertController.addAction(UIAlertAction(title: "Try saving again", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
+                    self.saveEntry()
+                }))
+                self.present(alertController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    // Update existing entry that's already on database
+    // TODO(cboo): Refactor out repetitive code.
+    func updateEntry() {
         var entryMedia: [UIImage] = []
         if uploadImageButton.image(for: .normal) != UIImage.init(named: "image_placeholder") {
             entryMedia.append(uploadImageButton.image(for: .normal)!)
         }
         
-        HappinessService.sharedInstance.create(text: textView.text, images: entryMedia, happinessLevel: Int(feelingSlider.value), location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
+        // Update entry
+        entry?.text = textView.text
+        entry?.location?.name = locationTextField.text
+        entry?.happinessLevel = Entry.getHappinessLevel(happinessLevelRaw: Int(feelingSlider.value))
+        
+        HappinessService.sharedInstance.update(entry: entry!, images: entryMedia, success: { (entry: Entry) in
             self.dismiss(animated: true, completion: {})
         }) { (error: Error) in
             let alertController = UIAlertController(title: "Error saving entry", message:
@@ -175,16 +234,20 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     // MARK: - UITextViewDelegate
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == UIColor.lightGray {
-            textView.text = nil
-            textView.textColor = UIColor.black
+        if !entryExisting {
+            if textView.textColor == UIColor.lightGray {
+                textView.text = nil
+                textView.textColor = UIColor.black
+            }
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            textView.text = textViewPlaceholderText
-            textView.textColor = UIColor.lightGray
+        if !entryExisting {
+            if textView.text.isEmpty {
+                textView.text = textViewPlaceholderText
+                textView.textColor = UIColor.lightGray
+            }
         }
     }
     
