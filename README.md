@@ -10,6 +10,10 @@ The following **required** functionality is completed:
    - [x] Sign up
    - [x] Logout
    - [x] Current user persisted across restarts.
+- [x] Log in/Sign up
+   - [x] user input validations.
+   - [x] present error message banner
+   - [x] log out
 - [x] Create daily journal entry
    - [x] Contains text input.
    - [x] Ability to categorize the entry as angry, bothered, sad, happy, excited or super excited.
@@ -23,7 +27,6 @@ The following **optional** features are nice to have:
 - [x] Upload image to entry from Photo library.
 - [x] User's current location tagged to the entry.
 - [x] Edit and Delete entry database calls completed.
-- [x] Login/Signup user input validations.
 - [x] Global error message banner.
 - [ ] View daily journal entries.
    - [ ] Calendar view.
