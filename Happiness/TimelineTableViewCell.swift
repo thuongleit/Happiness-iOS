@@ -82,11 +82,13 @@ class TimelineTableViewCell: UITableViewCell {
         
         let hasImage: Bool
         if let entryImageFile = entry.media {
+            
             hasImage = true
             entryImageView.file = entryImageFile
             entryImageView.loadInBackground()
         }
-        else{
+        else {
+            
             hasImage = false
             entryImageView.file = nil
             entryImageView.image = nil
