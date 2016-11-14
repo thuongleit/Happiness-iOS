@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="calendarTabContainerView" destination="POW-G5-ebK" id="azw-Ch-jfE"/>
                 <outlet property="contentView" destination="spa-pU-yJk" id="uV9-vm-xuf"/>
+                <outlet property="tabBarsBottomConstraint" destination="tUJ-GS-ec2" id="YXe-YV-tXN"/>
                 <outlet property="timelineTabContainerView" destination="EEh-TK-PLj" id="HCb-1R-Olw"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -45,8 +46,8 @@
                 <constraint firstItem="spa-pU-yJk" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="4Df-O2-nAO"/>
                 <constraint firstItem="EEh-TK-PLj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="4VS-PJ-xgK"/>
                 <constraint firstItem="POW-G5-ebK" firstAttribute="leading" secondItem="EEh-TK-PLj" secondAttribute="trailing" id="7Cf-iB-mtG"/>
-                <constraint firstAttribute="bottom" secondItem="POW-G5-ebK" secondAttribute="bottom" id="Dtz-g2-eht"/>
                 <constraint firstAttribute="trailing" secondItem="POW-G5-ebK" secondAttribute="trailing" id="Jki-cI-n22"/>
+                <constraint firstItem="POW-G5-ebK" firstAttribute="bottom" secondItem="EEh-TK-PLj" secondAttribute="bottom" id="gwx-zf-kj3"/>
                 <constraint firstItem="spa-pU-yJk" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="jeU-ud-vUK"/>
                 <constraint firstItem="POW-G5-ebK" firstAttribute="width" secondItem="EEh-TK-PLj" secondAttribute="width" id="kns-Tw-0Eg"/>
                 <constraint firstAttribute="trailing" secondItem="spa-pU-yJk" secondAttribute="trailing" id="kzz-fl-xSk"/>
