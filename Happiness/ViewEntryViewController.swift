@@ -59,6 +59,9 @@ class ViewEntryViewController: UIViewController {
                 photoImageView.image = nil
             }
         }
+        
+        // Reload view if entry was updated
+         NotificationCenter.default.addObserver(self, selector: #selector(ViewEntryViewController.reloadView), name: AppDelegate.GlobalEventEnum.updateEntryNotification.notification, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -66,7 +69,7 @@ class ViewEntryViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - 
+    // MARK: - Edit current entry
     func editEntry() {
         // Show the EditEntryViewController modally.
         let editEntryViewController = EditEntryViewController(nibName: nil, bundle: nil)
@@ -74,6 +77,14 @@ class ViewEntryViewController: UIViewController {
         let navigationController = UINavigationController(rootViewController: editEntryViewController)
         navigationController.navigationBar.isTranslucent = false
         present(navigationController, animated: true, completion: nil)
+    }
+    
+    // MARK: - Notification
+    func reloadView(notification: NSNotification) {
+        if let entry = notification.object as? Entry {
+            self.entry = entry
+            viewDidLoad()
+        }
     }
 
     /*
