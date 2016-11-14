@@ -89,9 +89,6 @@ class TimelineViewController: UIViewController {
             navigationItem.rightBarButtonItem?.image = navigationItem.rightBarButtonItem?.image?.withRenderingMode(.alwaysOriginal)
         }
         
-        // Hide the error banner.
-        //!!!errorBannerView.isHidden = true
-        
         // Set up the tableView.
         tableView.estimatedRowHeight = 125
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -334,7 +331,13 @@ class TimelineViewController: UIViewController {
         
         DispatchQueue.main.async {
             
-            //!!!self.errorBannerView.isHidden = success
+            if !success {
+            
+                if let navigationController = self.navigationController {
+                    
+                    UIConstants.presentError(message: "Network Error", inView: navigationController.view)
+                }
+            }
             
             MBProgressHUD.hide(for: self.view, animated: true)
             
