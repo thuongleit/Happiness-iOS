@@ -9,48 +9,60 @@
 import UIKit
 import MBProgressHUD
 
+// Represents a section in a timeline table.
+class TimelineSection
+{
+    let month: Int
+    let year: Int
+    let title: String
+    var entries = [Entry]()
+    var rows: Int {
+        
+        return entries.count
+    }
+    
+    let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    
+    init(month: Int, year: Int) {
+        
+        self.month = month
+        self.year = year
+        self.title = monthNames[month-1] + String(format: " %d", year)
+    }
+    
+    // Add the specified entry to the end of the entries array.
+    func append(entry: Entry) {
+        
+        entries.append(entry)
+    }
+    
+    // Add the specified entry to the start of the entries array.
+    func prepend(entry: Entry) {
+        
+        entries.insert(entry, at: 0)
+    }
+    
+    // Return the entry with the specified ID, or nil if no such entry is
+    // found.
+    func findEntry(_ entryId: String) -> Entry? {
+        
+        for entry in entries {
+            
+            if entry.id == entryId
+            {
+                return entry
+            }
+        }
+        return nil
+    }
+}
+
 class TimelineViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    class Section
-    {
-        let month: Int
-        let year: Int
-        let title: String
-        var entries = [Entry]()
-        var rows: Int {
-            
-            return entries.count
-        }
-        
-        let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+    var sections = [TimelineSection]()
 
-        init(month: Int, year: Int) {
-
-            self.month = month
-            self.year = year
-            self.title = monthNames[month-1] + String(format: " %d", year)
-        }
-        
-        func append(entry: Entry) {
-
-            entries.append(entry)
-        }
-
-        func prepend(entry: Entry) {
-            
-            entries.insert(entry, at: 0)
-        }
-    }
-    var sections = [Section]()
-
-    let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-
-    override func viewWillAppear(_ animated: Bool) {
-        NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.unhideBottomTabBars.notification))
-    }
-    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -75,34 +87,6 @@ class TimelineViewController: UIViewController {
             // Render the bar button images using the correct color.
             navigationItem.leftBarButtonItem?.image = navigationItem.leftBarButtonItem?.image?.withRenderingMode(.alwaysOriginal)
             navigationItem.rightBarButtonItem?.image = navigationItem.rightBarButtonItem?.image?.withRenderingMode(.alwaysOriginal)
-
-            // When an entry is created, add it to the table.
-            NotificationCenter.default.addObserver(
-                forName: AppDelegate.GlobalEventEnum.newEntryNotification.notification,
-                object: nil,
-                queue: OperationQueue.main) { (notification: Notification) in
-                
-                if let entry = notification.object as? Entry {
-                    
-                    let wasSectionAdded = self.addNewEntry(entry)
-                    
-                    DispatchQueue.main.async {
-                        
-                        if wasSectionAdded
-                        {
-                            // When a section is added, reload the entire table.
-                            self.tableView.reloadData()
-                        }
-                        else
-                        {
-                            // When the entry was added to the first section,
-                            // just reload the first section.
-                            self.tableView.reloadSections(IndexSet(integer: 0), with: .fade)
-                        }
-                    }
-
-                }
-            }
         }
         
         // Hide the error banner.
@@ -122,10 +106,63 @@ class TimelineViewController: UIViewController {
             for: UIControlEvents.valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
         
+        // When an entry is created, add it to the table.
+        NotificationCenter.default.addObserver(
+            forName: AppDelegate.GlobalEventEnum.newEntryNotification.notification,
+            object: nil,
+            queue: OperationQueue.main)
+            { (notification: Notification) in
+                
+                if let entry = notification.object as? Entry {
+                    
+                    let wasSectionAdded = self.addNewEntry(entry)
+                    
+                    DispatchQueue.main.async {
+                        
+                        if wasSectionAdded {
+                            
+                            // When a section is added, reload the entire table.
+                            self.tableView.reloadData()
+                        }
+                        else {
+                            
+                            // When the entry was added to the first section,
+                            // just reload the first section.
+                            self.tableView.reloadSections(IndexSet(integer: 0), with: .fade)
+                        }
+                    }
+                    
+                }
+            }
+
+        // When an entry is created, add it to the table.
+        NotificationCenter.default.addObserver(
+            forName: AppDelegate.GlobalEventEnum.updateEntryNotification.notification,
+            object: nil,
+            queue: OperationQueue.main)
+            { (notification: Notification) in
+            
+                if let entry = notification.object as? Entry,
+                    let updatedSectionIndex = self.updateEntry(entry) {
+                    
+                    DispatchQueue.main.async {
+                        
+                        // Reload the updated section.
+                        self.tableView.reloadSections(IndexSet(integer: updatedSectionIndex), with: .fade)
+                    }
+                }
+            }
+        
         // Get entries when the view controller loads.
         getEntries()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        
+        // Display the tab bar.
+        NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.unhideBottomTabBars.notification))
+    }
+ 
     // When the compose is pressed, present the EditEntryViewController modally.
     @IBAction func onComposeButton(_ sender: UIBarButtonItem)
     {
@@ -191,7 +228,7 @@ class TimelineViewController: UIViewController {
     func addEntries(entries: [Entry]) {
         
         sections.removeAll()
-        var section: Section?
+        var section: TimelineSection?
         var sectionMonth = -1
         var sectionYear = -1
         for entry in entries {
@@ -202,7 +239,7 @@ class TimelineViewController: UIViewController {
                 
                 sectionMonth = month
                 sectionYear = year
-                section = Section(month: month, year: year)
+                section = TimelineSection(month: month, year: year)
                 sections.append(section!)
             }
             
@@ -216,7 +253,7 @@ class TimelineViewController: UIViewController {
         
         let (month, year) = getEntryMonthYear(entry: entry)
         
-        let section: Section
+        let section: TimelineSection
         let wasSectionAdded: Bool
         if sections.count > 0 && sections[0].month == month && sections[0].year == year {
             
@@ -225,7 +262,7 @@ class TimelineViewController: UIViewController {
         }
         else {
             
-            section = Section(month: month, year: year)
+            section = TimelineSection(month: month, year: year)
             sections.insert(section, at: 0)
             wasSectionAdded = true
         }
@@ -233,6 +270,30 @@ class TimelineViewController: UIViewController {
         section.prepend(entry: entry)
         
         return wasSectionAdded
+    }
+    
+    // Updates the specified entry in the tableView, if found. Returns the
+    // section index of the updated entry, or nil if no entry was updated.
+    func updateEntry(_ entry: Entry) -> Int? {
+        
+        if let entryId = entry.id
+        {
+            var sectionIndex = 0
+            for section in sections {
+                
+                var foundEntry = section.findEntry(entryId)
+                if foundEntry != nil
+                {
+                    
+                    // foundEntry and entry may or may not reference the same
+                    // Entry object, so we copy entry to foundEntry.
+                    foundEntry = entry
+                    return sectionIndex
+                }
+                sectionIndex = sectionIndex + 1
+            }
+        }
+        return nil
     }
     
     // Return the month and year of the specified entry.

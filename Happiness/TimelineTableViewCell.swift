@@ -77,7 +77,14 @@ class TimelineTableViewCell: UITableViewCell {
         textView.text = entry.text
         
         if let location = entry.location {
+            
             locationLabel.text = UIConstants.locationString(from: location)
+            locationImageView.isHidden = false;
+        }
+        else {
+            
+            locationLabel.text = nil
+            locationImageView.isHidden = true;
         }
         
         let hasImage: Bool
