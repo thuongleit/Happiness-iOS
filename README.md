@@ -12,7 +12,7 @@ The following **required** functionality is completed:
    - [x] Current user persisted across restarts.
 - [x] Log in/Sign up
    - [x] User input validations.
-   - [x] Present error message banner
+   - [x] Present error message banner on error
    - [x] Log out
 - [x] Create daily journal entry
    - [x] Contains text input.
@@ -21,10 +21,11 @@ The following **required** functionality is completed:
 - [x] List View for user journal entries
    - [x] Autolayout constraints for the view
    - [x] Table sections grouped by month
+   - [x] URLs, etc. in entries are clickable
    - [x] Pull to refresh
    - [x] Swipe to delete
    - [x] User sees loading state while waiting for Parse API
-   - [x] Present error message banner
+   - [x] Present error message banner on error
 - [x] Custom tab bar controller
 
 The following **optional** features are nice to have:
