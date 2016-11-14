@@ -15,6 +15,7 @@ class ViewEntryViewController: UIViewController {
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var textLabel: UILabel!
 
+    @IBOutlet weak var locationIconImageView: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var feelingImageView: UIImageView!
 
@@ -34,6 +35,9 @@ class ViewEntryViewController: UIViewController {
         // Navigation bar edit entry
         let editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(ViewEntryViewController.editEntry))
         navigationItem.rightBarButtonItem = editButton
+        
+        // Location Icon
+        locationIconImageView.image = locationIconImageView.image?.withRenderingMode(.alwaysTemplate)
         
         // Set entry data
         if let entry = entry {
@@ -55,6 +59,7 @@ class ViewEntryViewController: UIViewController {
             if let photoFile = entry.media {
                 photoImageView.file = photoFile
                 photoImageView.loadInBackground()
+                photoImageView.clipsToBounds = true
             } else {
                 photoImageView.image = nil
             }
