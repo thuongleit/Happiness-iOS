@@ -56,7 +56,6 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate {
         tapBackground.numberOfTapsRequired = 1
         tapBackground.addTarget(self, action: #selector(dismissKeyboard))
         self.view.addGestureRecognizer(tapBackground)
-        
     }
     
     func setupContainerView() {
