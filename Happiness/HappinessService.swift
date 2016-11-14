@@ -205,7 +205,9 @@ class HappinessService: NSObject {
                         query.getObjectInBackground(withId: (entryObj?.objectId!)!, block: { (object:PFObject?, error: Error?) in
                             if error == nil && object != nil {
                                 
-                                self.createUpdateEntrySuccess!(Entry.init(entryObject: object!))
+                                let editedEntry = Entry.init(entryObject: object!)
+                                NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.updateEntryNotification.notification, object: editedEntry)
+                                self.createUpdateEntrySuccess!(editedEntry)
                                 
                             } else {
                                 self.callFailure!(error!)
