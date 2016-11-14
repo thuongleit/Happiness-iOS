@@ -15,6 +15,8 @@ class TimelineViewController: UIViewController {
     
     class Section
     {
+        let month: Int
+        let year: Int
         let title: String
         var entries = [Entry]()
         var rows: Int {
@@ -22,14 +24,23 @@ class TimelineViewController: UIViewController {
             return entries.count
         }
         
-        init(title: String) {
+        let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
-            self.title = title
+        init(month: Int, year: Int) {
+
+            self.month = month
+            self.year = year
+            self.title = monthNames[month-1] + String(format: " %d", year)
         }
         
-        func add(entry: Entry) {
+        func append(entry: Entry) {
 
             entries.append(entry)
+        }
+
+        func prepend(entry: Entry) {
+            
+            entries.insert(entry, at: 0)
         }
     }
     var sections = [Section]()
@@ -64,6 +75,34 @@ class TimelineViewController: UIViewController {
             // Render the bar button images using the correct color.
             navigationItem.leftBarButtonItem?.image = navigationItem.leftBarButtonItem?.image?.withRenderingMode(.alwaysOriginal)
             navigationItem.rightBarButtonItem?.image = navigationItem.rightBarButtonItem?.image?.withRenderingMode(.alwaysOriginal)
+
+            // When an entry is created, add it to the table.
+            NotificationCenter.default.addObserver(
+                forName: AppDelegate.GlobalEventEnum.newEntryNotification.notification,
+                object: nil,
+                queue: OperationQueue.main) { (notification: Notification) in
+                
+                if let entry = notification.object as? Entry {
+                    
+                    let wasSectionAdded = self.addNewEntry(entry)
+                    
+                    DispatchQueue.main.async {
+                        
+                        if wasSectionAdded
+                        {
+                            // When a section is added, reload the entire table.
+                            self.tableView.reloadData()
+                        }
+                        else
+                        {
+                            // When the entry was added to the first section,
+                            // just reload the first section.
+                            self.tableView.reloadSections(IndexSet(integer: 0), with: .fade)
+                        }
+                    }
+
+                }
+            }
         }
         
         // Hide the error banner.
@@ -129,7 +168,7 @@ class TimelineViewController: UIViewController {
                 //!!!self.maxId = nextMaxId
                 
                 // Set up the tableView sections based on the entries.
-                self.setupSections(entries: entries)
+                self.addEntries(entries: entries)
 
                 self.requestDidSucceed(true, refreshControl: refreshControl)
                 
@@ -149,7 +188,7 @@ class TimelineViewController: UIViewController {
     }
     
     // Set up the tableView sections based on the entries.
-    func setupSections(entries: [Entry]) {
+    func addEntries(entries: [Entry]) {
         
         sections.removeAll()
         var section: Section?
@@ -157,30 +196,62 @@ class TimelineViewController: UIViewController {
         var sectionYear = -1
         for entry in entries {
             
-            let month: Int
-            let year: Int
-            if let createdDate = entry.createdDate {
-                
-                month = Calendar.current.component(.month, from: createdDate)
-                year = Calendar.current.component(.year, from: createdDate)
-            }
-            else {
-                
-                month = 0
-                year = 0
-            }
+            let (month, year) = getEntryMonthYear(entry: entry)
             
             if section == nil || month != sectionMonth || year != sectionYear {
                 
                 sectionMonth = month
                 sectionYear = year
-                let title = monthNames[month-1] + String(format: " %d", year)
-                section = Section(title: title)
+                section = Section(month: month, year: year)
                 sections.append(section!)
             }
             
-            section!.add(entry: entry)
+            section!.append(entry: entry)
         }
+    }
+    
+    // Add the specified new entry to the tableView sections. Returns true
+    // if a new section was added, false otherwise.
+    func addNewEntry(_ entry: Entry) -> Bool {
+        
+        let (month, year) = getEntryMonthYear(entry: entry)
+        
+        let section: Section
+        let wasSectionAdded: Bool
+        if sections.count > 0 && sections[0].month == month && sections[0].year == year {
+            
+            section = sections[0]
+            wasSectionAdded = false
+        }
+        else {
+            
+            section = Section(month: month, year: year)
+            sections.insert(section, at: 0)
+            wasSectionAdded = true
+        }
+        
+        section.prepend(entry: entry)
+        
+        return wasSectionAdded
+    }
+    
+    // Return the month and year of the specified entry.
+    func getEntryMonthYear(entry: Entry) -> (Int, Int) {
+        
+        let month: Int
+        let year: Int
+        if let createdDate = entry.createdDate {
+            
+            month = Calendar.current.component(.month, from: createdDate)
+            year = Calendar.current.component(.year, from: createdDate)
+        }
+        else {
+            
+            month = 0
+            year = 0
+        }
+        
+        return (month, year)
     }
     
     // Get entries when the user pulls to refresh.
