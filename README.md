@@ -1,6 +1,10 @@
 # Happiness-iOS
    An app that lets you save your precious moments and then reflect on them to make you smile or feel happy.
 
+## Sprint 1
+
+<img src="https://github.com/TeamHappiness/Happiness-iOS/blob/master/Happinest.gif" alt="sprint1"/>
+
 ## User Stories
 
 The following **required** functionality is completed:
@@ -43,9 +47,13 @@ For create journal entry:
 - [x] Global error message banner
 - [ ] Calendar view for user journal entries
 
+
+
 ## Wireframe
 
 <img src="https://github.com/TeamHappiness/Happiness-iOS/blob/master/smileFirstSprint.gif" alt="app wireframe"/>
+
+
 
 ####PDF
 https://github.com/TeamHappiness/Happiness-iOS/blob/master/smileFirstSprint.pdf
