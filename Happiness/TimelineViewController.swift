@@ -69,9 +69,13 @@ class TimelineViewController: UIViewController {
 
         // Set up the navigation bar.
         if let navigationController = navigationController {
-
-            // Set the navigation bar color.
-            navigationController.navigationBar.barTintColor = UIColor(red: 0xFB/255.0, green: 0xF8/255.0, blue: 0xF4/255.0, alpha: 1.0) // magic numbers!!!
+            
+            // Set the navigation bar background color.
+            navigationController.navigationBar.barTintColor = UIConstants.primaryThemeColor
+            
+            // Set the navigation bar text and icon color.
+            navigationController.navigationBar.tintColor = UIConstants.textLightColor
+            navigationController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIConstants.textLightColor]
             
             // Set the navigation bar title.
             navigationItem.title = "Timeline"
@@ -83,10 +87,6 @@ class TimelineViewController: UIViewController {
                 target: self,
                 action: #selector(onComposeButton))
             navigationItem.rightBarButtonItem  = composeButton
-
-            // Render the bar button images using the correct color.
-            navigationItem.leftBarButtonItem?.image = navigationItem.leftBarButtonItem?.image?.withRenderingMode(.alwaysOriginal)
-            navigationItem.rightBarButtonItem?.image = navigationItem.rightBarButtonItem?.image?.withRenderingMode(.alwaysOriginal)
         }
         
         // Set up the tableView.

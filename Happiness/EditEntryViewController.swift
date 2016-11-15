@@ -42,12 +42,23 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Navigation bar title.
-        if entry == nil {
-            navigationItem.title = "New Entry"
-        } else {
-            navigationItem.title = "Edit Entry"
+
+        // Set up the navigation bar.
+        if let navigationController = navigationController {
+            
+            // Set the navigation bar background color.
+            navigationController.navigationBar.barTintColor = UIConstants.primaryThemeColor
+            
+            // Set the navigation bar text and icon color.
+            navigationController.navigationBar.tintColor = UIConstants.textLightColor
+            navigationController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIConstants.textLightColor]
+            
+            // Set title.
+            if entry == nil {
+                navigationItem.title = "New Entry"
+            } else {
+                navigationItem.title = "Edit Entry"
+            }
         }
         
         // Navigation bar save button.
