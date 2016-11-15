@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import ParseUI
+import MBProgressHUD
 
 class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextViewDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
@@ -144,9 +145,16 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
                 entryMedia.append(uploadImageButton.image(for: .normal)!)
             }
             
+            // Display progress HUD before the request is made.
+            MBProgressHUD.showAdded(to: view, animated: true)
+
             HappinessService.sharedInstance.create(text: textView.text, images: entryMedia, happinessLevel: Int(feelingSlider.value), location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
+                // Hide progress HUD after request is complete.
+                MBProgressHUD.hide(for: self.view, animated: true)
                 self.dismiss(animated: true, completion: {})
             }) { (error: Error) in
+                // Hide progress HUD after request is complete.
+                MBProgressHUD.hide(for: self.view, animated: true)
                 let alertController = UIAlertController(title: "Error saving entry", message:
                     "Happiness monster hugged our server just a little too hard...", preferredStyle: UIAlertControllerStyle.alert)
                 alertController.addAction(UIAlertAction(title: "Delete entry", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
@@ -173,9 +181,16 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         entry?.location?.name = locationTextField.text
         entry?.happinessLevel = Entry.getHappinessLevel(happinessLevelInt: Int(feelingSlider.value))
         
+        // Display progress HUD before the request is made.
+        MBProgressHUD.showAdded(to: view, animated: true)
+        
         HappinessService.sharedInstance.update(entry: entry!, images: entryMedia, success: { (entry: Entry) in
+            // Hide progress HUD after request is complete.
+            MBProgressHUD.hide(for: self.view, animated: true)
             self.dismiss(animated: true, completion: {})
         }) { (error: Error) in
+            // Hide progress HUD after request is complete.
+            MBProgressHUD.hide(for: self.view, animated: true)
             let alertController = UIAlertController(title: "Error saving entry", message:
                 "Happiness monster hugged our server just a little too hard...", preferredStyle: UIAlertControllerStyle.alert)
             alertController.addAction(UIAlertAction(title: "Delete entry", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
