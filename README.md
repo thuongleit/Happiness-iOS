@@ -30,15 +30,15 @@ The following **required** functionality is completed:
 
 The following **optional** features are nice to have:
 
-For Parse:
+- For Parse:
    - [x] Edit and Delete entry database calls
-For timeline for user journal entries:
+- For timeline for user journal entries:
    - [x] URLs, etc. in entries are clickable
    - [x] Pull to refresh
    - [x] Swipe to delete
    - [x] User sees loading state while waiting for Parse API
    - [x] Present error message banner on error
-For create journal entry:
+- For create journal entry:
    - [x] Upload image to entry from Photo library
    - [x] User's current location tagged to the entry
    - [x] User sees loading state while waiting for Parse API
