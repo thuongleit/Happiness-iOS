@@ -52,6 +52,7 @@ The following **optional** features are nice to have:
    - [x] Choose pretty colors for app. Color nav bar, text, tab bar, icons.
    - [x] Pretty cold start splash screen.
    - [x] App icon.
+- [x] Launch screen
 - [ ] Calendar view for user journal entries
 
 
