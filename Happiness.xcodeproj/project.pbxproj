@@ -237,7 +237,7 @@
 				TargetAttributes = {
 					E18E2CB31DC95FD500BA02C4 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = 64C3JFHWQT;
+						DevelopmentTeam = SCUP57ZH8V;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -482,8 +482,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Happiness/Happiness.entitlements;
-				DEVELOPMENT_TEAM = EEV6AZHDW2;
-				DEVELOPMENT_TEAM = 64C3JFHWQT;
+				DEVELOPMENT_TEAM = SCUP57ZH8V;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.mobile.Happiness;
@@ -499,8 +498,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Happiness/Happiness.entitlements;
-				DEVELOPMENT_TEAM = EEV6AZHDW2;
-				DEVELOPMENT_TEAM = 64C3JFHWQT;
+				DEVELOPMENT_TEAM = SCUP57ZH8V;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.mobile.Happiness;

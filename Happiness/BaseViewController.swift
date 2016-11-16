@@ -10,6 +10,8 @@ import UIKit
 
 class BaseViewController: UIViewController, TabBarViewDelegate {
     
+    let tabBarHeight: CGFloat = 60
+    
     enum TabSelection: Int {
         case timeline = 0, calendar
     }
@@ -20,19 +22,27 @@ class BaseViewController: UIViewController, TabBarViewDelegate {
     
     @IBOutlet weak var calendarTabContainerView: UIView!
     
-    var timelineViewController: TimelineViewController!
+    var timelineNavigationController: UINavigationController!
     
-    var calendarViewController: CalendarViewController!
+    var calendarNavigationController: UINavigationController!
     
     var selectedViewController: UIViewController?
+    
+    @IBOutlet weak var tabBarsBottomConstraint: NSLayoutConstraint!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        timelineViewController = TimelineViewController(nibName: "TimelineViewController", bundle: nil)
-        calendarViewController = CalendarViewController(nibName: "CalendarViewController", bundle: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(hideTabBars), name: AppDelegate.GlobalEventEnum.hideBottomTabBars.notification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(unhideTabBars), name: AppDelegate.GlobalEventEnum.unhideBottomTabBars.notification, object: nil)
         
-        self.switchToViewController(viewController: timelineViewController)
+        let timelineViewController = TimelineViewController(nibName: "TimelineViewController", bundle: nil)
+        timelineNavigationController = UINavigationController(rootViewController: timelineViewController)
+        
+        let calendarViewController = CalendarViewController(nibName: "CalendarViewController", bundle: nil)
+        calendarNavigationController = UINavigationController(rootViewController: calendarViewController)
+
+        self.switchToViewController(viewController: timelineNavigationController)
         
         if let timelineTab = Bundle.main.loadNibNamed("TabBarView", owner: self, options: nil)?.first as? TabBarView {
             timelineTab.frame = self.timelineTabContainerView.bounds
@@ -56,20 +66,15 @@ class BaseViewController: UIViewController, TabBarViewDelegate {
         doubleTap.numberOfTapsRequired = 2
         doubleTap.addTarget(self, action: #selector(logout))
         self.calendarTabContainerView.addGestureRecognizer(doubleTap)
-        
-        let doubleTapTimeline = UITapGestureRecognizer()
-        doubleTapTimeline.numberOfTapsRequired = 2
-        doubleTapTimeline.addTarget(self, action: #selector(bringEditView))
-        self.timelineTabContainerView.addGestureRecognizer(doubleTapTimeline)
     }
     
     func tabBarView(didTapButton tabBarView: TabBarView) {
         switch tabBarView.tag {
         case TabSelection.timeline.rawValue:
-            self.switchToViewController(viewController: timelineViewController)
+            self.switchToViewController(viewController: timelineNavigationController)
             break
         case TabSelection.calendar.rawValue:
-            self.switchToViewController(viewController: calendarViewController)
+            self.switchToViewController(viewController: calendarNavigationController)
             break
         default:
             break
@@ -92,13 +97,16 @@ class BaseViewController: UIViewController, TabBarViewDelegate {
         selectedViewController = viewController
     }
     
-    func bringEditView() {
-        let editVC = EditEntryViewController(nibName: "EditEntryViewController", bundle: nil)
-        present(editVC, animated: true, completion: nil)
-    }
-    
     func logout() {
         NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogout.notification, object: nil)
+    }
+    
+    func hideTabBars() {
+       tabBarsBottomConstraint.constant = tabBarsBottomConstraint.constant - tabBarHeight
+    }
+    
+    func unhideTabBars() {
+        tabBarsBottomConstraint.constant = 0
     }
     
     override func didReceiveMemoryWarning() {

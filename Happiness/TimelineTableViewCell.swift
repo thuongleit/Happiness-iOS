@@ -8,6 +8,12 @@
 
 import UIKit
 import AFNetworking
+import ParseUI
+
+protocol TimelineTableViewCellDelegate: class
+{
+    func timelineCellWasTapped(_ cell: TimelineTableViewCell)
+}
 
 class TimelineTableViewCell: UITableViewCell {
 
@@ -15,15 +21,21 @@ class TimelineTableViewCell: UITableViewCell {
     @IBOutlet weak var dayNameLabel: UILabel!
     @IBOutlet weak var dayNumberLabel: UILabel!
     @IBOutlet weak var happinessImageView: UIImageView!
+    @IBOutlet weak var questionImageView: UIImageView!
     @IBOutlet weak var questionLabel: UILabel!
+    @IBOutlet weak var answerImageView: UIImageView!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var locationImageView: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
-    @IBOutlet weak var entryImageView: UIImageView!
+    @IBOutlet weak var entryImageView: PFImageView!
+    @IBOutlet weak var questionLabelLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var questionLabelTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var textViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var textViewTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var locationLabelTrailingConstraint: NSLayoutConstraint!
     
+    var entry: Entry?
+    weak var delegate : TimelineTableViewCellDelegate?
     let dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     
     override func awakeFromNib() {
@@ -31,34 +43,49 @@ class TimelineTableViewCell: UITableViewCell {
         super.awakeFromNib()
         
         // Initialization code
+        questionImageView.image = questionImageView.image?.withRenderingMode(.alwaysTemplate)
+        answerImageView.image = answerImageView.image?.withRenderingMode(.alwaysTemplate)
         textView.textContainer.lineBreakMode = .byTruncatingTail
         locationImageView.image = locationImageView.image?.withRenderingMode(.alwaysTemplate)
         entryImageView.layer.cornerRadius = 3
         entryImageView.clipsToBounds = true
+
+        
+        // Add a gesture recogizer programatically, since the following
+        // error occurs otherwise: "invalid nib registered for identifier
+        // (XXXCell) - nib must contain exactly one top level object which
+        // must be a UITableViewCell instance."
+        let tapGestureRecognizer =
+            UITapGestureRecognizer(target: self, action: #selector(onTextViewTap(_:)))
+        tapGestureRecognizer.cancelsTouchesInView = true
+        tapGestureRecognizer.numberOfTapsRequired = 1
+        textView.addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    @IBAction func onTextViewTap(_ sender: UITapGestureRecognizer) {
+        
+        // We use a tap gesture recognizer for the text view, since
+        // otherwise taps on the UITextView will not register as selecting
+        // a cell.
+        if sender.state == .ended
+        {
+            if let delegate = delegate
+            {
+                delegate.timelineCellWasTapped(self)
+            }
+        }
     }
 
     // Set the cell contents based on the specified parameters.
-    func setData(entry: Entry) {
+    func setData(entry: Entry, delegate: TimelineTableViewCellDelegate) {
         
-        // Use real colors!!!
-        // magic strings!!!
+        self.entry = entry
+        self.delegate = delegate
+
         if let happinessLevel = entry.happinessLevel {
         
-            switch happinessLevel {
-                
-            case .sad:
-                happinessColorView.backgroundColor = UIColor.blue
-                happinessImageView.image = UIImage(named: "sad-240")?.withRenderingMode(.alwaysTemplate)
-            case .happy:
-                happinessColorView.backgroundColor = UIColor.green
-                happinessImageView.image = UIImage(named: "happy-240")?.withRenderingMode(.alwaysTemplate)
-            case .excited:
-                happinessColorView.backgroundColor = UIColor.orange
-                happinessImageView.image = UIImage(named: "excited-240")?.withRenderingMode(.alwaysTemplate)
-            default:
-                happinessColorView.backgroundColor = UIColor.orange
-                happinessImageView.image = UIImage(named: "excited-240")?.withRenderingMode(.alwaysTemplate)
-            }
+            happinessColorView.backgroundColor = UIConstants.happinessLevelColor(happinessLevel)
+            happinessImageView.image = UIConstants.happinessLevelImage(happinessLevel)
         }
         else {
         
@@ -84,22 +111,52 @@ class TimelineTableViewCell: UITableViewCell {
         
         textView.text = entry.text
         
-        locationLabel.text = entry.location?.name
-        
-        let hasImage: Bool
-        if let imageUrls = entry.imageUrls,
-            imageUrls.count > 0 {
+        if let location = entry.location {
             
-            setImage(imageView: entryImageView, imageUrl: imageUrls[0])
-            hasImage = true
+            locationLabel.text = UIConstants.locationString(from: location)
+            locationImageView.isHidden = false;
         }
         else {
             
-            entryImageView.image = nil
-            hasImage = false
+            locationLabel.text = nil
+            locationImageView.isHidden = true;
         }
-
+        
+        let hasImage: Bool
+        if let entryImageFile = entry.media {
+            
+            hasImage = true
+            entryImageView.file = entryImageFile
+            entryImageView.loadInBackground()
+        }
+        else {
+            
+            hasImage = false
+            entryImageView.file = nil
+            entryImageView.image = nil
+        }
+        
         // Adjust constraints.
+        let defaultQuestionLabelLeadingConstraint: CGFloat = 66
+        let defaultTextViewLeadingConstraint: CGFloat = 61
+        let noQAImagesLeadingAdjustment: CGFloat = -12
+        if questionLabel.text != nil {
+            
+            questionImageView.isHidden = false
+            answerImageView.isHidden = false
+            questionLabelLeadingConstraint.constant = defaultQuestionLabelLeadingConstraint
+            textViewLeadingConstraint.constant = defaultTextViewLeadingConstraint
+        }
+        else {
+            
+            questionImageView.isHidden = true
+            answerImageView.isHidden = true
+            questionLabelLeadingConstraint.constant =
+                defaultQuestionLabelLeadingConstraint + noQAImagesLeadingAdjustment
+            textViewLeadingConstraint.constant =
+                defaultTextViewLeadingConstraint + noQAImagesLeadingAdjustment
+        }
+        
         let defaultMiddleTrailingConstraint: CGFloat = -8
         if hasImage {
             
@@ -113,47 +170,5 @@ class TimelineTableViewCell: UITableViewCell {
             textViewTrailingConstraint.constant = defaultMiddleTrailingConstraint + entryImageView.bounds.width
             locationLabelTrailingConstraint.constant = defaultMiddleTrailingConstraint + entryImageView.bounds.width
         }
-    }
-    
-    // Fade in the specified image if it is not cached, or simply update
-    // the image if it was cached.
-    func setImage(imageView: UIImageView, imageUrl: URL) {
-        
-        imageView.image = nil
-        let imageRequest = URLRequest(url: imageUrl)
-        imageView.setImageWith(
-            imageRequest,
-            placeholderImage: nil,
-            success: { (request: URLRequest, response: HTTPURLResponse?, image: UIImage) in
-                
-                DispatchQueue.main.async {
-                    
-                    let imageIsCached = response == nil
-                    if !imageIsCached {
-                        
-                        imageView.alpha = 0.0
-                        imageView.image = image
-                        UIView.animate(
-                            withDuration: 0.3,
-                            animations: { () -> Void in
-                                
-                                imageView.alpha = 1.0
-                            }
-                        )
-                    }
-                    else {
-                        
-                        imageView.image = image
-                    }
-                }
-            },
-            failure: { (request: URLRequest, response: HTTPURLResponse?, error: Error) in
-                
-                DispatchQueue.main.async {
-                    
-                    imageView.image = nil
-                }
-            }
-        )
     }
 }

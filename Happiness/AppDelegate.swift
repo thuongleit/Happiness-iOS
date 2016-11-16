@@ -17,6 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     enum GlobalEventEnum: String {
         case didLogin = "userDidLoginNotification"
         case didLogout = "userDidLogoutNotification"
+        case hideBottomTabBars = "hideBottomTabBars"
+        case unhideBottomTabBars = "unhideBottomTabBars"
+        case newEntryNotification = "newEntryCreated"
+        case updateEntryNotification = "entryUpdated"
         
         var notification : Notification.Name {
             return Notification.Name(rawValue: self.rawValue)
@@ -50,9 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func presentLoggedInScreens() {
         let baseViewController = BaseViewController(nibName: "BaseViewController", bundle: nil)
-        let baseNavigationController = UINavigationController(rootViewController: baseViewController)
-        baseNavigationController.navigationBar.isTranslucent = false;
-        window?.rootViewController = baseNavigationController
+        window?.rootViewController = baseViewController
     }
     
     func userDidLogOut() {

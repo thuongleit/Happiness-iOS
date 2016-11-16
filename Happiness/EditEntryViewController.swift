@@ -8,8 +8,10 @@
 
 import UIKit
 import CoreLocation
+import ParseUI
+import MBProgressHUD
 
-class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextViewDelegate, CLLocationManagerDelegate {
+class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextViewDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var questionLabel: UILabel!
@@ -24,7 +26,13 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
 
     let locationManager = CLLocationManager()
     
-    var entry: Entry?
+    var entry: Entry? {
+        didSet {
+            entryExisting = true
+        }
+    }
+    // Whether this entry is already saved to the database. If true, update instead of create entry.
+    var entryExisting: Bool = false
     
     var textViewPlaceholderText = "I'm grateful for..."
     
@@ -34,6 +42,32 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Set up the navigation bar.
+        if let navigationController = navigationController {
+            
+            // Set the navigation bar background color.
+            navigationController.navigationBar.barTintColor = UIConstants.primaryThemeColor
+            
+            // Set the navigation bar text and icon color.
+            navigationController.navigationBar.tintColor = UIConstants.textLightColor
+            navigationController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIConstants.textLightColor]
+            
+            // Set title.
+            if entry == nil {
+                navigationItem.title = "New Entry"
+            } else {
+                navigationItem.title = "Edit Entry"
+            }
+        }
+        
+        // Navigation bar save button.
+        let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(EditEntryViewController.saveEntry))
+        navigationItem.rightBarButtonItem = saveButton
+        
+        // Navigation bar cancel button.
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(EditEntryViewController.cancelEntry))
+        navigationItem.leftBarButtonItem = cancelButton
         
         // Ask for location permission
         self.locationManager.requestWhenInUseAuthorization()
@@ -53,24 +87,50 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
 //        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-        // Placeholder entry text
-        textView.text = textViewPlaceholderText
-        textView.textColor = UIColor.lightGray
-        textView.delegate = self
         
-        // If editing an existing entry, show values of that entry.
-        // Else create an entry with current date and current question.
+        // If new entry, use current date and current day's question.
         if entry == nil {
-            entry = Entry()
+            dateLabel.text = UIConstants.dateString(from: Date())
+            questionLabel.text = QuestionsList.getCurrentQuestion().text
+            
+            // Placeholder entry text
+            textView.text = textViewPlaceholderText
+            textView.textColor = UIColor.lightGray
+            textView.delegate = self
         }
-        if let date = entry?.createdDate {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MMM d y" // "EEE MMM d HH:mm:ss Z y"
-            let dateString = formatter.string(from: date)
-            dateLabel.text = dateString
+        // If editing an existing entry, show values of that entry.
+        if let entry = entry {
+            if let date = entry.createdDate {
+                dateLabel.text = UIConstants.dateString(from: date)
+            }
+            if let question = entry.question {
+                questionLabel.text = question.text
+            }
+            if let text = entry.text {
+                textView.text = text
+            }
+            if let locationName = entry.location?.name {
+                locationTextField.text = locationName
+            }
+            if let happinessLevel = entry.happinessLevel {
+                feelingImageView.image = UIConstants.happinessLevelImage(happinessLevel)
+                feelingSlider.value = Float(Entry.getHappinessLevelInt(happinessLevel: happinessLevel))
+            }
+            if let photoFile = entry.media {
+                photoFile.getDataInBackground(block: { (imageData: Data?, error: Error?) in
+                    if error == nil {
+                        let photo = UIImage(data: imageData!)
+                        self.uploadImageButton.setImage(photo, for: .normal)
+                    }
+                })
+            }
         }
-        if let question = entry?.question {
-            questionLabel.text = question.text
+        
+        let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
+        let address = UIConstants.getAddressForLatLng(latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude))
+        
+        if let placeOfInterest = address {
+            locationTextField.placeholder = placeOfInterest
         }
     }
 
@@ -79,30 +139,109 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - User Action
+    // MARK: - HappinessService
     
-    @IBAction func onSaveButton(_ sender: Any) {
-        // Call HappinessService to save entry
-        saveEntry()
+    func cancelEntry() {
+        self.dismiss(animated: true, completion: {})
     }
     
     func saveEntry() {
-        let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
-        print("locations = \(locationCoordinate.latitude) \(locationCoordinate.longitude)")
+        if (entryExisting) {
+            updateEntry()
+        } else {
+            let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
+            
+            var entryMedia: [UIImage] = []
+            if uploadImageButton.image(for: .normal) != UIImage.init(named: "image_placeholder") {
+                entryMedia.append(uploadImageButton.image(for: .normal)!)
+            }
+            
+            // Display progress HUD before the request is made.
+            MBProgressHUD.showAdded(to: view, animated: true)
 
-        HappinessService.sharedInstance.create(text: textView.text, images: nil, happinessLevel: Int(feelingSlider.value), location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
+            HappinessService.sharedInstance.create(text: textView.text, images: entryMedia, happinessLevel: Int(feelingSlider.value), location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
+                // Hide progress HUD after request is complete.
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.dismiss(animated: true, completion: {})
+            }) { (error: Error) in
+                // Hide progress HUD after request is complete.
+                MBProgressHUD.hide(for: self.view, animated: true)
+                let alertController = UIAlertController(title: "Error saving entry", message:
+                    "Happiness monster hugged our server just a little too hard...", preferredStyle: UIAlertControllerStyle.alert)
+                alertController.addAction(UIAlertAction(title: "Delete entry", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
+                    self.cancelEntry()
+                }))
+                alertController.addAction(UIAlertAction(title: "Try saving again", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
+                    self.saveEntry()
+                }))
+                self.present(alertController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    // Update existing entry that's already on database
+    // TODO(cboo): Refactor out repetitive code.
+    func updateEntry() {
+        var entryMedia: [UIImage] = []
+        if uploadImageButton.image(for: .normal) != UIImage.init(named: "image_placeholder") {
+            entryMedia.append(uploadImageButton.image(for: .normal)!)
+        }
+        
+        // Update entry
+        entry?.text = textView.text
+        entry?.location?.name = locationTextField.text
+        entry?.happinessLevel = Entry.getHappinessLevel(happinessLevelInt: Int(feelingSlider.value))
+        
+        // Display progress HUD before the request is made.
+        MBProgressHUD.showAdded(to: view, animated: true)
+        
+        HappinessService.sharedInstance.update(entry: entry!, images: entryMedia, success: { (entry: Entry) in
+            // Hide progress HUD after request is complete.
+            MBProgressHUD.hide(for: self.view, animated: true)
             self.dismiss(animated: true, completion: {})
         }) { (error: Error) in
+            // Hide progress HUD after request is complete.
+            MBProgressHUD.hide(for: self.view, animated: true)
             let alertController = UIAlertController(title: "Error saving entry", message:
                 "Happiness monster hugged our server just a little too hard...", preferredStyle: UIAlertControllerStyle.alert)
             alertController.addAction(UIAlertAction(title: "Delete entry", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
-                self.dismiss(animated: true, completion: {})
+                self.cancelEntry()
             }))
             alertController.addAction(UIAlertAction(title: "Try saving again", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
                 self.saveEntry()
             }))
             self.present(alertController, animated: true, completion: nil)
         }
+    }
+    
+    // MARK: - User Action
+    
+    @IBAction func onUploadButton(_ sender: Any) {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.allowsEditing = true
+        picker.sourceType = .photoLibrary
+        present(picker, animated: true)
+    }
+    
+    @IBAction func onFeelingSliderChange(_ sender: UISlider) {
+        let happinessLevelInt = Int(feelingSlider.value)
+        let happinessLevel = Entry.getHappinessLevel(happinessLevelInt: happinessLevelInt)
+        feelingImageView.image = UIConstants.happinessLevelImage(happinessLevel)
+    }
+    
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage //2
+        //cameraImageView.contentMode = .scaleAspectFit //3
+        //cameraImageView.image = chosenImage //4
+        uploadImageButton.imageView?.contentMode = .scaleAspectFit
+        uploadImageButton.setImage(chosenImage, for: .normal)
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Notifications
@@ -140,16 +279,20 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     // MARK: - UITextViewDelegate
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.textColor == UIColor.lightGray {
-            textView.text = nil
-            textView.textColor = UIColor.black
+        if !entryExisting {
+            if textView.textColor == UIColor.lightGray {
+                textView.text = nil
+                textView.textColor = UIColor.black
+            }
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            textView.text = textViewPlaceholderText
-            textView.textColor = UIColor.lightGray
+        if !entryExisting {
+            if textView.text.isEmpty {
+                textView.text = textViewPlaceholderText
+                textView.textColor = UIColor.lightGray
+            }
         }
     }
     

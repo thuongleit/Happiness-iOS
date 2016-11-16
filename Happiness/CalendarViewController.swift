@@ -13,7 +13,19 @@ class CalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // Set up the navigation bar.
+        if let navigationController = navigationController {
+            
+            // Set the navigation bar background color.
+            navigationController.navigationBar.barTintColor = UIConstants.primaryThemeColor
+            
+            // Set the navigation bar text and icon color.
+            navigationController.navigationBar.tintColor = UIConstants.textLightColor
+            navigationController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIConstants.textLightColor]
+            
+            // Set the navigation bar title.
+            navigationItem.title = "Calendar"
+        }
     }
 
     override func didReceiveMemoryWarning() {

@@ -16,6 +16,9 @@ class HappinessService: NSObject {
     let parseApplicationID = "4Lp3DZTydiCTjsmftoTctwTo0Edb1hTVe4wgqxOM"
     let parseClientKey = "sENDA3tgrescOEbnZywnmJ5lFcoFgVLWd3Ka26tQ"
     
+    let googleMapsBaseURL = "https://maps.googleapis.com/maps/api/geocode/json?"
+    let googleMapsAPIKey = "AIzaSyC0SxpBokzPt8_s-Jf6q1yzzt7WPibKHZc"
+    
     var loginSuccess:((User) -> ())?
     var callFailure:((Error) -> ())?
     
@@ -148,8 +151,9 @@ class HappinessService: NSObject {
                 
                 query.getObjectInBackground(withId: entryObj.objectId!, block: { (object:PFObject?, error: Error?) in
                     if error == nil && object != nil {
-                        
-                        self.createUpdateEntrySuccess!(Entry.init(entryObject: object!))
+                        let newEntry = Entry.init(entryObject: object!)
+                        NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.newEntryNotification.notification, object: newEntry)
+                        self.createUpdateEntrySuccess!(newEntry)
                         
                     } else {
                         self.callFailure!(error!)
@@ -185,7 +189,9 @@ class HappinessService: NSObject {
                 }
                 entryObj?.setObject(PFUser.current()!, forKey: "author")
                 entryObj?.setObject(entry.text!, forKey: "text")
-                entryObj?.setObject(entry.happinessLevel?.rawValue ?? 10, forKey: "happinessLevel")
+                if let happinessInt = entry.happinessLevel?.rawValue {
+                    entryObj?.setObject(happinessInt, forKey: "happinessLevel")
+                }
                 entryObj?.setObject(self.createLocationObject(location: entry.location!), forKey: "location")
                 
                 entryObj?.saveInBackground(block: { (succeded: Bool, error:Error?) in
@@ -198,7 +204,9 @@ class HappinessService: NSObject {
                         query.getObjectInBackground(withId: (entryObj?.objectId!)!, block: { (object:PFObject?, error: Error?) in
                             if error == nil && object != nil {
                                 
-                                self.createUpdateEntrySuccess!(Entry.init(entryObject: object!))
+                                let editedEntry = Entry.init(entryObject: object!)
+                                NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.updateEntryNotification.notification, object: editedEntry)
+                                self.createUpdateEntrySuccess!(editedEntry)
                                 
                             } else {
                                 self.callFailure!(error!)

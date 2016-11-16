@@ -11,6 +11,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ViewEntryViewController" customModule="Happiness" customModuleProvider="target">
             <connections>
+                <outlet property="dateLabel" destination="7Zf-13-44p" id="OEU-1E-Jsh"/>
+                <outlet property="feelingImageView" destination="9K5-Vh-Kxg" id="Jpu-vm-Z0v"/>
+                <outlet property="locationIconImageView" destination="d1u-oL-XZX" id="M5g-Kc-y8A"/>
+                <outlet property="locationLabel" destination="zeY-iz-uI8" id="5g5-pU-ZGF"/>
+                <outlet property="photoImageView" destination="OI9-3X-mgb" id="gNM-fN-lc4"/>
+                <outlet property="questionLabel" destination="JaI-mm-GV4" id="kdY-AK-1c8"/>
+                <outlet property="textLabel" destination="Qnx-Pz-8pb" id="pRm-Qm-a2R"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -20,53 +27,72 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nov 12, 2016" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Zf-13-44p">
-                    <rect key="frame" x="259" y="40" width="100" height="21"/>
+                    <rect key="frame" x="259" y="20" width="100" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What are you grateful for today?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JaI-mm-GV4">
-                    <rect key="frame" x="16" y="81" width="343" height="29"/>
+                    <rect key="frame" x="16" y="61" width="343" height="29"/>
                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                     <color key="textColor" red="1" green="0.50256161160000001" blue="0.4588075774" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="really_happy" translatesAutoresizingMaskIntoConstraints="NO" id="9K5-Vh-Kxg">
-                    <rect key="frame" x="16" y="171" width="60" height="60"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="60" id="8GD-w5-Utf"/>
-                        <constraint firstAttribute="width" constant="60" id="Xq1-FI-Kju"/>
-                    </constraints>
-                </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qnx-Pz-8pb">
-                    <rect key="frame" x="16" y="130" width="343" height="21"/>
-                    <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                    <rect key="frame" x="16" y="110" width="343" height="21"/>
+                    <string key="text">Had a great day at Fort Funstion with my two best friends. Haven't seen them in 6 months! We sat on the beach and sang songs. Linna played guitar—she's so awesome! Totally going to be a rockstar singer later!!</string>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="friends_beach_guitar" translatesAutoresizingMaskIntoConstraints="NO" id="OI9-3X-mgb">
-                    <rect key="frame" x="16" y="251" width="343" height="230"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fort Funston, San Francisco, CA" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zeY-iz-uI8">
+                    <rect key="frame" x="48" y="154" width="220" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="really_happy" translatesAutoresizingMaskIntoConstraints="NO" id="9K5-Vh-Kxg">
+                    <rect key="frame" x="16" y="18" width="24" height="24"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="8GD-w5-Utf"/>
+                        <constraint firstAttribute="width" constant="24" id="Xq1-FI-Kju"/>
+                    </constraints>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="friends_beach_guitar" translatesAutoresizingMaskIntoConstraints="NO" id="OI9-3X-mgb" customClass="PFImageView">
+                    <rect key="frame" x="16" y="195" width="343" height="230"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="230" id="gzg-Gq-30H"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location-240" translatesAutoresizingMaskIntoConstraints="NO" id="d1u-oL-XZX">
+                    <rect key="frame" x="16" y="151" width="24" height="24"/>
+                    <color key="tintColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="24" id="17k-PH-Ufv"/>
+                        <constraint firstAttribute="height" constant="24" id="vdB-4Z-Phu"/>
                     </constraints>
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="0.94901960780000005" green="0.94509803920000002" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="OI9-3X-mgb" firstAttribute="top" secondItem="9K5-Vh-Kxg" secondAttribute="bottom" constant="20" id="4fQ-7x-Mni"/>
                 <constraint firstItem="9K5-Vh-Kxg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="50p-Pu-Yfz"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zeY-iz-uI8" secondAttribute="trailing" constant="16" id="6fg-gr-5Fp"/>
                 <constraint firstItem="JaI-mm-GV4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="86E-aC-nlf"/>
                 <constraint firstItem="Qnx-Pz-8pb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="ALb-ha-Bti"/>
-                <constraint firstItem="9K5-Vh-Kxg" firstAttribute="top" secondItem="Qnx-Pz-8pb" secondAttribute="bottom" constant="20" id="F25-sF-WF2"/>
+                <constraint firstItem="9K5-Vh-Kxg" firstAttribute="centerY" secondItem="7Zf-13-44p" secondAttribute="centerY" id="EXA-jJ-KIQ"/>
                 <constraint firstItem="Qnx-Pz-8pb" firstAttribute="top" secondItem="JaI-mm-GV4" secondAttribute="bottom" constant="20" id="JgF-e5-avK"/>
                 <constraint firstAttribute="trailing" secondItem="7Zf-13-44p" secondAttribute="trailing" constant="16" id="KLq-v0-Wfz"/>
+                <constraint firstItem="zeY-iz-uI8" firstAttribute="leading" secondItem="d1u-oL-XZX" secondAttribute="trailing" constant="8" id="Od7-pZ-Fp7"/>
                 <constraint firstItem="Qnx-Pz-8pb" firstAttribute="top" secondItem="JaI-mm-GV4" secondAttribute="bottom" constant="20" id="Ols-Gr-857"/>
-                <constraint firstItem="7Zf-13-44p" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="40" id="UyH-Va-xS1"/>
+                <constraint firstItem="d1u-oL-XZX" firstAttribute="top" secondItem="Qnx-Pz-8pb" secondAttribute="bottom" constant="20" id="S8Y-NP-Lru"/>
+                <constraint firstItem="7Zf-13-44p" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="UyH-Va-xS1"/>
                 <constraint firstAttribute="trailing" secondItem="Qnx-Pz-8pb" secondAttribute="trailing" constant="16" id="YIx-05-M8P"/>
                 <constraint firstAttribute="trailing" secondItem="JaI-mm-GV4" secondAttribute="trailing" constant="16" id="Z0R-dB-xua"/>
+                <constraint firstItem="d1u-oL-XZX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="gt2-GG-0io"/>
+                <constraint firstItem="OI9-3X-mgb" firstAttribute="top" secondItem="d1u-oL-XZX" secondAttribute="bottom" constant="20" id="lC0-bf-6zl"/>
                 <constraint firstItem="JaI-mm-GV4" firstAttribute="top" secondItem="7Zf-13-44p" secondAttribute="bottom" constant="20" id="oQZ-lO-Aaq"/>
                 <constraint firstAttribute="trailing" secondItem="OI9-3X-mgb" secondAttribute="trailing" constant="16" id="vso-Cg-Neh"/>
+                <constraint firstItem="zeY-iz-uI8" firstAttribute="centerY" secondItem="d1u-oL-XZX" secondAttribute="centerY" id="y4W-zd-Sa8"/>
                 <constraint firstItem="OI9-3X-mgb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="zvw-bd-a7y"/>
             </constraints>
             <point key="canvasLocation" x="33.5" y="53.5"/>
@@ -74,6 +100,7 @@
     </objects>
     <resources>
         <image name="friends_beach_guitar" width="2403" height="1600"/>
+        <image name="location-240" width="240" height="240"/>
         <image name="really_happy" width="60" height="60"/>
     </resources>
 </document>

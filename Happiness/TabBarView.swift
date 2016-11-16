@@ -31,13 +31,13 @@ class TabBarView: UIView {
     }
     
     func markSelected() {
-        self.backgroundColor = UIConstants.secondaryThemeColor
-        self.tabButton.setTitleColor(UIConstants.primaryThemeColor, for: .normal)
+        self.backgroundColor = UIConstants.secondarySelectedThemeColor
+        self.tabButton.setTitleColor(UIConstants.textLightColor, for: .normal)
     }
     
     func markUnselected() {
-        self.backgroundColor = UIConstants.primaryThemeColor
-        self.tabButton.setTitleColor(UIConstants.secondaryThemeColor, for: .normal)
+        self.backgroundColor = UIConstants.secondaryThemeColor
+        self.tabButton.setTitleColor(UIConstants.textLightColor, for: .normal)
     }
     
     func onButtonTap() {
