@@ -153,7 +153,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         }
     }
     
-    // MARK - CLLocationManagerDelegate
+    // MARK: - CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
 //        var locValue:CLLocationCoordinate2D = manager.location!.coordinate
 //        print("locations = \(locValue.latitude) \(locValue.longitude)")
