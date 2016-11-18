@@ -63,7 +63,7 @@ class HappinessService: NSObject {
         })
     }
     
-    func signup(email: String, password: String, name: String, success: @escaping (_ user: User) -> (), failure: @escaping (Error) -> ()) {
+    func signup(email: String, password: String, name: String, profileImage: UIImage?, success: @escaping (_ user: User) -> (), failure: @escaping (Error) -> ()) {
         
         loginSuccess = success
         callFailure = failure
@@ -78,6 +78,11 @@ class HappinessService: NSObject {
             newUser.password = password
             newUser.email = email
             newUser.setObject(name, forKey: "name")//custom field
+            
+            if let pfImage = profileImage {
+                let resizedImage = resizeImage(image: pfImage, targetSize: CGSize.init(width: 600, height: 600))
+                newUser["profileImage"] = getPFFileFromImage(image: resizedImage) // PFFile column type
+            }
             
             newUser.signUpInBackground {
                 (succeeded: Bool, error: Error?) -> Void in
@@ -109,6 +114,32 @@ class HappinessService: NSObject {
     
     func logoutUser(){
         PFUser.logOut()
+    }
+    
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        let size = image.size
+        
+        let widthRatio  = targetSize.width  / image.size.width
+        let heightRatio = targetSize.height / image.size.height
+        
+        // Figure out what our orientation is, and use that to form the rectangle
+        var newSize: CGSize
+        if(widthRatio > heightRatio) {
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else {
+            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+        }
+        
+        // This is the rect that we've calculated out and this is what is actually used below
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+        
+        // Actually do the resizing to the rect using the ImageContext stuff
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
     }
     
     // Convert Location to be stored on server. Helper for service create() and update() methods.
