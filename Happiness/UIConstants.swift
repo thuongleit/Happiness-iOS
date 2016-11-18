@@ -11,21 +11,22 @@ import UIKit
 class UIConstants: NSObject {
     
     // MARK: - Colors
-<<<<<<< HEAD
-    static let primaryThemeColor = UIColor(red: 123/255, green: 104/255, blue: 238/255, alpha: 1)
-=======
+
     // light blue
     static let primaryThemeColor = UIColor(red: 117/255, green: 201/255, blue: 177/255, alpha: 1)
     // deep light blue
     static let primarySelectedThemeColor = UIColor(red: 117/255, green: 201/255, blue: 177/255, alpha: 1)
->>>>>>> master
+
     
     // pink
     static let secondaryThemeColor = UIColor(red: 255/255, green: 128/255, blue: 117/255, alpha: 1)
     // deep pink
     static let secondarySelectedThemeColor = UIColor(red: 226/255, green: 38/255, blue: 77/255, alpha: 1)
     
-<<<<<<< HEAD
+    // white
+    static let textLightColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+
+
     static func happinessLevelColor(_ happinessLevel: HappinessLevel) -> UIColor {
         switch happinessLevel {
         case .angry: // deep red
@@ -40,29 +41,6 @@ class UIConstants: NSObject {
             return UIColor.init(colorLiteralRed: 123/255.0, green: 209/255.0, blue: 134/255.0, alpha: 1.0)
         case .superExcited: // bright turquiose
             return UIColor.init(colorLiteralRed: 25/255.0, green: 207/255.0, blue: 134/255.0, alpha: 1.0)
-        }
-    }
-
-    // MARK: - Images
-
-=======
-    // white
-    static let textLightColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
-    
-    static func happinessLevelColor(_ happinessLevel: HappinessLevel) -> UIColor {
-        switch happinessLevel {
-        case .angry: // deep red
-            return UIColor.init(colorLiteralRed: 205/255, green: 45/255, blue: 34/255, alpha: 1.0)
-        case .bothered: // light red
-            return UIColor.init(colorLiteralRed: 254/255, green: 110/255, blue: 75/255, alpha: 1.0)
-        case .sad: // light blue
-            return UIColor.init(colorLiteralRed: 117/255, green: 201/255, blue: 177/255, alpha: 1.0)
-        case .happy: // yellow
-            return UIColor.init(colorLiteralRed: 255/255, green: 212/255, blue: 84/255, alpha: 1.0)
-        case .excited: // turquoise
-            return UIColor.init(colorLiteralRed: 123/255, green: 209/255, blue: 134/255, alpha: 1.0)
-        case .superExcited: // bright turquiose
-            return UIColor.init(colorLiteralRed: 25/255, green: 207/255, blue: 134/255, alpha: 1.0)
         }
     }
     
@@ -107,7 +85,6 @@ class UIConstants: NSObject {
     
     // MARK: - Images
     
->>>>>>> master
     static func happinessLevelImage(_ happinessLevel: HappinessLevel) -> UIImage {
         switch happinessLevel {
         case .angry:
@@ -124,9 +101,6 @@ class UIConstants: NSObject {
             return UIImage(named: "super_excited")!
         }
     }
-<<<<<<< HEAD
-
-=======
     
     // MARK: - Date
     static func dateString(from date: Date) -> String {
@@ -172,7 +146,6 @@ class UIConstants: NSObject {
         return address
     }
     
->>>>>>> master
     // MARK: - Text
     static let textFontName = "Avenir-Medium"
     
