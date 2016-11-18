@@ -144,7 +144,7 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate {
             
         } else {
             
-            HappinessService.sharedInstance.signup(email: emailTextField.text!, password: passwordTextField.text!, name: nameTextField.text!, success: { (user: User) in
+            HappinessService.sharedInstance.signup(email: emailTextField.text!, password: passwordTextField.text!, name: nameTextField.text!, profileImage: nil,  success: { (user: User) in
                 MBProgressHUD.hide(for: self.view, animated: true)
                 print("sign up success with name \(user.name)")
                 NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogin.notification, object: nil)
