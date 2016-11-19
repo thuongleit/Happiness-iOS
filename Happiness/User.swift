@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import Parse
 
 class User: NSObject {
     
     var id: String?
     var name: String?
     var email: String?
-    var profileImageUrl: URL?
+    var profileImage: PFFile?
     var entries: [Entry]?
     var createdDate: Date?
     
@@ -22,6 +23,10 @@ class User: NSObject {
         name = obj.object(forKey: "name") as? String
         email = obj.object(forKey: "email") as? String
         createdDate = obj.value(forKey: "createdAt") as? Date
+        
+        if(obj.object(forKey: "profileImage") != nil){
+            profileImage = obj.object(forKey: "profileImage") as? PFFile
+        }
     }
 
 }
