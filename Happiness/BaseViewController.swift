@@ -41,7 +41,7 @@ class BaseViewController: UIViewController, TabBarViewDelegate {
         
         let calendarViewController = CalendarViewController(nibName: "CalendarViewController", bundle: nil)
         calendarNavigationController = UINavigationController(rootViewController: calendarViewController)
-        
+
         self.switchToViewController(viewController: timelineNavigationController)
         
         if let timelineTab = Bundle.main.loadNibNamed("TabBarView", owner: self, options: nil)?.first as? TabBarView {

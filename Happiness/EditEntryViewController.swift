@@ -42,12 +42,23 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Navigation bar title.
-        if entry == nil {
-            navigationItem.title = "New Entry"
-        } else {
-            navigationItem.title = "Edit Entry"
+
+        // Set up the navigation bar.
+        if let navigationController = navigationController {
+            
+            // Set the navigation bar background color.
+            navigationController.navigationBar.barTintColor = UIConstants.primaryThemeColor
+            
+            // Set the navigation bar text and icon color.
+            navigationController.navigationBar.tintColor = UIConstants.textLightColor
+            navigationController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIConstants.textLightColor]
+            
+            // Set title.
+            if entry == nil {
+                navigationItem.title = "New Entry"
+            } else {
+                navigationItem.title = "Edit Entry"
+            }
         }
         
         // Navigation bar save button.
@@ -86,13 +97,6 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             textView.text = textViewPlaceholderText
             textView.textColor = UIColor.lightGray
             textView.delegate = self
-            
-            let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
-            let address = UIConstants.getAddressForLatLng(latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude))
-            
-            if let placeOfInterest = address {
-                locationTextField.placeholder = placeOfInterest
-            }
         }
         // If editing an existing entry, show values of that entry.
         if let entry = entry {
@@ -120,6 +124,13 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
                     }
                 })
             }
+        }
+        
+        let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
+        let address = UIConstants.getAddressForLatLng(latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude))
+        
+        if let placeOfInterest = address {
+            locationTextField.placeholder = placeOfInterest
         }
     }
 
