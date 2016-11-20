@@ -25,6 +25,7 @@ class HappinessService: NSObject {
     var createUpdateEntrySuccess:((Entry) -> ())?
     var getEntriesSuccess:(([Entry]) -> ())?
     var deleteSuccess: (() -> ())?
+    var getNestUsersSuccess:(([User]) -> ())?
     
     func login(email: String, password: String, success: @escaping (_ user: User) -> (), failure: @escaping (Error) -> ()) {
         
@@ -46,6 +47,7 @@ class HappinessService: NSObject {
                 
                 let query = PFUser.query() //cant query user table using PFQuery, use PFUser
                 query?.whereKey("objectId", equalTo: (pfCurrentUser?.objectId)!)
+                query?.includeKey("nest")
                 
                 query?.findObjectsInBackground(block: { (objects: [PFObject]?, error:Error?) in
                     if let error = error {
@@ -55,6 +57,7 @@ class HappinessService: NSObject {
                     else {
                         for pfobj in objects! {
                             let curUser = User(obj: pfobj as AnyObject)
+                            User.currentUser = curUser
                             self.loginSuccess!(curUser)
                         }
                     }
@@ -94,6 +97,7 @@ class HappinessService: NSObject {
                     
                     let query = PFUser.query()
                     query?.whereKey("username", equalTo: (pfCurrentUser?.username)!)
+                    query?.includeKey("nest")
                     
                     query?.findObjectsInBackground(block: { (objects: [PFObject]?, error:Error?) in
                         if let error = error {
@@ -103,6 +107,7 @@ class HappinessService: NSObject {
                         else {
                             for pfobj in objects! {
                                 let curUser = User(obj: pfobj as AnyObject)
+                                User.currentUser = curUser
                                 self.loginSuccess!(curUser)
                             }
                         }
@@ -157,12 +162,26 @@ class HappinessService: NSObject {
         callFailure = failure
         
         let entryObj = PFObject(className: "Entry")
+        
         if let images = images {
             if(images.count > 0){
-                entryObj["media"] = getPFFileFromImage(image: images[0]) // PFFile column type
+                let entryImage = images[0]
+                let resizedImage = resizeImage(image: entryImage, targetSize: CGSize.init(width: 600, height: 600))
+                entryObj["media"] = getPFFileFromImage(image: resizedImage) // PFFile column type
             }
         }
+        
         entryObj["author"] = PFUser.current() // Pointer column type that points to PFUser
+        
+        let curUser = User.currentUser
+        let nestId = curUser?.nest?.id
+        
+        if let nestId = nestId {
+            let nestObj = PFObject.init(className: "Nest")
+            nestObj.setValue(nestId, forKey: "objectId")
+            entryObj["nest"] = nestObj
+        }
+        
         entryObj["text"] = text
         entryObj["happinessLevel"] = happinessLevel
         if let location = location {
@@ -179,6 +198,8 @@ class HappinessService: NSObject {
                 
                 let query = PFQuery(className: "Entry")
                 query.includeKey("author")
+                query.includeKey("nest")
+                query.includeKey("author.nest")
                 
                 query.getObjectInBackground(withId: entryObj.objectId!, block: { (object:PFObject?, error: Error?) in
                     if error == nil && object != nil {
@@ -213,11 +234,15 @@ class HappinessService: NSObject {
         var query = PFQuery(className:"Entry")
         
         query.getObjectInBackground(withId: entry.id!, block: { (entryObj: PFObject?, error: Error?) in
+            
             if error == nil && entryObj != nil {
                 
                 if((images?.count)! > 0){
-                    entryObj?.setObject(self.getPFFileFromImage(image: images?[0])! , forKey: "media") // PFFile column type
+                    let entryImage = images![0]
+                    let resizedImage = self.resizeImage(image: entryImage, targetSize: CGSize.init(width: 600, height: 600))
+                    entryObj?.setObject(self.getPFFileFromImage(image: resizedImage)! , forKey: "media") // PFFile column type
                 }
+                
                 entryObj?.setObject(PFUser.current()!, forKey: "author")
                 entryObj?.setObject(entry.text!, forKey: "text")
                 if let happinessInt = entry.happinessLevel?.rawValue {
@@ -230,6 +255,8 @@ class HappinessService: NSObject {
                     {
                         query = PFQuery(className: "Entry")
                         query.includeKey("author")
+                        query.includeKey("nest")
+                        query.includeKey("author.nest")
                         
                         //once saved get the object back
                         query.getObjectInBackground(withId: (entryObj?.objectId!)!, block: { (object:PFObject?, error: Error?) in
@@ -252,12 +279,6 @@ class HappinessService: NSObject {
                 self.callFailure!(error!)
             }
         })
-    }
-    
-    func uploadImage(image: UIImage, success: @escaping (_ url: URL) -> (), failure: @escaping (Error) -> ()) {
-    }
-    
-    func deleteImage(imageUrl: URL, success: @escaping () -> (), failure: @escaping (Error) -> ()) {
     }
     
     func delete(entry: Entry, success: @escaping () -> (), failure: @escaping (Error) -> ()) {
@@ -294,8 +315,23 @@ class HappinessService: NSObject {
         
         let query = PFQuery(className: "Entry")
         query.order(byDescending: "createdAt")
-        query.whereKey("author", equalTo: PFUser.current()!)
+        
+        
+        let curUser = User.currentUser
+        let nestId = curUser?.nest?.id
+        
+        if let nestId = nestId {
+            let nestObj = PFObject.init(className: "Nest")
+            nestObj.setValue(nestId, forKey: "objectId")
+            query.whereKey("nest", equalTo: nestObj)
+        }
+        else{
+            query.whereKey("author", equalTo: PFUser.current()!)//return only signed in user's entries
+        }
+        
         query.includeKey("author")
+        query.includeKey("nest")
+        query.includeKey("author.nest")
         query.limit = 20
         //query.skip = skipCount//for paging
         
@@ -315,14 +351,37 @@ class HappinessService: NSObject {
         }
     }
     
-    // Returns all entries for current user between start and end date
-    // Nil start or end dates means no date constraints
-    func getEntries(startDate: Date?, endDate: Date?, success: @escaping (_ entries: [Entry]) -> (), failure: @escaping (Error) -> ()) {
+    func getAllNestUsers(nestObjID: String?, success: @escaping (_ users: [User]) -> (), failure: @escaping (Error) -> ()){
         
+        getNestUsersSuccess = success
+        callFailure = failure
+        
+        let query = PFQuery(className: "_User")
+        
+        if let nestObjID = nestObjID{
+            let nestObj = PFObject.init(className: "Nest")
+            nestObj.setValue(nestObjID, forKey: "objectId")
+            query.whereKey("nest", equalTo: nestObj)
+        }
+        
+        query.limit = 20
+        query.includeKey("nest")
+        //query.skip = skipCount//for paging
+        
+        // fetch data asynchronously
+        query.findObjectsInBackground(block: { (objects: [PFObject]?, error:Error?) in
+            if let error = error {
+                self.callFailure!(error)
+                print(error.localizedDescription)
+            }
+            else {
+                var nestUsers = [User]()
+                for pfobj in objects! {
+                    let curUser = User(obj: pfobj as AnyObject)
+                    nestUsers.append(curUser)
+                }
+                self.getNestUsersSuccess!(nestUsers)
+            }
+        })
     }
-    
-    // We will set up database of questions and push notifications for questions in sprint 2.
-    //    func getQuestion
-    
-    
 }
