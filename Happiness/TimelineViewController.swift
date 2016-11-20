@@ -115,12 +115,20 @@ class TimelineViewController: UIViewController {
             navigationItem.title = "Timeline"
             
             // Add the compose button.
+            
+            let composeImage = UIImage(named: UIConstants.ImageName.composeButton)
             let composeButton = UIBarButtonItem(
-                image: UIImage(named: UIConstants.ImageName.composeButton),
+                image: composeImage,
                 style: .plain,
                 target: self,
                 action: #selector(onComposeButton))
             navigationItem.rightBarButtonItem  = composeButton
+            
+            let doubleTap = UITapGestureRecognizer()
+            doubleTap.numberOfTapsRequired = 2
+            doubleTap.addTarget(self, action: #selector(logout))
+            self.navigationController?.navigationBar.subviews[0].isUserInteractionEnabled = true
+            self.navigationController?.navigationBar.subviews[0].addGestureRecognizer(doubleTap)
         }
         
         // Set up the tableView.
@@ -186,6 +194,10 @@ class TimelineViewController: UIViewController {
         
         // Get entries when the view controller loads.
         getEntries()
+    }
+    
+    func logout() {
+        NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogout.notification, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
