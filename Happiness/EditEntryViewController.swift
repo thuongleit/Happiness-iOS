@@ -126,11 +126,15 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             }
         }
         
-        let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
-        let address = UIConstants.getAddressForLatLng(latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude))
-        
-        if let placeOfInterest = address {
-            locationTextField.placeholder = placeOfInterest
+        if CLLocationManager.locationServicesEnabled() {
+            if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+                let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
+                let address = UIConstants.getAddressForLatLng(latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude))
+
+                if let placeOfInterest = address {
+                    locationTextField.placeholder = placeOfInterest
+                }
+            }
         }
     }
 
