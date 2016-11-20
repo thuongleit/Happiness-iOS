@@ -36,6 +36,8 @@ class BaseViewController: UIViewController, TabBarViewDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(hideTabBars), name: AppDelegate.GlobalEventEnum.hideBottomTabBars.notification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(unhideTabBars), name: AppDelegate.GlobalEventEnum.unhideBottomTabBars.notification, object: nil)
         
+        NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.hideBottomTabBars.notification))
+        
         let timelineViewController = TimelineViewController(nibName: "TimelineViewController", bundle: nil)
         timelineNavigationController = UINavigationController(rootViewController: timelineViewController)
         
@@ -106,7 +108,7 @@ class BaseViewController: UIViewController, TabBarViewDelegate {
     }
     
     func unhideTabBars() {
-        tabBarsBottomConstraint.constant = 0
+//        tabBarsBottomConstraint.constant = 0
     }
     
     override func didReceiveMemoryWarning() {
