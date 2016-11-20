@@ -12,48 +12,82 @@ import MBProgressHUD
 // Represents a section in a timeline table.
 class TimelineSection
 {
-    let month: Int
+    let week: Int
     let year: Int
     let title: String
-    var entries = [Entry]()
+    private var entries = [Entry]()
+    private var userEntryCount = [String: Int]() // maps user IDs to entry counts
     var rows: Int {
         
         return entries.count
     }
     
-    let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    
-    init(month: Int, year: Int) {
+    init(week: Int, year: Int) {
         
-        self.month = month
+        self.week = week
         self.year = year
-        self.title = monthNames[month-1] + String(format: " %d", year)
+        self.title = String(format: "Week %d, %d", week, year) // temp code!!!
     }
     
     // Add the specified entry to the end of the entries array.
     func append(entry: Entry) {
         
+        if let userId = entry.author?.id {
+            
+            userEntryCount[userId] = userEntryCount[userId] ?? 0 + 1
+        }
+
         entries.append(entry)
     }
     
     // Add the specified entry to the start of the entries array.
     func prepend(entry: Entry) {
         
+        if let userId = entry.author?.id {
+            
+            userEntryCount[userId] = userEntryCount[userId] ?? 0 + 1
+        }
+        
         entries.insert(entry, at: 0)
+    }
+    
+    // Remove the specified entry from the entries array.
+    func remove(entryAtRow atRow: Int) {
+
+        let entry = entries[atRow]
+        if let userId = entry.author?.id {
+            
+            userEntryCount[userId] = userEntryCount[userId] ?? 0 - 1
+        }
+        
+        entries.remove(at: atRow)
+    }
+    
+    // Return the specified entry from the entries array.
+    func get(entryAtRow atRow: Int) -> Entry {
+        
+        return entries[atRow]
     }
     
     // Return the entry with the specified ID, or nil if no such entry is
     // found.
-    func findEntry(_ entryId: String) -> Entry? {
+    func get(entryWithId entryId: String) -> Entry? {
         
         for entry in entries {
             
-            if entry.id == entryId
-            {
+            if entry.id == entryId {
+                
                 return entry
             }
         }
         return nil
+    }
+    
+    // Return the count of entries for the specified user, or nil if no
+    // such user has entries.
+    func getEntryCount(userWithId userId: String) -> Int? {
+        
+        return userEntryCount[userId]
     }
 }
 
@@ -226,21 +260,29 @@ class TimelineViewController: UIViewController {
         
         sections.removeAll()
         var section: TimelineSection?
-        var sectionMonth = -1
+        var sectionWeek = -1
         var sectionYear = -1
         for entry in entries {
             
-            let (month, year) = getEntryMonthYear(entry: entry)
+            let (week, year) = getEntryWeekYear(date: entry.createdDate)
             
-            if section == nil || month != sectionMonth || year != sectionYear {
+            if section == nil || week != sectionWeek || year != sectionYear {
                 
-                sectionMonth = month
+                sectionWeek = week
                 sectionYear = year
-                section = TimelineSection(month: month, year: year)
+                section = TimelineSection(week: week, year: year)
                 sections.append(section!)
             }
             
             section!.append(entry: entry)
+        }
+        
+        // Add section for the current week even if it has no entries.
+        let (thisWeek, thisYear) = getEntryWeekYear(date: Date())
+        if !(sections.count > 0 && sections[0].week == thisWeek && sections[0].year == thisYear) {
+            
+            section = TimelineSection(week: thisWeek, year: thisYear)
+            sections.insert(section!, at: 0)
         }
     }
     
@@ -248,18 +290,18 @@ class TimelineViewController: UIViewController {
     // if a new section was added, false otherwise.
     func addNewEntry(_ entry: Entry) -> Bool {
         
-        let (month, year) = getEntryMonthYear(entry: entry)
+        let (week, year) = getEntryWeekYear(date: entry.createdDate)
         
         let section: TimelineSection
         let wasSectionAdded: Bool
-        if sections.count > 0 && sections[0].month == month && sections[0].year == year {
+        if sections.count > 0 && sections[0].week == week && sections[0].year == year {
             
             section = sections[0]
             wasSectionAdded = false
         }
         else {
             
-            section = TimelineSection(month: month, year: year)
+            section = TimelineSection(week: week, year: year)
             sections.insert(section, at: 0)
             wasSectionAdded = true
         }
@@ -278,7 +320,7 @@ class TimelineViewController: UIViewController {
             var sectionIndex = 0
             for section in sections {
                 
-                var foundEntry = section.findEntry(entryId)
+                var foundEntry = section.get(entryWithId: entryId)
                 if foundEntry != nil
                 {
                     
@@ -293,23 +335,23 @@ class TimelineViewController: UIViewController {
         return nil
     }
     
-    // Return the month and year of the specified entry.
-    func getEntryMonthYear(entry: Entry) -> (Int, Int) {
+    // Return the week and year of the specified entry.
+    func getEntryWeekYear(date: Date?) -> (Int, Int) {
         
-        let month: Int
+        let week: Int
         let year: Int
-        if let createdDate = entry.createdDate {
+        if let date = date {
             
-            month = Calendar.current.component(.month, from: createdDate)
-            year = Calendar.current.component(.year, from: createdDate)
+            week = Calendar.current.component(.weekOfYear, from: date)
+            year = Calendar.current.component(.yearForWeekOfYear, from: date)
         }
         else {
             
-            month = 0
+            week = 0
             year = 0
         }
         
-        return (month, year)
+        return (week, year)
     }
     
     // Get entries when the user pulls to refresh.
@@ -393,7 +435,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         let cell = tableView.dequeueReusableCell(withIdentifier: UIConstants.CellReuseIdentifier.timelineCell) as! TimelineTableViewCell
         
         // Set the cell contents.
-        cell.setData(entry: sections[indexPath.section].entries[indexPath.row], delegate: self)
+        cell.setData(entry: sections[indexPath.section].get(entryAtRow: indexPath.row), delegate: self)
         
         return cell
     }
@@ -402,7 +444,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         
         // Push the ViewEntryViewController.
         pushViewEntryViewController(
-            forEntry: sections[indexPath.section].entries[indexPath.row])
+            forEntry: sections[indexPath.section].get(entryAtRow: indexPath.row))
         
         // Do not leave rows selected.
         tableView.deselectRow(at: indexPath, animated: true)
@@ -418,13 +460,13 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
             willRequest()
             
             happinessService.delete(
-                entry: sections[indexPath.section].entries[indexPath.row],
+                entry: sections[indexPath.section].get(entryAtRow: indexPath.row),
                 success: { () in
                     
                     // Remove the entry from the section. To simplify the
                     // tableView reloading code, we currently do not remove
                     // a section with zero entries.
-                    self.sections[indexPath.section].entries.remove(at: indexPath.row)
+                    self.sections[indexPath.section].remove(entryAtRow: indexPath.row)
 
                     self.requestDidSucceed(true, refreshControl: nil)
                     
