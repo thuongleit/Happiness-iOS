@@ -470,10 +470,26 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        
+        // Only allow swipe to delete for current user's entries.
+        let entry = sections[indexPath.section].get(entryAtRow: indexPath.row)
+        if let entryUserId = entry.author?.id,
+            let currentUserId = User.currentUser?.id,
+            entryUserId == currentUserId {
+            
+            return true
+         
+        }
+        else {
+            
+            return false
+        }
+    }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         // Swipe to delete
-        // Shouldn't allow deletion of other users' entries!!!
         if editingStyle == .delete
         {
             let happinessService = HappinessService.sharedInstance
