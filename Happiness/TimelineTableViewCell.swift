@@ -10,32 +10,44 @@ import UIKit
 import AFNetworking
 import ParseUI
 
-protocol TimelineTableViewCellDelegate: class
-{
+protocol TimelineTableViewCellDelegate: class {
+    
     func timelineCellWasTapped(_ cell: TimelineTableViewCell)
 }
 
 class TimelineTableViewCell: UITableViewCell {
 
     @IBOutlet weak var happinessColorView: UIView!
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var monthNameLabel: UILabel!
     @IBOutlet weak var dayNameLabel: UILabel!
     @IBOutlet weak var dayNumberLabel: UILabel!
     @IBOutlet weak var happinessImageView: UIImageView!
-    @IBOutlet weak var questionImageView: UIImageView!
-    @IBOutlet weak var questionLabel: UILabel!
-    @IBOutlet weak var answerImageView: UIImageView!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var locationImageView: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var profileImageView: PFImageView!
     @IBOutlet weak var entryImageView: PFImageView!
-    @IBOutlet weak var questionLabelLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var questionLabelTrailingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var textViewLeadingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var textViewTrailingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var locationLabelTrailingConstraint: NSLayoutConstraint!
+    
+    var entryImageViewAspectConstraint : NSLayoutConstraint? {
+        
+        didSet {
+            
+            if let oldAspectConstraint = oldValue {
+                
+                entryImageView.removeConstraint(oldAspectConstraint)
+            }
+            if let aspectConstraint = entryImageViewAspectConstraint {
+                
+                aspectConstraint.priority = 999 // avoid LayoutConstraints error
+                entryImageView.addConstraint(aspectConstraint)
+            }
+        }
+    }
     
     var entry: Entry?
     weak var delegate : TimelineTableViewCellDelegate?
+    let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     let dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     
     override func awakeFromNib() {
@@ -43,14 +55,11 @@ class TimelineTableViewCell: UITableViewCell {
         super.awakeFromNib()
         
         // Initialization code
-        questionImageView.image = questionImageView.image?.withRenderingMode(.alwaysTemplate)
-        answerImageView.image = answerImageView.image?.withRenderingMode(.alwaysTemplate)
         textView.textContainer.lineBreakMode = .byTruncatingTail
         locationImageView.image = locationImageView.image?.withRenderingMode(.alwaysTemplate)
-        entryImageView.layer.cornerRadius = 3
-        entryImageView.clipsToBounds = true
+        profileImageView.layer.cornerRadius = profileImageView.bounds.width / 2.0 // circle
+        profileImageView.clipsToBounds = true
 
-        
         // Add a gesture recogizer programatically, since the following
         // error occurs otherwise: "invalid nib registered for identifier
         // (XXXCell) - nib must contain exactly one top level object which
@@ -81,6 +90,8 @@ class TimelineTableViewCell: UITableViewCell {
         
         self.entry = entry
         self.delegate = delegate
+        
+        userNameLabel.text = entry.author?.name
 
         if let happinessLevel = entry.happinessLevel {
         
@@ -95,19 +106,20 @@ class TimelineTableViewCell: UITableViewCell {
         
         if let createdDate = entry.createdDate {
             
-            let weekday = Calendar.current.component(.weekday, from: createdDate)
-            dayNameLabel.text = dayNames[weekday-1]
-            
+            let month = Calendar.current.component(.month, from: createdDate)
+            monthNameLabel.text = monthNames[month-1]
+
             let day = Calendar.current.component(.day, from: createdDate)
             dayNumberLabel.text = String(format: "%02d", day)
+
+            let weekday = Calendar.current.component(.weekday, from: createdDate)
+            dayNameLabel.text = dayNames[weekday-1]            
         }
         else {
         
             dayNameLabel.text = nil
             dayNumberLabel.text = nil
         }
-        
-        questionLabel.text = entry.question?.text
         
         textView.text = entry.text
         
@@ -122,53 +134,51 @@ class TimelineTableViewCell: UITableViewCell {
             locationImageView.isHidden = true;
         }
         
-        let hasImage: Bool
+        if let profileImageFile = entry.author?.profileImage {
+            
+            profileImageView.image = nil
+            profileImageView.file = profileImageFile
+            profileImageView.loadInBackground()
+        }
+        else {
+            
+            profileImageView.file = nil
+            profileImageView.image = nil
+        }
+
         if let entryImageFile = entry.media {
             
-            hasImage = true
+            // Create entryImageView aspect ratio constraint to match
+            // image aspect ratio.
+            let aspect: CGFloat = 4.0 / 3.0 // Should be image width/height!!!
+            entryImageViewAspectConstraint = NSLayoutConstraint(
+                item: entryImageView,
+                attribute: NSLayoutAttribute.width,
+                relatedBy: NSLayoutRelation.equal,
+                toItem: entryImageView,
+                attribute: NSLayoutAttribute.height,
+                multiplier: aspect,
+                constant: 0.0)
+
+            entryImageView.image = nil
             entryImageView.file = entryImageFile
             entryImageView.loadInBackground()
         }
         else {
             
-            hasImage = false
+            // No image, create entryImageView height constraint of 0 so
+            // that it has no effect on auto layout.
+            self.entryImageViewAspectConstraint = NSLayoutConstraint(
+                item: entryImageView,
+                attribute: NSLayoutAttribute.height,
+                relatedBy: NSLayoutRelation.equal,
+                toItem: nil,
+                attribute: NSLayoutAttribute.notAnAttribute,
+                multiplier: 1,
+                constant: 0)
+            
             entryImageView.file = nil
             entryImageView.image = nil
-        }
-        
-        // Adjust constraints.
-        let defaultQuestionLabelLeadingConstraint: CGFloat = 66
-        let defaultTextViewLeadingConstraint: CGFloat = 61
-        let noQAImagesLeadingAdjustment: CGFloat = -12
-        if questionLabel.text != nil {
-            
-            questionImageView.isHidden = false
-            answerImageView.isHidden = false
-            questionLabelLeadingConstraint.constant = defaultQuestionLabelLeadingConstraint
-            textViewLeadingConstraint.constant = defaultTextViewLeadingConstraint
-        }
-        else {
-            
-            questionImageView.isHidden = true
-            answerImageView.isHidden = true
-            questionLabelLeadingConstraint.constant =
-                defaultQuestionLabelLeadingConstraint + noQAImagesLeadingAdjustment
-            textViewLeadingConstraint.constant =
-                defaultTextViewLeadingConstraint + noQAImagesLeadingAdjustment
-        }
-        
-        let defaultMiddleTrailingConstraint: CGFloat = -8
-        if hasImage {
-            
-            questionLabelTrailingConstraint.constant = defaultMiddleTrailingConstraint
-            textViewTrailingConstraint.constant = defaultMiddleTrailingConstraint
-            locationLabelTrailingConstraint.constant = defaultMiddleTrailingConstraint
-        }
-        else {
-
-            questionLabelTrailingConstraint.constant = defaultMiddleTrailingConstraint + entryImageView.bounds.width
-            textViewTrailingConstraint.constant = defaultMiddleTrailingConstraint + entryImageView.bounds.width
-            locationLabelTrailingConstraint.constant = defaultMiddleTrailingConstraint + entryImageView.bounds.width
         }
     }
 }
