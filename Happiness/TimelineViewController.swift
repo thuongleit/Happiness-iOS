@@ -14,12 +14,22 @@ class TimelineSection
 {
     let week: Int
     let year: Int
-    let title: String
+    let title: String // remove this once new section header code is complete!!!
     private var entries = [Entry]()
     private var userEntryCount = [String: Int]() // maps user IDs to entry counts
+    
     var rows: Int {
         
-        return entries.count
+        var currentUserEntryCount = 0
+        if let currentUserId = User.currentUser?.id,
+            let _currentUserEntryCount = userEntryCount[currentUserId] {
+                
+            currentUserEntryCount = _currentUserEntryCount
+        }
+        
+        // Only display entries for milestone if current user created an
+        // entry for that milestone.
+        return currentUserEntryCount > 0 ? entries.count : 0
     }
     
     init(week: Int, year: Int) {
@@ -453,6 +463,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         // Swipe to delete
+        // Shouldn't allow deletion of other users' entries!!!
         if editingStyle == .delete
         {
             let happinessService = HappinessService.sharedInstance
