@@ -158,6 +158,11 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate, UINaviga
                 UIConstants.presentError(message: "The passwords you typed do not match", inView: self.view)
                 return
             }
+            
+            if (profileImageView.image == nil) {
+                UIConstants.presentError(message: "Please upload a profile image", inView: self.view)
+                return
+            }
         }
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
@@ -173,8 +178,6 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate, UINaviga
                 UIConstants.presentError(message: "Incorrect email and password.", inView: self.view)
                 print("login fail with error: \(error)")
             })
-            
-            
         } else {
             
             HappinessService.sharedInstance.signup(email: emailTextField.text!, password: passwordTextField.text!, name: nameTextField.text!, profileImage: profileImageView.image, success: { (user: User) in
@@ -183,15 +186,10 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate, UINaviga
                 print("sign up success with name \(user.name)")
                 NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogin.notification, object: nil)
                 
-                
             }, failure: { (error: Error) in
                 MBProgressHUD.hide(for: self.view, animated: true)
                 print("sign up fail with error: \(error)")
-                
-                
             })
-            
-        
         }
     }
     
