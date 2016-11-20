@@ -101,9 +101,6 @@ class Entry: NSObject {
             return 4
         case .superExcited:
             return 5
-        default:
-            return 3
         }
-        return 3
     }
 }

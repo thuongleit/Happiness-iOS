@@ -90,7 +90,7 @@ class TimelineViewController: UIViewController {
         }
         
         // Set up the tableView.
-        tableView.estimatedRowHeight = 125
+        tableView.estimatedRowHeight = 438
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.register(
             UINib(nibName: UIConstants.ClassName.timelineTableViewCellXib, bundle: nil),
