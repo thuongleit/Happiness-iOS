@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let serviceInstance = HappinessService.sharedInstance
         Parse.setApplicationId(serviceInstance.parseApplicationID, clientKey: serviceInstance.parseClientKey)
         
-        if (PFUser.current() != nil) {
+        if (User.currentUser != nil) {
             presentLoggedInScreens()
         } else {
             presentLoginSignupScreens()
@@ -59,6 +59,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func userDidLogOut() {
         PFUser.logOut()
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: User.currentUserKey)
+        defaults.synchronize()
         presentLoginSignupScreens()
     }
     
