@@ -19,6 +19,7 @@ class ViewEntryViewController: UIViewController {
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var feelingImageView: UIImageView!
 
+    @IBOutlet weak var profileImageView: PFImageView!
     @IBOutlet weak var photoImageView: PFImageView!
 
 
@@ -41,6 +42,13 @@ class ViewEntryViewController: UIViewController {
         
         // Set entry data
         if let entry = entry {
+            if let profileImageFile = entry.author?.profileImage {
+                profileImageView.file = profileImageFile
+                profileImageView.loadInBackground()
+                profileImageView.clipsToBounds = true
+            } else {
+                profileImageView.image = nil
+            }
             if let date = entry.createdDate {
                 dateLabel.text = UIConstants.dateString(from: date)
             }
