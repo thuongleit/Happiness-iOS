@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import ParseUI
 import MBProgressHUD
 
-class LoginSignupViewController: UIViewController, UITextFieldDelegate {
+class LoginSignupViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    
+    @IBOutlet weak var profileImageView: PFImageView!
     
     @IBOutlet weak var nameView: UIView!
     @IBOutlet weak var nameLabel: UILabel!
@@ -40,9 +43,20 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate {
         if (isLoginFlow()) {
             nameView.isHidden = true
             loginSignupButton.setTitle("Log In", for: .normal)
+            profileImageView.isHidden = true
             confirmView.isHidden = true
             buttonsTopConstraint.constant = buttonsTopConstraint.constant - confirmView.bounds.height
         }
+        
+        profileImageView.layer.cornerRadius = 41
+        profileImageView.layer.masksToBounds = true
+        
+        let profileImageTap = UITapGestureRecognizer()
+        profileImageTap.numberOfTapsRequired = 1
+        profileImageTap.addTarget(self, action: #selector(onProfileImageTap))
+        profileImageView.isUserInteractionEnabled = true
+        profileImageView.addGestureRecognizer(profileImageTap)
+        
         
         setupContainerView()
         setupTextLabel()
@@ -56,6 +70,25 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate {
         tapBackground.numberOfTapsRequired = 1
         tapBackground.addTarget(self, action: #selector(dismissKeyboard))
         self.view.addGestureRecognizer(tapBackground)
+    }
+    
+    func onProfileImageTap() {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.allowsEditing = true
+        picker.sourceType = .photoLibrary
+        present(picker, animated: true)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.image = chosenImage
+        dismiss(animated: true, completion: nil)
     }
     
     func setupContainerView() {
@@ -144,14 +177,21 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate {
             
         } else {
             
-            HappinessService.sharedInstance.signup(email: emailTextField.text!, password: passwordTextField.text!, name: nameTextField.text!, profileImage: nil,  success: { (user: User) in
+            HappinessService.sharedInstance.signup(email: emailTextField.text!, password: passwordTextField.text!, name: nameTextField.text!, profileImage: profileImageView.image, success: { (user: User) in
+                
                 MBProgressHUD.hide(for: self.view, animated: true)
                 print("sign up success with name \(user.name)")
                 NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogin.notification, object: nil)
+                
+                
             }, failure: { (error: Error) in
                 MBProgressHUD.hide(for: self.view, animated: true)
                 print("sign up fail with error: \(error)")
+                
+                
             })
+            
+        
         }
     }
     
