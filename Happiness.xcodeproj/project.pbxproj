@@ -46,7 +46,7 @@
 		CB1008FB1DD6A00200D2DD38 /* Happiness.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Happiness.entitlements; sourceTree = "<group>"; };
 		E17ACFAF1DD70E2200E826FE /* LoginSignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSignupViewController.swift; sourceTree = "<group>"; };
 		E17ACFB01DD70E2200E826FE /* LoginSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginSignupViewController.xib; sourceTree = "<group>"; };
-		E18E2CB41DC95FD500BA02C4 /* Happinest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Happinest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E18E2CB41DC95FD500BA02C4 /* Happynest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Happynest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E18E2CB71DC95FD500BA02C4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E18E2CB91DC95FD500BA02C4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E18E2CBC1DC95FD500BA02C4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -130,7 +130,7 @@
 		E18E2CB51DC95FD500BA02C4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E18E2CB41DC95FD500BA02C4 /* Happinest.app */,
+				E18E2CB41DC95FD500BA02C4 /* Happynest.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -222,7 +222,7 @@
 			);
 			name = Happiness;
 			productName = Happiness;
-			productReference = E18E2CB41DC95FD500BA02C4 /* Happinest.app */;
+			productReference = E18E2CB41DC95FD500BA02C4 /* Happynest.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -426,7 +426,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = Happinest;
+				PRODUCT_NAME = Happynest;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -470,7 +470,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = Happinest;
+				PRODUCT_NAME = Happynest;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
@@ -488,7 +488,7 @@
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.mobile.Happiness;
-				PRODUCT_NAME = Happinest;
+				PRODUCT_NAME = Happynest;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -504,7 +504,7 @@
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.mobile.Happiness;
-				PRODUCT_NAME = Happinest;
+				PRODUCT_NAME = Happynest;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
