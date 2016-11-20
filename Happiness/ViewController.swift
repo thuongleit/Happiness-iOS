@@ -22,6 +22,15 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     @IBOutlet weak var profileImageFromCamera: UIImageView!
     @IBOutlet weak var profilePFImageView: PFImageView!
     
+    @IBOutlet weak var firstNestUserLabel: UILabel!
+    @IBOutlet weak var secondNestUserLabel: UILabel!
+    @IBOutlet weak var thirdNestUserLabel: UILabel!
+    
+    @IBOutlet weak var firstNestUserProfileImageVIew: PFImageView!
+    
+    @IBOutlet weak var secondNestUserProfileImageVIew: PFImageView!
+
+    @IBOutlet weak var thirdNestUserProfileImageVIew: PFImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
         loginButton.layer.cornerRadius = 5
@@ -90,6 +99,60 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         profileImageFromCamera.contentMode = .scaleAspectFit
         profileImageFromCamera.image = chosenImage
         dismiss(animated: true, completion: nil)
+    }
+    
+    
+    @IBAction func getNestUsers(_ sender: Any) {
+        
+        let curUser = User.currentUser
+        
+        let nestId = curUser?.nest?.id
+        
+        HappinessService.sharedInstance.getAllNestUsers(nestObjID: nestId, success: {(nestUsers: [User]) in
+            
+            var i = 0;
+            for nUser in nestUsers{
+                if(i == 0){
+                    self.firstNestUserLabel.text = nUser.name
+                    if let photoFile = nUser.profileImage {
+                        self.firstNestUserProfileImageVIew.file = photoFile
+                        self.firstNestUserProfileImageVIew.loadInBackground()
+                        self.firstNestUserProfileImageVIew.clipsToBounds = true
+                    } else {
+                        self.firstNestUserProfileImageVIew.image = nil
+                    }
+                }
+
+                if(i == 1){
+                    self.secondNestUserLabel.text = nUser.name
+                    if let photoFile = nUser.profileImage {
+                        self.secondNestUserProfileImageVIew.file = photoFile
+                        self.secondNestUserProfileImageVIew.loadInBackground()
+                        self.secondNestUserProfileImageVIew.clipsToBounds = true
+                    } else {
+                        self.secondNestUserProfileImageVIew.image = nil
+                    }
+                }
+
+                if(i == 2){
+                    self.thirdNestUserLabel.text = nUser.name
+                    if let photoFile = nUser.profileImage {
+                        self.thirdNestUserProfileImageVIew.file = photoFile
+                        self.thirdNestUserProfileImageVIew.loadInBackground()
+                        self.thirdNestUserProfileImageVIew.clipsToBounds = true
+                    } else {
+                        self.thirdNestUserProfileImageVIew.image = nil
+                    }
+                }
+                
+                i = i + 1
+            }
+            
+        },failure: {(error: Error) in
+            print(error.localizedDescription)
+
+        })
+        
     }
     
     override func didReceiveMemoryWarning() {

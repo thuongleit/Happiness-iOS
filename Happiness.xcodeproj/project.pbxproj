@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CBE5F76A1DDEA56D00C134FA /* Nest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE5F7691DDEA56D00C134FA /* Nest.swift */; };
 		E17ACFB11DD70E2200E826FE /* LoginSignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17ACFAF1DD70E2200E826FE /* LoginSignupViewController.swift */; };
 		E17ACFB21DD70E2200E826FE /* LoginSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E17ACFB01DD70E2200E826FE /* LoginSignupViewController.xib */; };
 		E18E2CB81DC95FD500BA02C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18E2CB71DC95FD500BA02C4 /* AppDelegate.swift */; };
@@ -44,6 +45,7 @@
 		5AE4C7038851B234F5ED6EEA /* Pods-Happiness.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Happiness.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Happiness/Pods-Happiness.debug.xcconfig"; sourceTree = "<group>"; };
 		7408CEF910F5ADEE5474CF54 /* Pods-Happiness.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Happiness.release.xcconfig"; path = "Pods/Target Support Files/Pods-Happiness/Pods-Happiness.release.xcconfig"; sourceTree = "<group>"; };
 		CB1008FB1DD6A00200D2DD38 /* Happiness.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Happiness.entitlements; sourceTree = "<group>"; };
+		CBE5F7691DDEA56D00C134FA /* Nest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nest.swift; sourceTree = "<group>"; };
 		E17ACFAF1DD70E2200E826FE /* LoginSignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSignupViewController.swift; sourceTree = "<group>"; };
 		E17ACFB01DD70E2200E826FE /* LoginSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginSignupViewController.xib; sourceTree = "<group>"; };
 		E18E2CB41DC95FD500BA02C4 /* Happynest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Happynest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,6 +162,7 @@
 				E1B6F64A1DD411E100B01B9E /* Entry.swift */,
 				E1B6F64C1DD4135500B01B9E /* Question.swift */,
 				E1B6F64E1DD4142900B01B9E /* Location.swift */,
+				CBE5F7691DDEA56D00C134FA /* Nest.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -343,6 +346,7 @@
 				E1E579C91DD7F39D0032570C /* TabBarView.swift in Sources */,
 				FCEAD6C51DD7BBCA002ADFC2 /* TimelineTableViewCell.swift in Sources */,
 				E1B6F64D1DD4135500B01B9E /* Question.swift in Sources */,
+				CBE5F76A1DDEA56D00C134FA /* Nest.swift in Sources */,
 				E1B6F6621DD43F2100B01B9E /* TimelineViewController.swift in Sources */,
 				E1B6F66E1DD43FF800B01B9E /* EditEntryViewController.swift in Sources */,
 				E1B6F64B1DD411E100B01B9E /* Entry.swift in Sources */,
