@@ -167,10 +167,12 @@ class UIConstants: NSObject {
     }
     
     class CellReuseIdentifier {
+        static let timelineHeaderCell = "TimelineHeaderCell"
         static let timelineCell = "TimelineCell"
     }
     
     class ClassName {
+        static let timelineTableHeaderViewCellXib = "TimelineHeaderTableViewCell"
         static let timelineTableViewCellXib = "TimelineTableViewCell"
     }
     

@@ -91,5 +91,4 @@ final class User: NSObject, NSCoding {
             defaults.synchronize()
         }
     }
-    
 }
