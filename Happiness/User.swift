@@ -11,6 +11,8 @@ import Parse
 
 final class User: NSObject, NSCoding {
     
+    static var currentUserKey = "currentUser"
+    
     var id: String?
     var name: String?
     var email: String?
@@ -64,10 +66,10 @@ final class User: NSObject, NSCoding {
     static var _currentUser: User?
     class var currentUser: User? {
         get {
-            if(_currentUser == nil){
+            if(_currentUser == nil) {
                 let defaults = UserDefaults.standard
                 
-                if let userData = defaults.object(forKey: "currentUser") as? Data {
+                if let userData = defaults.object(forKey: currentUserKey) as? Data {
                     _currentUser = NSKeyedUnarchiver.unarchiveObject(with: userData) as? User
                 }
             }
@@ -80,14 +82,13 @@ final class User: NSObject, NSCoding {
             
             if let user = user {
                 let savedData = NSKeyedArchiver.archivedData(withRootObject: user)
-                defaults.set(savedData, forKey: "currentUser")
+                defaults.set(savedData, forKey: currentUserKey)
             }
-            else{
-                defaults.set(nil, forKey: "currentUser")
+            else {
+                defaults.removeObject(forKey: currentUserKey)
             }
             
             defaults.synchronize()
-            
         }
     }
     

@@ -55,7 +55,7 @@ class TimelineSection
         
         if let userId = entry.author?.id {
             
-            userEntryCount[userId] = userEntryCount[userId] ?? 0 + 1
+            userEntryCount[userId] = (userEntryCount[userId] ?? 0) + 1
         }
         
         entries.insert(entry, at: 0)
@@ -67,7 +67,7 @@ class TimelineSection
         let entry = entries[atRow]
         if let userId = entry.author?.id {
             
-            userEntryCount[userId] = userEntryCount[userId] ?? 0 - 1
+            userEntryCount[userId] = (userEntryCount[userId] ?? 0) - 1
         }
         
         entries.remove(at: atRow)
@@ -124,6 +124,14 @@ class TimelineViewController: UIViewController {
             // Set the navigation bar title.
             navigationItem.title = "Timeline"
             
+            // Add the settings button.
+            let settingsButton = UIBarButtonItem(
+                image: UIImage(named: UIConstants.ImageName.settingsButton),
+                style: .plain,
+                target: self,
+                action: #selector(onSettingsButton))
+            navigationItem.leftBarButtonItem  = settingsButton
+
             // Add the compose button.
             let composeButton = UIBarButtonItem(
                 image: UIImage(named: UIConstants.ImageName.composeButton),
@@ -131,12 +139,6 @@ class TimelineViewController: UIViewController {
                 target: self,
                 action: #selector(onComposeButton))
             navigationItem.rightBarButtonItem  = composeButton
-            
-            let doubleTap = UITapGestureRecognizer()
-            doubleTap.numberOfTapsRequired = 2
-            doubleTap.addTarget(self, action: #selector(logout))
-            self.navigationController?.navigationBar.subviews[0].isUserInteractionEnabled = true
-            self.navigationController?.navigationBar.subviews[0].addGestureRecognizer(doubleTap)
         }
         
         // Set up the tableView.
@@ -204,16 +206,18 @@ class TimelineViewController: UIViewController {
         getEntries()
     }
     
-    func logout() {
-        NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogout.notification, object: nil)
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         
         // Display the tab bar.
         NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.unhideBottomTabBars.notification))
     }
  
+    // When the settings is pressed, log out.
+    @IBAction func onSettingsButton(_ sender: UIBarButtonItem)
+    {
+        NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogout.notification, object: nil)
+    }
+
     // When the compose is pressed, present the EditEntryViewController modally.
     @IBAction func onComposeButton(_ sender: UIBarButtonItem)
     {
