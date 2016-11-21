@@ -55,7 +55,7 @@ class TimelineSection
         
         if let userId = entry.author?.id {
             
-            userEntryCount[userId] = userEntryCount[userId] ?? 0 + 1
+            userEntryCount[userId] = (userEntryCount[userId] ?? 0) + 1
         }
         
         entries.insert(entry, at: 0)
@@ -67,7 +67,7 @@ class TimelineSection
         let entry = entries[atRow]
         if let userId = entry.author?.id {
             
-            userEntryCount[userId] = userEntryCount[userId] ?? 0 - 1
+            userEntryCount[userId] = (userEntryCount[userId] ?? 0) - 1
         }
         
         entries.remove(at: atRow)
