@@ -99,6 +99,13 @@ class TimelineSection
         
         return userEntryCount[userId]
     }
+    
+    // Returns a dictionary of user id to count of entries written for each user
+    // in the current user's nest.
+    func getEntryCountByUser() -> [String: Int]? {
+        let copyOfUserEntryCount = userEntryCount
+        return copyOfUserEntryCount
+    }
 }
 
 class TimelineViewController: UIViewController {
@@ -106,6 +113,7 @@ class TimelineViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var sections = [TimelineSection]()
+    var nestUsers = [User]()
 
     override func viewDidLoad() {
         
@@ -142,8 +150,13 @@ class TimelineViewController: UIViewController {
         }
         
         // Set up the tableView.
+        tableView.estimatedSectionHeaderHeight = 80
+        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 438
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.register(
+            UINib(nibName: UIConstants.ClassName.timelineTableHeaderViewCellXib, bundle: nil),
+            forHeaderFooterViewReuseIdentifier: UIConstants.CellReuseIdentifier.timelineHeaderCell)
         tableView.register(
             UINib(nibName: UIConstants.ClassName.timelineTableViewCellXib, bundle: nil),
             forCellReuseIdentifier: UIConstants.CellReuseIdentifier.timelineCell)
@@ -226,6 +239,17 @@ class TimelineViewController: UIViewController {
         navigationController.navigationBar.isTranslucent = false
         present(navigationController, animated: true, completion: nil)
     }
+    
+    func getNestUsers() {
+        let happinessService = HappinessService.sharedInstance
+        
+        happinessService.getNestUsersForCurrentUser(success: { (users: [User]) in
+            self.nestUsers = users
+            self.tableView.reloadData()
+        }, failure: { (error: Error) in
+            print(error.localizedDescription)
+        })
+    }
 
     // Get a collection of entries for the authenticating user.
     func getEntries(refreshControl: UIRefreshControl? = nil) {
@@ -268,7 +292,9 @@ class TimelineViewController: UIViewController {
                     
                     DispatchQueue.main.async {
                     
-                        self.tableView.reloadData()
+                        // self.tableView.reloadData()
+                        // Reload table after nest users are retreived for headers
+                        self.getNestUsers()
                     }
                 }
             },
@@ -432,21 +458,17 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         return sections.count
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
-        return sections[section].title
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: UIConstants.CellReuseIdentifier.timelineHeaderCell) as! TimelineHeaderTableViewCell
+        headerView.entryCountByUser = self.sections[section].getEntryCountByUser()
+        headerView.nestUsers = self.nestUsers
+        headerView.titleLabel.text = sections[section].title
+        return headerView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
       
-        return 30 // magic number!!!
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-
-        // Only use upper case for the first letter of each word.
-        let header = view as! UITableViewHeaderFooterView
-        header.textLabel?.text = header.textLabel?.text?.capitalized
+        return 130 // TODO(cboo): Fix auto height. Not working even though I have it in self.viewDidLoad()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -524,6 +546,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
 
         }
     }
+
 }
 
 // TimelineTableViewCell methods

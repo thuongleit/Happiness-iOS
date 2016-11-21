@@ -148,7 +148,7 @@ class TimelineTableViewCell: UITableViewCell {
             
             // Create entryImageView aspect ratio constraint to match
             // image aspect ratio.
-            let aspect: CGFloat = 4.0 / 3.0 // Should be image width/height!!!
+            let aspect: CGFloat = CGFloat(entry.aspectRatio ?? 4.0 / 3.0)
             entryImageViewAspectConstraint = NSLayoutConstraint(
                 item: entryImageView,
                 attribute: NSLayoutAttribute.width,

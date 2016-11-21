@@ -388,4 +388,19 @@ class HappinessService: NSObject {
             }
         })
     }
+    
+    var _nestUsers: [User]?
+    
+    func getNestUsersForCurrentUser(success: @escaping (_ users: [User]) -> (), failure: @escaping (Error) -> ()){
+        if let users = _nestUsers {
+            success(users)
+        } else {
+            self.getAllNestUsers(nestObjID: User.currentUser?.nest?.id, success: { (users: [User]) in
+                self._nestUsers = users
+                success(users)
+            }) { (error: Error) in
+                failure(error)
+            }
+        }
+    }
 }

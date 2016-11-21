@@ -16,7 +16,7 @@ class UIConstants: NSObject {
     // light blue
     static let primaryThemeColor = UIColor(red: 117/255, green: 201/255, blue: 177/255, alpha: 1)
     // deep light blue
-    static let primarySelectedThemeColor = UIColor(red: 117/255, green: 201/255, blue: 177/255, alpha: 1)
+    static let primarySelectedThemeColor = UIColor(red: 99/255, green: 206/255, blue: 199/255, alpha: 1) // 107, 224, 216
 
     
     // pink
@@ -27,6 +27,14 @@ class UIConstants: NSObject {
     // white
     static let textLightColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
 
+    // white
+    static let whiteColor = UIColor.white
+    // light gray
+    static let lightGrayColor = UIColor(red: 224/255, green: 226/255, blue: 226/255, alpha: 1)
+    // dark gray
+    static let darkGrayColor = UIColor(red: 57/255, green: 59/255, blue: 59/255, alpha: 1)
+    // black
+    static let blackColor = UIColor.black
 
     static func happinessLevelColor(_ happinessLevel: HappinessLevel) -> UIColor {
         switch happinessLevel {
@@ -43,6 +51,32 @@ class UIConstants: NSObject {
         case .superExcited: // bright turquiose
             return UIColor.init(colorLiteralRed: 25/255.0, green: 207/255.0, blue: 134/255.0, alpha: 1.0)
         }
+    }
+    
+    // Turns an image into grayscale colors.
+    static func convertToGrayScale(image: UIImage) -> UIImage {
+        let imageRect:CGRect = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
+        let colorSpace = CGColorSpaceCreateDeviceGray()
+        let width = image.size.width
+        let height = image.size.height
+        
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.none.rawValue)
+        let context = CGContext(data: nil, width: Int(width), height: Int(height), bitsPerComponent: 8, bytesPerRow: 0, space: colorSpace, bitmapInfo: bitmapInfo.rawValue)
+        
+        context?.draw(image.cgImage!, in: imageRect)
+        let imageRef = context!.makeImage()
+        let newImage = UIImage(cgImage: imageRef!)
+        
+        return newImage
+    }
+    
+    // Turns an image into grayscale colors. Slightly different shades of gray.
+    static func convertToGrayScale2(image: UIImage) -> UIImage {
+        let filter: CIFilter = CIFilter(name: "CIPhotoEffectMono")!
+        filter.setDefaults()
+        filter.setValue(CoreImage.CIImage(image: image)!, forKey: kCIInputImageKey)
+        
+        return UIImage(cgImage: CIContext(options:nil).createCGImage(filter.outputImage!, from: filter.outputImage!.extent)!)
     }
     
     // MARK: - Views
@@ -216,10 +250,12 @@ class UIConstants: NSObject {
     }
     
     class CellReuseIdentifier {
+        static let timelineHeaderCell = "TimelineHeaderCell"
         static let timelineCell = "TimelineCell"
     }
     
     class ClassName {
+        static let timelineTableHeaderViewCellXib = "TimelineHeaderTableViewCell"
         static let timelineTableViewCellXib = "TimelineTableViewCell"
     }
     
