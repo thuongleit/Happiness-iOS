@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Used for creating happiness entries</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -23,9 +21,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>We will surprise you with smiles as you&apos;re on the go.</string>
+	<string>We will surprise you with smiles as you're on the go.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Remember the places with memories that made you smile.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Used for creating happiness entries</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
