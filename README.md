@@ -42,15 +42,18 @@ The following **required** functionality is completed:
 - [x] Model
       - [x] Nest class
       - [x] Add nests member to User class
-- [ ] Service
+      - [x] Singleton for current user
+      - [x] Current User object stored in UserDefaults
+- [x] Service
    - [x] getEntries() retrieves nest entries of current user's nest
    - [x] getAllNestUsers() retrieves users in current user's nest
-   - [ ] getEntries() skip count
+   - [x] getEntries() skip count
    - [x] Store entry image aspect ratio in database
    - [x] Downsize images for faster performance
-- [ ] Location
-   - [ ] For reverse geocoding, use city/state or area of interest
-   - [ ] If create entry location name is blank, set based on lat/lon (i.e., don't call locationString() when scrolling)
+   - [x] update create entry to store user's nest into entry table nest column as pointer
+- [x] Location
+   - [x] For reverse geocoding, use city/state or area of interest
+   - [x] If create entry location name is blank, set based on lat/lon (i.e., don't call locationString() when scrolling)
 
 The following **optional** features are nice to have:
 
