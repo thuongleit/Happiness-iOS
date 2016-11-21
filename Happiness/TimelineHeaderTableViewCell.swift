@@ -41,6 +41,9 @@ class TimelineHeaderTableViewCell: UITableViewHeaderFooterView {
                             if let entryCount = self.entryCountByUser?[user.id!] {
                                 if entryCount > 0 {
                                     imageView.layer.borderColor = UIConstants.whiteColor.cgColor
+                                } else {
+                                    imageView.image = UIConstants.convertToGrayScale(image: image)
+                                    imageView.layer.borderColor = UIConstants.darkGrayColor.cgColor
                                 }
                             } else {
                             // Pink border and grayed-out image if not completed entry
@@ -78,14 +81,22 @@ class TimelineHeaderTableViewCell: UITableViewHeaderFooterView {
                     if currentUserEntryCount > 0 {
                         // Your pals have not completed
                         messageLabel.text = "\(userCount - completedUserCount) pal" + (userCount - completedUserCount > 1 ? "s " : " ") + "didn't write!"
+                        // Set text and background colors
+                        messageLabel.textColor = UIConstants.whiteColor
+                        contentView.backgroundColor = UIConstants.secondaryThemeColor
+                    } else {
+                        messageLabel.text = "You didn't write! :("
+                        // Set text and background colors
+                        messageLabel.textColor = UIConstants.secondaryThemeColor
+                        contentView.backgroundColor = UIConstants.secondarySelectedThemeColor
                     }
                 } else {
                     // You have not completed
                     messageLabel.text = "You didn't write! :("
+                    // Set text and background colors
+                    messageLabel.textColor = UIConstants.secondaryThemeColor
+                    contentView.backgroundColor = UIConstants.secondarySelectedThemeColor
                 }
-                // Set text and background colors
-                messageLabel.textColor = UIConstants.secondaryThemeColor
-                contentView.backgroundColor = UIConstants.secondarySelectedThemeColor
             }
         }
     }
