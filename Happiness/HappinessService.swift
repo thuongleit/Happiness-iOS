@@ -156,7 +156,7 @@ class HappinessService: NSObject {
         return jsonLocationObj
     }
     
-    func create(text: String, images: [UIImage]?, happinessLevel: Int?, location: Location?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {
+    func create(text: String, images: [UIImage]?, happinessLevel: Int?, placemark: String?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {
         
         createUpdateEntrySuccess = success
         callFailure = failure
@@ -187,9 +187,8 @@ class HappinessService: NSObject {
         
         entryObj["text"] = text
         entryObj["happinessLevel"] = happinessLevel
-        if let location = location {
-            // Convert Location to dictionary format to be stored on server
-            entryObj["location"] = createLocationObject(location: location)
+        if let placemark = placemark {
+            entryObj["placemark"] = placemark
         }
         
         // Save object (following function will save the object in Parse asynchronously)
@@ -253,7 +252,7 @@ class HappinessService: NSObject {
                 if let happinessInt = entry.happinessLevel?.rawValue {
                     entryObj?.setObject(happinessInt, forKey: "happinessLevel")
                 }
-                entryObj?.setObject(self.createLocationObject(location: entry.location!), forKey: "location")
+                entryObj?.setObject(entry.placemark!, forKey: "location")
                 
                 entryObj?.saveInBackground(block: { (succeded: Bool, error:Error?) in
                     if(succeded)

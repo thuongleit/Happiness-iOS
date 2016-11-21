@@ -58,8 +58,8 @@ class ViewEntryViewController: UIViewController {
             if let text = entry.text {
                 textLabel.text = text
             }
-            if let location = entry.location {
-                locationLabel.text = UIConstants.locationString(from: location)
+            if let placemark = entry.placemark {
+                locationLabel.text = placemark
             }
             if let happinessLevel = entry.happinessLevel {
                 feelingImageView.image = UIConstants.happinessLevelImage(happinessLevel)
