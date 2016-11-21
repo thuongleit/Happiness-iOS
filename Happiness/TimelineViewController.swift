@@ -460,15 +460,15 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: UIConstants.CellReuseIdentifier.timelineHeaderCell) as! TimelineHeaderTableViewCell
-        headerView.nestUsers = self.nestUsers
         headerView.entryCountByUser = self.sections[section].getEntryCountByUser()
-        headerView.messageLabel.text = sections[section].title
+        headerView.nestUsers = self.nestUsers
+        headerView.titleLabel.text = sections[section].title
         return headerView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
       
-        return 80 // auto height should work though in self.viewDidLoad()
+        return 130 // TODO(cboo): Fix auto height. Not working even though I have it in self.viewDidLoad()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

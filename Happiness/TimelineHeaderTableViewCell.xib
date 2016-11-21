@@ -19,31 +19,31 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder for nest profiles" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nmk-8D-wGP">
-                        <rect key="frame" x="6" y="6" width="308" height="20.5"/>
+                        <rect key="frame" x="10" y="10" width="304" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 pals have not completed!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rZX-cf-nPA">
+                        <rect key="frame" x="10" y="50.5" width="185" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nxb-aI-OZF" customClass="PFImageView">
-                        <rect key="frame" x="6" y="30" width="40" height="40"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="40" id="o2S-Y4-VF0"/>
-                            <constraint firstAttribute="width" constant="40" id="uUZ-20-vgy"/>
-                        </constraints>
-                    </imageView>
                 </subviews>
+                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                 <constraints>
-                    <constraint firstItem="nxb-aI-OZF" firstAttribute="top" secondItem="Nmk-8D-wGP" secondAttribute="bottom" constant="4" id="6al-8a-zxj"/>
+                    <constraint firstAttribute="bottom" secondItem="rZX-cf-nPA" secondAttribute="bottom" constant="10" id="6GH-9k-6QP"/>
                     <constraint firstAttribute="trailing" secondItem="Nmk-8D-wGP" secondAttribute="trailing" constant="6" id="FPB-Rr-Imk"/>
-                    <constraint firstItem="nxb-aI-OZF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="6" id="Lqv-GJ-kmA"/>
-                    <constraint firstItem="Nmk-8D-wGP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="WMi-fN-Mof"/>
-                    <constraint firstItem="Nmk-8D-wGP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="6" id="efv-Ol-yRA"/>
+                    <constraint firstItem="Nmk-8D-wGP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="WMi-fN-Mof"/>
+                    <constraint firstItem="rZX-cf-nPA" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="Zzy-SI-b2V"/>
+                    <constraint firstItem="Nmk-8D-wGP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="efv-Ol-yRA"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Nmk-8D-wGP" secondAttribute="bottom" constant="6" id="mrC-89-mgD"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="messageLabel" destination="Nmk-8D-wGP" id="Cgk-X1-0zm"/>
-                <outlet property="profileImageView" destination="nxb-aI-OZF" id="Vcl-Re-tid"/>
+                <outlet property="messageLabel" destination="rZX-cf-nPA" id="RUH-d4-fH0"/>
+                <outlet property="titleLabel" destination="Nmk-8D-wGP" id="KcO-8n-tPx"/>
             </connections>
             <point key="canvasLocation" x="34" y="114.5"/>
         </tableViewCell>
