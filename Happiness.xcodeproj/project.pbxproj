@@ -44,8 +44,8 @@
 		497F8C0D117519D30237A150 /* Pods_Happiness.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Happiness.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE4C7038851B234F5ED6EEA /* Pods-Happiness.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Happiness.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Happiness/Pods-Happiness.debug.xcconfig"; sourceTree = "<group>"; };
 		7408CEF910F5ADEE5474CF54 /* Pods-Happiness.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Happiness.release.xcconfig"; path = "Pods/Target Support Files/Pods-Happiness/Pods-Happiness.release.xcconfig"; sourceTree = "<group>"; };
+		CB1008FB1DD6A00200D2DD38 /* Happiness.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Happiness.entitlements; sourceTree = "<group>"; };
 		CBE5F7691DDEA56D00C134FA /* Nest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nest.swift; sourceTree = "<group>"; };
-		E15855501DE26FD30045E1F2 /* Happynest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Happynest.entitlements; sourceTree = "<group>"; };
 		E17ACFAF1DD70E2200E826FE /* LoginSignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSignupViewController.swift; sourceTree = "<group>"; };
 		E17ACFB01DD70E2200E826FE /* LoginSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginSignupViewController.xib; sourceTree = "<group>"; };
 		E18E2CB41DC95FD500BA02C4 /* Happynest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Happynest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,8 +140,8 @@
 		E18E2CB61DC95FD500BA02C4 /* Happiness */ = {
 			isa = PBXGroup;
 			children = (
-				E15855501DE26FD30045E1F2 /* Happynest.entitlements */,
 				E17ACFAA1DD70ACD00E826FE /* Login/Signup View Controllers */,
+				CB1008FB1DD6A00200D2DD38 /* Happiness.entitlements */,
 				E1B6F6591DD4384E00B01B9E /* API */,
 				E1B6F6511DD4342B00B01B9E /* Views */,
 				E1B6F6501DD4338100B01B9E /* View Controllers */,
@@ -240,13 +240,10 @@
 				TargetAttributes = {
 					E18E2CB31DC95FD500BA02C4 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = EEV6AZHDW2;
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = SCUP57ZH8V;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
-								enabled = 1;
-							};
-							com.apple.Push = {
 								enabled = 1;
 							};
 						};
@@ -411,8 +408,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.teamhappiness.Happynest";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: com.teamhappiness.Happynest";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -463,8 +459,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.teamhappiness.Happynest";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: com.teamhappiness.Happynest";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -492,15 +487,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Happiness/Happynest.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Zihan Zhou (3B35NTJ7CA)";
-				DEVELOPMENT_TEAM = EEV6AZHDW2;
+				CODE_SIGN_ENTITLEMENTS = Happiness/Happiness.entitlements;
+				DEVELOPMENT_TEAM = SCUP57ZH8V;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.Happynest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.mobile.Happiness;
 				PRODUCT_NAME = Happynest;
-				PROVISIONING_PROFILE = "4ed1a535-3a8e-42c0-af68-366be96fa882";
-				PROVISIONING_PROFILE_SPECIFIER = "Happynest 4 devices";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -511,15 +503,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Happiness/Happynest.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Zihan Zhou (3B35NTJ7CA)";
-				DEVELOPMENT_TEAM = EEV6AZHDW2;
+				CODE_SIGN_ENTITLEMENTS = Happiness/Happiness.entitlements;
+				DEVELOPMENT_TEAM = SCUP57ZH8V;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.Happynest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.mobile.Happiness;
 				PRODUCT_NAME = Happynest;
-				PROVISIONING_PROFILE = "4ed1a535-3a8e-42c0-af68-366be96fa882";
-				PROVISIONING_PROFILE_SPECIFIER = "Happynest 4 devices";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

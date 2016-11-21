@@ -8,10 +8,9 @@
 
 import UIKit
 import Parse
-import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
@@ -31,13 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        // Apple Push Notifications
-        let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.badge, .alert, .sound], completionHandler: { (granted: Bool, error: Error?) in
-            
-        })
-        application.registerForRemoteNotifications()
-        
         NotificationCenter.default.addObserver(self, selector: #selector(userDidLogOut), name: GlobalEventEnum.didLogout.notification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(userDidLogIn), name: GlobalEventEnum.didLogin.notification, object: nil)
         
@@ -51,17 +43,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         return true
-    }
-    
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let currentInstallation = PFInstallation.current()
-        currentInstallation?.setDeviceTokenFrom(deviceToken)
-        currentInstallation?.channels = ["global"]
-        currentInstallation?.saveInBackground()
-    }
-    
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        print("receiving notifcations")
     }
     
     func presentLoginSignupScreens() {
