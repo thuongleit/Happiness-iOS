@@ -499,8 +499,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.Happynest;
 				PRODUCT_NAME = Happynest;
-				PROVISIONING_PROFILE = "39d242d6-f6c8-43e3-b1ae-0290684032a1";
-				PROVISIONING_PROFILE_SPECIFIER = "Happynest PF 1";
+				PROVISIONING_PROFILE = "4ed1a535-3a8e-42c0-af68-366be96fa882";
+				PROVISIONING_PROFILE_SPECIFIER = "Happynest 4 devices";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -518,8 +518,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.Happynest;
 				PRODUCT_NAME = Happynest;
-				PROVISIONING_PROFILE = "39d242d6-f6c8-43e3-b1ae-0290684032a1";
-				PROVISIONING_PROFILE_SPECIFIER = "Happynest PF 1";
+				PROVISIONING_PROFILE = "4ed1a535-3a8e-42c0-af68-366be96fa882";
+				PROVISIONING_PROFILE_SPECIFIER = "Happynest 4 devices";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
