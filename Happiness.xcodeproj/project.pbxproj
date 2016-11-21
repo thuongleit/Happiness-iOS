@@ -246,8 +246,8 @@
 				TargetAttributes = {
 					E18E2CB31DC95FD500BA02C4 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = SCUP57ZH8V;
-						ProvisioningStyle = Automatic;
+						DevelopmentTeam = EEV6AZHDW2;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 1;
@@ -496,11 +496,13 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Happiness/Happiness.entitlements;
-				DEVELOPMENT_TEAM = SCUP57ZH8V;
+				DEVELOPMENT_TEAM = EEV6AZHDW2;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.mobile.Happiness;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.Happynest;
 				PRODUCT_NAME = Happynest;
+				PROVISIONING_PROFILE = "4ed1a535-3a8e-42c0-af68-366be96fa882";
+				PROVISIONING_PROFILE_SPECIFIER = "Happynest 4 devices";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -512,11 +514,13 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Happiness/Happiness.entitlements;
-				DEVELOPMENT_TEAM = SCUP57ZH8V;
+				DEVELOPMENT_TEAM = EEV6AZHDW2;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.mobile.Happiness;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.Happynest;
 				PRODUCT_NAME = Happynest;
+				PROVISIONING_PROFILE = "4ed1a535-3a8e-42c0-af68-366be96fa882";
+				PROVISIONING_PROFILE_SPECIFIER = "Happynest 4 devices";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
