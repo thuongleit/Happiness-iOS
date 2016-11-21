@@ -22,12 +22,11 @@ The following **required** functionality is completed:
    - [x] Only display entries for milestone if user created entry for that milestone
    - [x] Only allow swipe to delete for current user's entries
    - [ ] Make necessary adjustments to section headers and rows when a new entry is created or an existing entry is deleted
-- [ ] Timeline "milestone" section header
-   - [ ] Displays profile pictures of all users in nest
-   - [ ] When a user has not completed entry for milestone, profile picture is grayed out
-   - [ ] When a user has completed entry for milestone, profile picture is color
-   - [ ] Display milestone deadline date
-   - [ ] Display label which describes if user has completed entry
+- [x] Timeline "milestone" section header
+   - [x] Displays profile pictures of all users in nest
+   - [x] When a user has not completed entry for milestone, profile picture is grayed out
+   - [x] When a user has completed entry for milestone, profile picture is color
+   - [x] Display label which describes if user has completed entry
 - [x] Timeline entries
   - [x] New layout based on nest design
 - [x] View entry
@@ -55,6 +54,7 @@ The following **required** functionality is completed:
 The following **optional** features are nice to have:
 
 - [x] Change app name to "Happynest"
+- [ ] Display milestone deadline date if you haven't written yet. E.g. "3 days left!"
 
 
 ## Sprint 1
