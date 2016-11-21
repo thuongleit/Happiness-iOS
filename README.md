@@ -38,6 +38,7 @@ The following **required** functionality is completed:
       - [ ] If yes, then a push notification is sent to that user.
       - [ ] Display success/failure banner which indicates if nudge was successful
       - [ ] For user receiving the push notification, sliding the notification takes user to new entry screen
+      - [x] Push notifications set up on one machine. Having problem with exporting Provisioning Profile/Certificates.
 - [x] Model
       - [x] Nest class
       - [x] Add nests member to User class
