@@ -14,12 +14,22 @@ class TimelineSection
 {
     let week: Int
     let year: Int
-    let title: String
+    let title: String // remove this once new section header code is complete!!!
     private var entries = [Entry]()
     private var userEntryCount = [String: Int]() // maps user IDs to entry counts
+    
     var rows: Int {
         
-        return entries.count
+        var currentUserEntryCount = 0
+        if let currentUserId = User.currentUser?.id,
+            let _currentUserEntryCount = userEntryCount[currentUserId] {
+                
+            currentUserEntryCount = _currentUserEntryCount
+        }
+        
+        // Only display entries for milestone if current user created an
+        // entry for that milestone.
+        return currentUserEntryCount > 0 ? entries.count : 0
     }
     
     init(week: Int, year: Int) {
@@ -115,10 +125,8 @@ class TimelineViewController: UIViewController {
             navigationItem.title = "Timeline"
             
             // Add the compose button.
-            
-            let composeImage = UIImage(named: UIConstants.ImageName.composeButton)
             let composeButton = UIBarButtonItem(
-                image: composeImage,
+                image: UIImage(named: UIConstants.ImageName.composeButton),
                 style: .plain,
                 target: self,
                 action: #selector(onComposeButton))
@@ -460,6 +468,23 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         
         // Do not leave rows selected.
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        
+        // Only allow swipe to delete for current user's entries.
+        let entry = sections[indexPath.section].get(entryAtRow: indexPath.row)
+        if let entryUserId = entry.author?.id,
+            let currentUserId = User.currentUser?.id,
+            entryUserId == currentUserId {
+            
+            return true
+         
+        }
+        else {
+            
+            return false
+        }
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
