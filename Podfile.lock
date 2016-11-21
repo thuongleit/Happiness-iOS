@@ -37,8 +37,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: ee2828f815ccf904d741b08a49aa6178af292fbc
 
-<<<<<<< HEAD
-COCOAPODS: 1.1.1
-=======
-COCOAPODS: 1.1.0.rc.2
->>>>>>> a703155... check in missing file
+COCOAPODS: 1.1.0.rc.3

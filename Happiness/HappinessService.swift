@@ -168,6 +168,9 @@ class HappinessService: NSObject {
                 let entryImage = images[0]
                 let resizedImage = resizeImage(image: entryImage, targetSize: CGSize.init(width: 600, height: 600))
                 entryObj["media"] = getPFFileFromImage(image: resizedImage) // PFFile column type
+                let aspectRatio = resizedImage.size.width/resizedImage.size.height
+                let str = String(format: "%.2f", aspectRatio)
+                entryObj["aspectRatio"] = Double(str)
             }
         }
         
@@ -241,6 +244,8 @@ class HappinessService: NSObject {
                     let entryImage = images![0]
                     let resizedImage = self.resizeImage(image: entryImage, targetSize: CGSize.init(width: 600, height: 600))
                     entryObj?.setObject(self.getPFFileFromImage(image: resizedImage)! , forKey: "media") // PFFile column type
+                    let aspectRatio = resizedImage.size.width/resizedImage.size.height
+                    entryObj?.setObject(aspectRatio, forKey: "aspectRatio")
                 }
                 
                 entryObj?.setObject(PFUser.current()!, forKey: "author")
