@@ -23,8 +23,9 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     @IBOutlet weak var feelingSlider: UISlider!
     
     @IBOutlet weak var uploadImageButton: UIButton!
-
+    
     let locationManager = CLLocationManager()
+    var placeOfInterest:String?
     
     var entry: Entry? {
         didSet {
@@ -39,10 +40,10 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     // The view y right before keyboard is shown
     var topY: CGFloat = 0
     var keyboardHeight: CGFloat = 0
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Set up the navigation bar.
         if let navigationController = navigationController {
             
@@ -84,8 +85,8 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         
         // Scroll up view on keyboard showing
         // TODO(cboo): Buggy, need to fix.
-//        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        //        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        //        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         
         // If new entry, use current date and current day's question.
@@ -109,7 +110,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             if let text = entry.text {
                 textView.text = text
             }
-            if let locationName = entry.location?.name {
+            if let locationName = entry.placemark {
                 locationTextField.text = locationName
             }
             if let happinessLevel = entry.happinessLevel {
@@ -127,13 +128,18 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         }
         
         let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
-        let address = UIConstants.getAddressForLatLng(latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude))
+        placeOfInterest = UIConstants.getAddressForLatLng(latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude))
+        locationTextField.placeholder = placeOfInterest
+        //first show google maps state and city, and then try reverse geocoding to try apple maps for placemarks
         
-        if let placeOfInterest = address {
-            locationTextField.placeholder = placeOfInterest
-        }
+        UIConstants.getAreaOfInterest(location: locationManager.location!, completion: {(areaOfInterest:String?, error: Error?) -> Void in
+            if(error == nil) {
+                self.placeOfInterest = areaOfInterest
+                self.locationTextField.placeholder = self.placeOfInterest
+            }
+        })
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -149,8 +155,6 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         if (entryExisting) {
             updateEntry()
         } else {
-            let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
-            
             var entryMedia: [UIImage] = []
             if uploadImageButton.image(for: .normal) != UIImage.init(named: "image_placeholder") {
                 entryMedia.append(uploadImageButton.image(for: .normal)!)
@@ -158,8 +162,9 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             
             // Display progress HUD before the request is made.
             MBProgressHUD.showAdded(to: view, animated: true)
-
-            HappinessService.sharedInstance.create(text: textView.text, images: entryMedia, happinessLevel: Int(feelingSlider.value), location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
+            
+            let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
+            HappinessService.sharedInstance.create(text: textView.text, images: entryMedia, happinessLevel: Int(feelingSlider.value), placemark: placeOfInterest, location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
                 // Hide progress HUD after request is complete.
                 MBProgressHUD.hide(for: self.view, animated: true)
                 self.dismiss(animated: true, completion: {})
@@ -189,13 +194,14 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         
         // Update entry
         entry?.text = textView.text
-        entry?.location?.name = locationTextField.text
+        entry?.placemark = locationTextField.text
         entry?.happinessLevel = Entry.getHappinessLevel(happinessLevelInt: Int(feelingSlider.value))
         
         // Display progress HUD before the request is made.
         MBProgressHUD.showAdded(to: view, animated: true)
         
-        HappinessService.sharedInstance.update(entry: entry!, images: entryMedia, success: { (entry: Entry) in
+        let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
+        HappinessService.sharedInstance.update(entry: entry!, images: entryMedia, location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
             // Hide progress HUD after request is complete.
             MBProgressHUD.hide(for: self.view, animated: true)
             self.dismiss(animated: true, completion: {})
@@ -275,7 +281,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
-
+    
     // MARK: - UITextViewDelegate
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -298,18 +304,18 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     
     // MARK: - CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        var locValue:CLLocationCoordinate2D = manager.location!.coordinate
-//        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        //        var locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        //        print("locations = \(locValue.latitude) \(locValue.longitude)")
     }
     
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

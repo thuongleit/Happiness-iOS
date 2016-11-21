@@ -47,6 +47,7 @@ class ViewEntryViewController: UIViewController {
             if let profileImageFile = entry.author?.profileImage {
                 profileImageView.file = profileImageFile
                 profileImageView.loadInBackground()
+                profileImageView.layer.cornerRadius = profileImageView.bounds.width / 2.0 // circle
                 profileImageView.clipsToBounds = true
             } else {
                 profileImageView.image = nil
@@ -60,8 +61,8 @@ class ViewEntryViewController: UIViewController {
             if let text = entry.text {
                 textLabel.text = text
             }
-            if let location = entry.location {
-                locationLabel.text = UIConstants.locationString(from: location)
+            if let placemark = entry.placemark {
+                locationLabel.text = placemark
             }
             if let happinessLevel = entry.happinessLevel {
                 feelingImageView.image = UIConstants.happinessLevelImage(happinessLevel)

@@ -14,7 +14,7 @@ class TimelineSection
 {
     let week: Int
     let year: Int
-    let title: String // remove this once new section header code is complete!!!
+    let title: String
     private var entries = [Entry]()
     private var userEntryCount = [String: Int]() // maps user IDs to entry counts
     
@@ -36,7 +36,7 @@ class TimelineSection
         
         self.week = week
         self.year = year
-        self.title = String(format: "Week %d, %d", week, year) // temp code!!!
+        self.title = String(format: "Week %d, %d", week, year)
     }
     
     // Add the specified entry to the end of the entries array.
@@ -44,7 +44,7 @@ class TimelineSection
         
         if let userId = entry.author?.id {
             
-            userEntryCount[userId] = userEntryCount[userId] ?? 0 + 1
+            userEntryCount[userId] = (userEntryCount[userId] ?? 0) + 1
         }
 
         entries.append(entry)
@@ -114,6 +114,7 @@ class TimelineViewController: UIViewController {
     
     var sections = [TimelineSection]()
     var nestUsers = [User]()
+    var pagingCount = 0
 
     override func viewDidLoad() {
         
@@ -265,7 +266,7 @@ class TimelineViewController: UIViewController {
 
         willRequest()
             
-        happinessService.getEntries(
+        happinessService.getEntries(skipTo: pagingCount,
             success: { (entries: [Entry]) in
 
                 let shouldReloadData: Bool

@@ -156,7 +156,7 @@ class HappinessService: NSObject {
         return jsonLocationObj
     }
     
-    func create(text: String, images: [UIImage]?, happinessLevel: Int?, location: Location?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {
+    func create(text: String, images: [UIImage]?, happinessLevel: Int?, placemark: String?, location: Location?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {
         
         createUpdateEntrySuccess = success
         callFailure = failure
@@ -187,6 +187,10 @@ class HappinessService: NSObject {
         
         entryObj["text"] = text
         entryObj["happinessLevel"] = happinessLevel
+        if let placemark = placemark {
+            entryObj["placemark"] = placemark
+        }
+        
         if let location = location {
             // Convert Location to dictionary format to be stored on server
             entryObj["location"] = createLocationObject(location: location)
@@ -229,7 +233,7 @@ class HappinessService: NSObject {
         return nil
     }
     
-    func update(entry: Entry, images: [UIImage]?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {
+    func update(entry: Entry, images: [UIImage]?, location: Location?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {
         
         createUpdateEntrySuccess = success
         callFailure = failure
@@ -253,7 +257,11 @@ class HappinessService: NSObject {
                 if let happinessInt = entry.happinessLevel?.rawValue {
                     entryObj?.setObject(happinessInt, forKey: "happinessLevel")
                 }
-                entryObj?.setObject(self.createLocationObject(location: entry.location!), forKey: "location")
+                
+                if let location = location {
+                    entryObj?.setObject(self.createLocationObject(location: location), forKey: "location")
+                }
+                entryObj?.setObject(entry.placemark!, forKey: "placemark")
                 
                 entryObj?.saveInBackground(block: { (succeded: Bool, error:Error?) in
                     if(succeded)
@@ -314,7 +322,7 @@ class HappinessService: NSObject {
     }
     
     // Returns all entries for current user
-    func getEntries(success: @escaping (_ entries: [Entry]) -> (), failure: @escaping (Error) -> ()) {
+    func getEntries(skipTo: Int?, success: @escaping (_ entries: [Entry]) -> (), failure: @escaping (Error) -> ()) {
         getEntriesSuccess = success
         callFailure = failure
         
@@ -337,8 +345,10 @@ class HappinessService: NSObject {
         query.includeKey("author")
         query.includeKey("nest")
         query.includeKey("author.nest")
-        query.limit = 20
-        //query.skip = skipCount//for paging
+        query.limit = 100
+        if let skipCount = skipTo{
+            query.skip = skipCount//for paging
+        }
         
         // fetch data asynchronously
         query.findObjectsInBackground { (entries: [PFObject]?, error: Error?) in
