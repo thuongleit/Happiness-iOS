@@ -34,8 +34,10 @@ class ViewEntryViewController: UIViewController {
         navigationController?.navigationBar.isTranslucent = false
         
         // Navigation bar edit entry
-        let editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(ViewEntryViewController.editEntry))
-        navigationItem.rightBarButtonItem = editButton
+        if (User.currentUser?.id == entry.author?.id) {
+            let editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(ViewEntryViewController.editEntry))
+            navigationItem.rightBarButtonItem = editButton
+        }
         
         // Location Icon
         locationIconImageView.image = locationIconImageView.image?.withRenderingMode(.alwaysTemplate)
