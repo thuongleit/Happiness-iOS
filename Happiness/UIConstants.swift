@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class UIConstants: NSObject {
     
@@ -164,16 +165,64 @@ class UIConstants: NSObject {
         }
         return ""
     }
-       
+    
+    //apple maps API
+    static func getAreaOfInterest(location: CLLocation, completion: @escaping (_ areaOfInterest: String?, _ error: Error?) -> ()) {
+        
+        var placeOfInterest:String?
+        let mapCompletion = completion
+        
+        CLGeocoder().reverseGeocodeLocation(location, completionHandler: {
+            (placemarks, error) -> Void in
+            
+            if (error != nil) {
+                print("ERROR:" + (error?.localizedDescription)!)
+                mapCompletion(nil, error)
+            }
+            
+            if (placemarks?.count)! > 0 {
+                let pm = (placemarks?[0])! as CLPlacemark
+                if(pm.areasOfInterest != nil){
+                    let areaOfInterest = pm.areasOfInterest as [String]?
+                    if ((areaOfInterest?.count)! > 0){
+                        placeOfInterest = areaOfInterest?[0]
+                    }
+                }
+                else{
+                    placeOfInterest = "\(pm.locality!), \(pm.administrativeArea!)"
+                }
+            }
+            mapCompletion(placeOfInterest!, nil)
+        })
+
+    }
+    
+    
+    //google maps API
     static func getAddressForLatLng(latitude: Float, longitude: Float) -> String? {
         var address:String?
         let url = NSURL(string: "\(HappinessService.sharedInstance.googleMapsBaseURL)latlng=\(latitude),\(longitude)&key=\(HappinessService.sharedInstance.googleMapsAPIKey)")
+        var city = ""
+        var state = ""
+        
         let data = NSData(contentsOf: url! as URL)
         if let data = data  {
             let json = try! JSONSerialization.jsonObject(with: data as Data, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
             if let result = json["results"] as? NSArray {
                 if let addressArray = result[0] as? NSDictionary {
                     address = addressArray["formatted_address"] as? String
+                    if let addressComponents = addressArray["address_components"] as? NSArray {
+                       
+                        if let cityArray = addressComponents[2] as? NSDictionary{
+                           city = cityArray["long_name"] as! String
+                        }
+                        
+                        if let stateArray = addressComponents[4] as? NSDictionary{
+                            state = stateArray["short_name"] as! String
+                        }
+                        
+                        address = "\(city), \(state)"
+                    }
                 }
             }
         }
