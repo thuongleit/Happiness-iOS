@@ -30,6 +30,7 @@ class Entry: NSObject {
     var createdDate: Date?
     var happinessLevel: HappinessLevel?
     var image: UIImage?
+    var aspectRatio:Double?
     
     // Creates an Entry from the server data.
     init(entryObject: AnyObject?) {
@@ -38,6 +39,8 @@ class Entry: NSObject {
             author = User.init(obj: entryObject.object(forKey: "author") as AnyObject)
             text = entryObject.object(forKey: "text") as? String // on db side it is only string not NSAttributedString
             createdDate = entryObject.value(forKey: "createdAt") as? Date
+            aspectRatio = entryObject.value(forKey: "aspectRatio") as? Double
+
             
             if(entryObject.object(forKey: "question") != nil){
                 question = Question.init(questionObject: entryObject.object(forKey: "question") as AnyObject)
