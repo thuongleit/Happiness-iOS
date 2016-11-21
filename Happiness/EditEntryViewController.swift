@@ -25,6 +25,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     @IBOutlet weak var uploadImageButton: UIButton!
 
     let locationManager = CLLocationManager()
+    var placeOfInterest:String?
     
     var entry: Entry? {
         didSet {
@@ -109,7 +110,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             if let text = entry.text {
                 textView.text = text
             }
-            if let locationName = entry.location?.name {
+            if let locationName = entry.placemark {
                 locationTextField.text = locationName
             }
             if let happinessLevel = entry.happinessLevel {
@@ -127,11 +128,16 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         }
         
         let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
-        let address = UIConstants.getAddressForLatLng(latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude))
+        placeOfInterest = UIConstants.getAddressForLatLng(latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude))
+        locationTextField.placeholder = placeOfInterest
+        //first show google maps state and city, and then try reverse geocoding to try apple maps for placemarks
         
-        if let placeOfInterest = address {
-            locationTextField.placeholder = placeOfInterest
-        }
+        UIConstants.getAreaOfInterest(location: locationManager.location!, completion: {(areaOfInterest:String?, error: Error?) -> Void in
+            if(error == nil) {
+                self.placeOfInterest = areaOfInterest
+                self.locationTextField.placeholder = self.placeOfInterest
+            }
+        })
     }
 
     override func didReceiveMemoryWarning() {
@@ -149,8 +155,6 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         if (entryExisting) {
             updateEntry()
         } else {
-            let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
-            
             var entryMedia: [UIImage] = []
             if uploadImageButton.image(for: .normal) != UIImage.init(named: "image_placeholder") {
                 entryMedia.append(uploadImageButton.image(for: .normal)!)
@@ -159,7 +163,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             // Display progress HUD before the request is made.
             MBProgressHUD.showAdded(to: view, animated: true)
 
-            HappinessService.sharedInstance.create(text: textView.text, images: entryMedia, happinessLevel: Int(feelingSlider.value), location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
+            HappinessService.sharedInstance.create(text: textView.text, images: entryMedia, happinessLevel: Int(feelingSlider.value), placemark: placeOfInterest, success: { (entry: Entry) in
                 // Hide progress HUD after request is complete.
                 MBProgressHUD.hide(for: self.view, animated: true)
                 self.dismiss(animated: true, completion: {})
@@ -189,7 +193,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         
         // Update entry
         entry?.text = textView.text
-        entry?.location?.name = locationTextField.text
+        entry?.placemark = locationTextField.text
         entry?.happinessLevel = Entry.getHappinessLevel(happinessLevelInt: Int(feelingSlider.value))
         
         // Display progress HUD before the request is made.

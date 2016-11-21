@@ -26,21 +26,33 @@ class Entry: NSObject {
     var text: String?
     var imageUrls: [URL]?
     var media:PFFile?
-    var location: Location?
+    //var location: Location?
     var createdDate: Date?
     var happinessLevel: HappinessLevel?
     var image: UIImage?
     var aspectRatio:Double?
+    var placemark:String?//location stored as string
     
     // Creates an Entry from the server data.
     init(entryObject: AnyObject?) {
+        
         if let entryObject = entryObject {
             id = entryObject.value(forKey: "objectId") as? String
             author = User.init(obj: entryObject.object(forKey: "author") as AnyObject)
             text = entryObject.object(forKey: "text") as? String // on db side it is only string not NSAttributedString
             createdDate = entryObject.value(forKey: "createdAt") as? Date
             aspectRatio = entryObject.value(forKey: "aspectRatio") as? Double
-
+            placemark = ""
+            
+            if let areaOfInterest = entryObject.value(forKey: "placemark") as? String {
+                placemark = areaOfInterest
+            }
+            else {
+                if(entryObject.object(forKey: "location") != nil){
+                    let location = Location.init(locationObject: entryObject.object(forKey: "location") as AnyObject)
+                    placemark = UIConstants.locationString(from: location)
+                }
+            }
             
             if(entryObject.object(forKey: "question") != nil){
                 question = Question.init(questionObject: entryObject.object(forKey: "question") as AnyObject)
@@ -48,10 +60,6 @@ class Entry: NSObject {
             
             if(entryObject.object(forKey: "media") != nil){
                 media = entryObject.object(forKey: "media") as? PFFile
-            }
-            
-            if(entryObject.object(forKey: "location") != nil){
-                location = Location.init(locationObject: entryObject.object(forKey: "location") as AnyObject)
             }
             
             if(entryObject.value(forKey: "happinessLevel") != nil){
