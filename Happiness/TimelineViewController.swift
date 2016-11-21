@@ -114,6 +114,7 @@ class TimelineViewController: UIViewController {
     
     var sections = [TimelineSection]()
     var nestUsers = [User]()
+    var pagingCount = 0
 
     override func viewDidLoad() {
         
@@ -265,7 +266,7 @@ class TimelineViewController: UIViewController {
 
         willRequest()
             
-        happinessService.getEntries(
+        happinessService.getEntries(skipTo: pagingCount,
             success: { (entries: [Entry]) in
 
                 let shouldReloadData: Bool

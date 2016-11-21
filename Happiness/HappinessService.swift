@@ -313,7 +313,7 @@ class HappinessService: NSObject {
     }
     
     // Returns all entries for current user
-    func getEntries(success: @escaping (_ entries: [Entry]) -> (), failure: @escaping (Error) -> ()) {
+    func getEntries(skipTo: Int?, success: @escaping (_ entries: [Entry]) -> (), failure: @escaping (Error) -> ()) {
         getEntriesSuccess = success
         callFailure = failure
         
@@ -336,8 +336,10 @@ class HappinessService: NSObject {
         query.includeKey("author")
         query.includeKey("nest")
         query.includeKey("author.nest")
-        query.limit = 20
-        //query.skip = skipCount//for paging
+        query.limit = 100
+        if let skipCount = skipTo{
+            query.skip = skipCount//for paging
+        }
         
         // fetch data asynchronously
         query.findObjectsInBackground { (entries: [PFObject]?, error: Error?) in
