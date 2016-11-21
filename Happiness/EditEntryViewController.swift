@@ -23,7 +23,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     @IBOutlet weak var feelingSlider: UISlider!
     
     @IBOutlet weak var uploadImageButton: UIButton!
-
+    
     let locationManager = CLLocationManager()
     var placeOfInterest:String?
     
@@ -40,10 +40,10 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     // The view y right before keyboard is shown
     var topY: CGFloat = 0
     var keyboardHeight: CGFloat = 0
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Set up the navigation bar.
         if let navigationController = navigationController {
             
@@ -85,8 +85,8 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         
         // Scroll up view on keyboard showing
         // TODO(cboo): Buggy, need to fix.
-//        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        //        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        //        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         
         // If new entry, use current date and current day's question.
@@ -139,7 +139,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             }
         })
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -162,8 +162,9 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             
             // Display progress HUD before the request is made.
             MBProgressHUD.showAdded(to: view, animated: true)
-
-            HappinessService.sharedInstance.create(text: textView.text, images: entryMedia, happinessLevel: Int(feelingSlider.value), placemark: placeOfInterest, success: { (entry: Entry) in
+            
+            let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
+            HappinessService.sharedInstance.create(text: textView.text, images: entryMedia, happinessLevel: Int(feelingSlider.value), placemark: placeOfInterest, location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
                 // Hide progress HUD after request is complete.
                 MBProgressHUD.hide(for: self.view, animated: true)
                 self.dismiss(animated: true, completion: {})
@@ -199,7 +200,8 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         // Display progress HUD before the request is made.
         MBProgressHUD.showAdded(to: view, animated: true)
         
-        HappinessService.sharedInstance.update(entry: entry!, images: entryMedia, success: { (entry: Entry) in
+        let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
+        HappinessService.sharedInstance.update(entry: entry!, images: entryMedia, location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
             // Hide progress HUD after request is complete.
             MBProgressHUD.hide(for: self.view, animated: true)
             self.dismiss(animated: true, completion: {})
@@ -279,7 +281,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
-
+    
     // MARK: - UITextViewDelegate
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -302,18 +304,18 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     
     // MARK: - CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-//        var locValue:CLLocationCoordinate2D = manager.location!.coordinate
-//        print("locations = \(locValue.latitude) \(locValue.longitude)")
+        //        var locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        //        print("locations = \(locValue.latitude) \(locValue.longitude)")
     }
     
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

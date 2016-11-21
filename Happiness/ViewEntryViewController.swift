@@ -47,6 +47,7 @@ class ViewEntryViewController: UIViewController {
             if let profileImageFile = entry.author?.profileImage {
                 profileImageView.file = profileImageFile
                 profileImageView.loadInBackground()
+                profileImageView.layer.cornerRadius = profileImageView.bounds.width / 2.0 // circle
                 profileImageView.clipsToBounds = true
             } else {
                 profileImageView.image = nil

@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ViewEntryViewController" customModule="Happiness" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ViewEntryViewController" customModule="Happynest" customModuleProvider="target">
             <connections>
                 <outlet property="dateLabel" destination="7Zf-13-44p" id="OEU-1E-Jsh"/>
                 <outlet property="feelingImageView" destination="9K5-Vh-Kxg" id="Jpu-vm-Z0v"/>
@@ -60,7 +60,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="really_happy" translatesAutoresizingMaskIntoConstraints="NO" id="9K5-Vh-Kxg">
-                    <rect key="frame" x="56" y="54" width="24" height="24"/>
+                    <rect key="frame" x="52" y="52" width="24" height="24"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="24" id="8GD-w5-Utf"/>
                         <constraint firstAttribute="width" constant="24" id="Xq1-FI-Kju"/>
@@ -83,7 +83,7 @@
             </subviews>
             <color key="backgroundColor" red="0.94901960780000005" green="0.94509803920000002" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="9K5-Vh-Kxg" firstAttribute="bottom" secondItem="2UQ-f5-qzw" secondAttribute="bottom" constant="8" id="4M9-Sa-4p5"/>
+                <constraint firstItem="9K5-Vh-Kxg" firstAttribute="bottom" secondItem="2UQ-f5-qzw" secondAttribute="bottom" constant="6" id="4M9-Sa-4p5"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zeY-iz-uI8" secondAttribute="trailing" constant="16" id="6fg-gr-5Fp"/>
                 <constraint firstItem="JaI-mm-GV4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="86E-aC-nlf"/>
                 <constraint firstItem="2UQ-f5-qzw" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="AKc-EI-Euf"/>
@@ -92,7 +92,7 @@
                 <constraint firstAttribute="trailing" secondItem="7Zf-13-44p" secondAttribute="trailing" constant="16" id="KLq-v0-Wfz"/>
                 <constraint firstItem="zeY-iz-uI8" firstAttribute="leading" secondItem="d1u-oL-XZX" secondAttribute="trailing" constant="8" id="Od7-pZ-Fp7"/>
                 <constraint firstItem="Qnx-Pz-8pb" firstAttribute="top" secondItem="JaI-mm-GV4" secondAttribute="bottom" constant="20" id="Ols-Gr-857"/>
-                <constraint firstItem="9K5-Vh-Kxg" firstAttribute="leading" secondItem="2UQ-f5-qzw" secondAttribute="trailing" constant="-10" id="RfW-1O-0cA"/>
+                <constraint firstItem="9K5-Vh-Kxg" firstAttribute="leading" secondItem="2UQ-f5-qzw" secondAttribute="trailing" constant="-14" id="RfW-1O-0cA"/>
                 <constraint firstItem="d1u-oL-XZX" firstAttribute="top" secondItem="Qnx-Pz-8pb" secondAttribute="bottom" constant="20" id="S8Y-NP-Lru"/>
                 <constraint firstItem="7Zf-13-44p" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="UyH-Va-xS1"/>
                 <constraint firstAttribute="trailing" secondItem="Qnx-Pz-8pb" secondAttribute="trailing" constant="16" id="YIx-05-M8P"/>
