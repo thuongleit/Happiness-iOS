@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E18E2CB31DC95FD500BA02C4"
-               BuildableName = "Happiness.app"
+               BuildableName = "Happynest.app"
                BlueprintName = "Happiness"
                ReferencedContainer = "container:Happiness.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E18E2CB31DC95FD500BA02C4"
-            BuildableName = "Happiness.app"
+            BuildableName = "Happynest.app"
             BlueprintName = "Happiness"
             ReferencedContainer = "container:Happiness.xcodeproj">
          </BuildableReference>
@@ -56,7 +56,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E18E2CB31DC95FD500BA02C4"
-            BuildableName = "Happiness.app"
+            BuildableName = "Happynest.app"
             BlueprintName = "Happiness"
             ReferencedContainer = "container:Happiness.xcodeproj">
          </BuildableReference>
@@ -75,7 +75,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E18E2CB31DC95FD500BA02C4"
-            BuildableName = "Happiness.app"
+            BuildableName = "Happynest.app"
             BlueprintName = "Happiness"
             ReferencedContainer = "container:Happiness.xcodeproj">
          </BuildableReference>
