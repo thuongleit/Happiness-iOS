@@ -76,6 +76,7 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
                 
                 let tap = UITapGestureRecognizer()
                 tap.numberOfTapsRequired = 1
+                imageView.tag = index
                 tap.addTarget(self, action: #selector(profileImageTap))
                 imageView.isUserInteractionEnabled = true
                 imageView.addGestureRecognizer(tap)
@@ -116,8 +117,9 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
         }
     }
     
-    func profileImageTap() {
-        delegate?.timelineHeaderView?(headerView: self, didTapOnProfileImage: nil)
+    func profileImageTap(sender: UITapGestureRecognizer) {
+        let user = nestUsers?[(sender.view?.tag)!]
+        delegate?.timelineHeaderView?(headerView: self, didTapOnProfileImage: user)
     }
     
     override func awakeFromNib() {

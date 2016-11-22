@@ -550,7 +550,25 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func timelineHeaderView(headerView: TimelineHeaderView, didTapOnProfileImage toNudgeUser: User?) {
-        print("NUDGING")
+        let name = toNudgeUser!.name!
+        let email = toNudgeUser!.email!
+        let nudgeMessage = "\(User.currentUser!.name!) is reminding you to finish this week's challenge!"
+        let nudgingAlert = UIAlertController(title: "\(name) hasn't completed this week's challenge yet!", message: "Do you want to give \(name) a nudge?", preferredStyle: .alert)
+        nudgingAlert.addAction(UIAlertAction(title: "Sure!", style: .default, handler: { (alert) in
+            
+            APNUtil.sendNudging(targetEmail: email, withMessage: nudgeMessage, completionBlock: { (result) in
+                if result == true {
+                    UIConstants.presentError(message: "\(name) is being reminded to finish the challenge!", inView: self.view)
+                } else {
+                    UIConstants.presentError(message: "Hmm something went wrong.", inView: self.view)
+                }
+            })
+            
+        }))
+        nudgingAlert.addAction(UIAlertAction(title: "Hmm no", style: .cancel, handler: { (alert) in
+            
+        }))
+        present(nudgingAlert, animated: true, completion: nil)
     }
 }
 
