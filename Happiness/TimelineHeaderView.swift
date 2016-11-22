@@ -9,22 +9,30 @@
 import UIKit
 import ParseUI
 
-class TimelineHeaderTableViewCell: UITableViewHeaderFooterView {
+@objc protocol TimelineHeaderViewDelegate {
+    @objc optional func timelineHeaderView(headerView: TimelineHeaderView, didTapOnProfileImage toNudgeUser: User?)
+}
+
+class TimelineHeaderView: UITableViewHeaderFooterView {
 
     @IBOutlet weak var titleLabel: UILabel!
     
     @IBOutlet weak var messageLabel: UILabel!
     
+    weak var delegate: TimelineHeaderViewDelegate?
+    
     // Array of profile imageViews. Initialized when nestUsers is set.
     var profileImagesByUserId = [String: PFImageView]()
 
     var entryCountByUser: [String: Int]?
+    
     var nestUsers: [User]? {
         didSet {
             // Remove old profile image views
             for (userId, imageView) in profileImagesByUserId {
                 imageView.removeFromSuperview()
             }
+            
             profileImagesByUserId = [String: PFImageView]()
             
             // Set profiles and message label
@@ -52,6 +60,7 @@ class TimelineHeaderTableViewCell: UITableViewHeaderFooterView {
                             }
                         }
                     })
+                    imageView.contentMode = .scaleAspectFill
                     imageView.layer.cornerRadius = imageView.bounds.width / 2.0 // circle
                     imageView.clipsToBounds = true
                     
@@ -64,6 +73,12 @@ class TimelineHeaderTableViewCell: UITableViewHeaderFooterView {
                 
                 profileImagesByUserId[user.id!] = imageView
                 contentView.addSubview(imageView)
+                
+                let tap = UITapGestureRecognizer()
+                tap.numberOfTapsRequired = 1
+                tap.addTarget(self, action: #selector(profileImageTap))
+                imageView.isUserInteractionEnabled = true
+                imageView.addGestureRecognizer(tap)
             }
             
             // Message text
@@ -99,6 +114,10 @@ class TimelineHeaderTableViewCell: UITableViewHeaderFooterView {
                 }
             }
         }
+    }
+    
+    func profileImageTap() {
+        delegate?.timelineHeaderView?(headerView: self, didTapOnProfileImage: nil)
     }
     
     override func awakeFromNib() {

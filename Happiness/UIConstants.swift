@@ -15,12 +15,13 @@ class UIConstants: NSObject {
 
     // light blue
     static let primaryThemeColor = UIColor(red: 117/255, green: 201/255, blue: 177/255, alpha: 1)
+    
     // deep light blue
     static let primarySelectedThemeColor = UIColor(red: 99/255, green: 206/255, blue: 199/255, alpha: 1) // 107, 224, 216
-
     
     // pink
     static let secondaryThemeColor = UIColor(red: 255/255, green: 128/255, blue: 117/255, alpha: 1)
+    
     // deep pink
     static let secondarySelectedThemeColor = UIColor(red: 226/255, green: 38/255, blue: 77/255, alpha: 1)
     
@@ -29,10 +30,13 @@ class UIConstants: NSObject {
 
     // white
     static let whiteColor = UIColor.white
+    
     // light gray
     static let lightGrayColor = UIColor(red: 224/255, green: 226/255, blue: 226/255, alpha: 1)
+    
     // dark gray
     static let darkGrayColor = UIColor(red: 57/255, green: 59/255, blue: 59/255, alpha: 1)
+    
     // black
     static let blackColor = UIColor.black
 
@@ -198,7 +202,7 @@ class UIConstants: NSObject {
     }
     
     
-    //google maps API
+    // google maps API
     static func getAddressForLatLng(latitude: Float, longitude: Float) -> String? {
         var address:String?
         let url = NSURL(string: "\(HappinessService.sharedInstance.googleMapsBaseURL)latlng=\(latitude),\(longitude)&key=\(HappinessService.sharedInstance.googleMapsAPIKey)")
@@ -255,7 +259,7 @@ class UIConstants: NSObject {
     }
     
     class ClassName {
-        static let timelineTableHeaderViewCellXib = "TimelineHeaderTableViewCell"
+        static let timelineTableHeaderViewCellXib = "TimelineHeaderView"
         static let timelineTableViewCellXib = "TimelineTableViewCell"
     }
     
@@ -263,4 +267,5 @@ class UIConstants: NSObject {
         static let composeButton = "compose-22"
         static let settingsButton = "settings-22"
     }
+    
 }

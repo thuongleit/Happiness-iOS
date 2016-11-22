@@ -108,7 +108,7 @@ class TimelineSection
     }
 }
 
-class TimelineViewController: UIViewController {
+class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -460,7 +460,8 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: UIConstants.CellReuseIdentifier.timelineHeaderCell) as! TimelineHeaderTableViewCell
+        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: UIConstants.CellReuseIdentifier.timelineHeaderCell) as! TimelineHeaderView
+        headerView.delegate = self
         headerView.entryCountByUser = self.sections[section].getEntryCountByUser()
         headerView.nestUsers = self.nestUsers
         headerView.titleLabel.text = sections[section].title
@@ -547,7 +548,10 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
 
         }
     }
-
+    
+    func timelineHeaderView(headerView: TimelineHeaderView, didTapOnProfileImage toNudgeUser: User?) {
+        print("NUDGING")
+    }
 }
 
 // TimelineTableViewCell methods

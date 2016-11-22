@@ -1,4 +1,4 @@
-//
+ //
 //  AppDelegate.swift
 //  Happiness
 //
@@ -34,10 +34,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Apple Push Notifications
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.badge, .alert, .sound], completionHandler: { (granted: Bool, error: Error?) in
-            
+            // place to check for whether or not the user has granted push notification permission
         })
         application.registerForRemoteNotifications()
         
+        // Log in/ log out notifications
         NotificationCenter.default.addObserver(self, selector: #selector(userDidLogOut), name: GlobalEventEnum.didLogout.notification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(userDidLogIn), name: GlobalEventEnum.didLogin.notification, object: nil)
         
@@ -49,14 +50,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         } else {
             presentLoginSignupScreens()
         }
-
         return true
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let currentInstallation = PFInstallation.current()
         currentInstallation?.setDeviceTokenFrom(deviceToken)
-        currentInstallation?.channels = ["global"]
         currentInstallation?.saveInBackground()
     }
     
@@ -109,7 +108,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
 
 }
 
