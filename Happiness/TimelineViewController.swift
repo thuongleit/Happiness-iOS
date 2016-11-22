@@ -558,9 +558,9 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
             
             APNUtil.sendNudging(targetEmail: email, withMessage: nudgeMessage, completionBlock: { (result) in
                 if result == true {
-                    UIConstants.presentError(message: "\(name) is being reminded to finish the challenge!", inView: self.view)
+                    UIConstants.presentError(message: "\(name) is being reminded to finish the challenge!", inView: (self.navigationController?.view)!)
                 } else {
-                    UIConstants.presentError(message: "Hmm something went wrong.", inView: self.view)
+                    UIConstants.presentError(message: "Hmm something went wrong.", inView: (self.navigationController?.view)!)
                 }
             })
             
