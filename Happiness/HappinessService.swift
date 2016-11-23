@@ -393,6 +393,7 @@ class HappinessService: NSObject {
                 var nestUsers = [User]()
                 for pfobj in objects! {
                     let curUser = User(obj: pfobj as AnyObject)
+                    print(curUser.name)
                     nestUsers.append(curUser)
                 }
                 self.getNestUsersSuccess!(nestUsers)

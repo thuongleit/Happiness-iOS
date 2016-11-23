@@ -3,6 +3,8 @@
 
 ## Sprint 2
 
+<img src="https://github.com/TeamHappiness/Happiness-iOS/blob/master/Sprint2.gif" alt="sprint2"/>
+
 ## User Stories
 
 The following **required** functionality is completed:
@@ -21,7 +23,7 @@ The following **required** functionality is completed:
    - [x] Add section header for current milestone even if it has no entries
    - [x] Only display entries for milestone if user created entry for that milestone
    - [x] Only allow swipe to delete for current user's entries
-   - [ ] Make necessary adjustments to section headers and rows when a new entry is created or an existing entry is deleted
+   - [x] Make necessary adjustments to section headers and rows when a new entry is created or an existing entry is deleted
 - [x] Timeline "milestone" section header
    - [x] Displays profile pictures of all users in nest
    - [x] When a user has not completed entry for milestone, profile picture is grayed out
@@ -31,12 +33,12 @@ The following **required** functionality is completed:
   - [x] New layout based on nest design
 - [x] View entry
   - [x] Display profile picture
-- [ ] Edit entry
-  - [ ] Only allow edit entry for current user's entries
-- [ ] Push notifications
-   - [ ] Tapping on another user's grayed profile picture on section header will show an alert asking if you want to nudge that person.
-      - [ ] If yes, then a push notification is sent to that user.
-      - [ ] Display success/failure banner which indicates if nudge was successful
+- [x] Edit entry
+  - [x] Only allow edit entry for current user's entries
+- [x] Push notifications
+   - [x] Tapping on another user's grayed profile picture on section header will show an alert asking if you want to nudge that person.
+      - [x] If yes, then a push notification is sent to that user.
+      - [x] Display success/failure banner which indicates if nudge was successful
       - [ ] For user receiving the push notification, sliding the notification takes user to new entry screen
       - [x] Push notifications set up on one machine. Having problem with exporting Provisioning Profile/Certificates.
 - [x] Model

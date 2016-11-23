@@ -172,6 +172,12 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate, UINaviga
             HappinessService.sharedInstance.login(email: emailTextField.text!, password: passwordTextField.text!, success: { (user: User) in
                 MBProgressHUD.hide(for: self.view, animated: true)
                 print("log in success with name \(user.name)")
+                
+                // store user's email address for push notification
+                let installation = PFInstallation.current()
+                installation?["email"] = user.email
+                installation?.saveInBackground()
+                
                 NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogin.notification, object: nil)
             }, failure: { (error: Error) in
                 MBProgressHUD.hide(for: self.view, animated: true)
@@ -204,7 +210,6 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate, UINaviga
     func isValidEmail(testStr:String) -> Bool {
         // print("validate calendar: \(testStr)")
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-        
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailTest.evaluate(with: testStr)
     }
