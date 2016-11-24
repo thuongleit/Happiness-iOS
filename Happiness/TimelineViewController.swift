@@ -112,6 +112,8 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
+    var confettiView: ConfettiView?
+    
     var sections = [TimelineSection]()
     var nestUsers = [User]()
     var pagingCount = 0
@@ -148,6 +150,17 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
                 target: self,
                 action: #selector(onComposeButton))
             navigationItem.rightBarButtonItem  = composeButton
+            
+            // Temp confetti code!!!
+            let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress))
+            view.addGestureRecognizer(longPressRecognizer)
+            
+            // Add confetti view.
+            confettiView = ConfettiView(frame: view.bounds)
+            if let confettiView = confettiView {
+                
+                view.addSubview(confettiView)
+            }
         }
         
         // Set up the tableView.
@@ -239,6 +252,21 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
         let navigationController = UINavigationController(rootViewController: editEntryViewController)
         navigationController.navigationBar.isTranslucent = false
         present(navigationController, animated: true, completion: nil)
+    }
+    
+    // Temp confetti code!!!
+    @IBAction func onLongPress(_ sender: UILongPressGestureRecognizer)
+    {
+        if let navigationController = self.navigationController {
+            
+            UIConstants.presentError(
+                message: "Everyone completed the challenge!!!",
+                inView: navigationController.view)
+        }
+        if let confettiView = confettiView {
+            
+            confettiView.drop(seconds: 1.8)
+        }
     }
     
     func getNestUsers() {
