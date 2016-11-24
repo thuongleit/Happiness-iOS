@@ -266,6 +266,9 @@ class UIConstants: NSObject {
     class ImageName {
         static let composeButton = "compose-22"
         static let settingsButton = "settings-22"
+        static let confettiHappy = "happy-20"
+        static let confettiReallyHappy = "really_happy-20"
+        static let confettiHeart = "heartRed"
     }
     
 }

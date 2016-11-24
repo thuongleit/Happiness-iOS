@@ -39,6 +39,7 @@
 		E1E579C71DD7F36D0032570C /* TabBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1E579C61DD7F36D0032570C /* TabBarView.xib */; };
 		E1E579C91DD7F39D0032570C /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E579C81DD7F39D0032570C /* TabBarView.swift */; };
 		F704FCA419A24176385233FF /* Pods_Happiness.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 497F8C0D117519D30237A150 /* Pods_Happiness.framework */; };
+		FC86135F1DE667AC00497425 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC86135E1DE667AC00497425 /* ConfettiView.swift */; };
 		FCEAD6C51DD7BBCA002ADFC2 /* TimelineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEAD6C41DD7BBCA002ADFC2 /* TimelineTableViewCell.swift */; };
 		FCEAD6C71DD7BCBA002ADFC2 /* TimelineTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCEAD6C61DD7BCBA002ADFC2 /* TimelineTableViewCell.xib */; };
 /* End PBXBuildFile section */
@@ -81,6 +82,7 @@
 		E1B6F6711DD4403E00B01B9E /* CalendarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarViewController.xib; sourceTree = "<group>"; };
 		E1E579C61DD7F36D0032570C /* TabBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TabBarView.xib; sourceTree = "<group>"; };
 		E1E579C81DD7F39D0032570C /* TabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
+		FC86135E1DE667AC00497425 /* ConfettiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		FCEAD6C41DD7BBCA002ADFC2 /* TimelineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewCell.swift; sourceTree = "<group>"; };
 		FCEAD6C61DD7BCBA002ADFC2 /* TimelineTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -201,6 +203,7 @@
 				FCEAD6C61DD7BCBA002ADFC2 /* TimelineTableViewCell.xib */,
 				E1E579C61DD7F36D0032570C /* TabBarView.xib */,
 				E1E579C81DD7F39D0032570C /* TabBarView.swift */,
+				FC86135E1DE667AC00497425 /* ConfettiView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -249,7 +252,7 @@
 				TargetAttributes = {
 					E18E2CB31DC95FD500BA02C4 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = EEV6AZHDW2;
+						DevelopmentTeam = SCUP57ZH8V;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -356,6 +359,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC86135F1DE667AC00497425 /* ConfettiView.swift in Sources */,
 				E1E579C91DD7F39D0032570C /* TabBarView.swift in Sources */,
 				E183327D1DE41A0100DDD7C7 /* APNUtil.swift in Sources */,
 				FCEAD6C51DD7BBCA002ADFC2 /* TimelineTableViewCell.swift in Sources */,
@@ -507,7 +511,7 @@
 				CODE_SIGN_ENTITLEMENTS = Happiness/Happynest.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Zihan Zhou (3B35NTJ7CA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = EEV6AZHDW2;
+				DEVELOPMENT_TEAM = SCUP57ZH8V;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.Happynest;
@@ -527,7 +531,7 @@
 				CODE_SIGN_ENTITLEMENTS = Happiness/Happynest.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Zihan Zhou (3B35NTJ7CA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = EEV6AZHDW2;
+				DEVELOPMENT_TEAM = SCUP57ZH8V;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.Happynest;
