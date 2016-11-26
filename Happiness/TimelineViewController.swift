@@ -130,7 +130,8 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
     
     var sections = [TimelineSection]()
     var nestUsers = [User]()
-    var pagingCount = 0
+    var scrollLoadingData = false
+    var lastEntryCreatedDate: Date?
 
     override func viewDidLoad() {
         
@@ -310,37 +311,31 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
         
         let happinessService = HappinessService.sharedInstance
         
-        /* test code!!!
-        let entries = getDummyEntries()
-        setupSections(entries: entries)
-        tableView.reloadData()
-        return
-        */
-
         willRequest()
-            
+        
         happinessService.getEntries(
-            skipTo: pagingCount,
+            beforeCreatedDate: scrollLoadingData ? lastEntryCreatedDate : nil,
             success: { (entries: [Entry]) in
 
                 let shouldReloadData: Bool
-                //!!!if self.scrollLoadingData {
-                //!!!
-                //!!!    // Infinite scroll.
-                //!!!    self.scrollLoadingData = false
-                //!!!    self.entries.append(contentsOf: entries)
-                //!!!    shouldReloadData = entries.count > 0
-                //!!!}
-                //!!!else {
-                    
-                    //delete!!!self.entries = entries
-                    shouldReloadData = true
-                //!!!}
-                //!!!self.maxId = nextMaxId
+                if self.scrollLoadingData {
                 
-                // Set up the tableView sections based on the entries.
-                self.addEntries(entries: entries)
-
+                    // Infinite scroll. Append entries to tableView.
+                    self.scrollLoadingData = false
+                    self.appendEntries(entries: entries)
+                    shouldReloadData = entries.count > 0
+                }
+                else {
+                    
+                    // Set up the tableView based on entries.
+                    self.addEntries(entries: entries)
+                    shouldReloadData = true
+                }
+                if entries.count > 0 {
+                    
+                    self.lastEntryCreatedDate = entries.last?.createdDate
+                }
+                
                 self.requestDidSucceed(true, refreshControl: refreshControl)
                 
                 if shouldReloadData {
@@ -361,34 +356,36 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
         )
     }
     
-    // Set up the tableView sections based on the entries.
+    // Replace the contents of the tableView with the specified entries.
     func addEntries(entries: [Entry]) {
         
         sections.removeAll()
-        var section: TimelineSection?
-        var sectionWeek = -1
-        var sectionYear = -1
-        for entry in entries {
-            
-            let (week, year) = UIConstants.getWeekYear(date: entry.createdDate)
-            
-            if section == nil || week != sectionWeek || year != sectionYear {
-                
-                sectionWeek = week
-                sectionYear = year
-                section = TimelineSection(week: week, year: year)
-                sections.append(section!)
-            }
-            
-            section!.append(entry: entry)
-        }
+        appendEntries(entries: entries)
         
         // Add section for the current week even if it has no entries.
         let (thisWeek, thisYear) = UIConstants.getWeekYear(date: Date())
         if !(sections.count > 0 && sections[0].week == thisWeek && sections[0].year == thisYear) {
             
-            section = TimelineSection(week: thisWeek, year: thisYear)
-            sections.insert(section!, at: 0)
+            let section = TimelineSection(week: thisWeek, year: thisYear)
+            sections.insert(section, at: 0)
+        }
+    }
+    
+    // Append the specified entries to the tableView.
+    func appendEntries(entries: [Entry]) {
+        
+        var section = sections.last
+        for entry in entries {
+            
+            let (week, year) = UIConstants.getWeekYear(date: entry.createdDate)
+            
+            if section == nil || week != section!.week || year != section!.year {
+                
+                section = TimelineSection(week: week, year: year)
+                sections.append(section!)
+            }
+            
+            section!.append(entry: entry)
         }
     }
     
@@ -637,6 +634,30 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
             
         }))
         present(nudgingAlert, animated: true, completion: nil)
+    }
+}
+
+// UIScrollView methods
+extension TimelineViewController: UIScrollViewDelegate
+{
+    func scrollViewDidScroll(_ scrollView: UIScrollView)
+    {
+        if (scrollView == tableView && !scrollLoadingData)
+        {
+            // Calculate the position of one screen length before the bottom
+            // of the results.
+            let scrollViewContentHeight = tableView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - tableView.bounds.size.height
+            
+            // When the user has scrolled past the threshold, start requesting
+            if (scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging)
+            {
+                scrollLoadingData = true
+                
+                // Get more entries.
+                getEntries()
+            }
+        }
     }
 }
 

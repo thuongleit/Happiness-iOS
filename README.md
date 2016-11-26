@@ -17,7 +17,7 @@ The following **required** functionality is completed:
    - [x] Settings button on left for sign out
 - [ ] Timeline section and row management
    - [x] Use getEntries() to retrieve nest entries from service
-   - [ ] Use getEntries() skip count for infinite scroll
+   - [x] Use getEntries() beforeCreatedDate for infinite scroll
    - [x] Divide entries into sections by week
    - [ ] Discard entries for a partial week
    - [x] Add section header for current milestone even if it has no entries
