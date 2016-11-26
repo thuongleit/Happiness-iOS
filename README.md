@@ -15,7 +15,7 @@ The following **required** functionality is completed:
    - [x] Hide tab bar, since timeline is the only main view
 - [x] Timeline navigation bar
    - [x] Settings button on left for sign out
-- [ ] Timeline section and row management
+- [x] Timeline section and row management
    - [x] Use getEntries() to retrieve nest entries from service
    - [x] Use getEntries() beforeCreatedDate for infinite scroll
    - [x] Divide entries into sections by week
