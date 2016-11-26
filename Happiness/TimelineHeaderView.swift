@@ -26,6 +26,8 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
 
     var entryCountByUser: [String: Int]?
     
+    var completedUserCount: Int?
+    
     var nestUsers: [User]? {
         didSet {
             // Remove old profile image views
@@ -84,7 +86,7 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
             
             // Message text
             let userCount: Int! = nestUsers?.count
-            let completedUserCount: Int! = entryCountByUser?.count
+            let completedUserCount = self.completedUserCount ?? 0
             if completedUserCount == nestUsers?.count {
                 // Everyone completed
                 messageLabel.text = "Woohoo! Everyone completed! ^_^"
@@ -92,7 +94,7 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
                 messageLabel.textColor = UIConstants.whiteColor
                 contentView.backgroundColor = UIConstants.primarySelectedThemeColor
             }
-            if (entryCountByUser?.count)! < (nestUsers?.count)! {
+            else if completedUserCount < (nestUsers?.count)! {
                 if let currentUserEntryCount = entryCountByUser?[(User.currentUser?.id)!] {
                     if currentUserEntryCount > 0 {
                         // Your pals have not completed

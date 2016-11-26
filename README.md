@@ -60,6 +60,9 @@ The following **required** functionality is completed:
 The following **optional** features are nice to have:
 
 - [x] Change app name to "Happynest"
+- [x] Confetti when everyone completes milestone (display only one time)
+   - [x] Show confetti for last user who completes milestone
+   - [x] Also show confetti for users who have already completed milestone when they next open the app
 - [ ] Display milestone deadline date if you haven't written yet. E.g. "3 days left!"
 
 

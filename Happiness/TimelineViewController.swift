@@ -100,11 +100,25 @@ class TimelineSection
         return userEntryCount[userId]
     }
     
+    // Return the count of users who have at least one entry.
+    func getCountOfUsersWithEntries() -> Int {
+        
+        var countOfUsersWithEntries = 0
+        for (_, entryCount) in userEntryCount {
+            
+            if entryCount > 0 {
+                
+                countOfUsersWithEntries = countOfUsersWithEntries + 1
+            }
+        }
+        return countOfUsersWithEntries
+    }
+    
     // Returns a dictionary of user id to count of entries written for each user
     // in the current user's nest.
     func getEntryCountByUser() -> [String: Int]? {
-        let copyOfUserEntryCount = userEntryCount
-        return copyOfUserEntryCount
+        
+        return userEntryCount
     }
 }
 
@@ -150,10 +164,6 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
                 target: self,
                 action: #selector(onComposeButton))
             navigationItem.rightBarButtonItem  = composeButton
-            
-            // Temp confetti code!!!
-            let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress))
-            view.addGestureRecognizer(longPressRecognizer)
             
             // Add confetti view.
             confettiView = ConfettiView(frame: view.bounds)
@@ -206,8 +216,10 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
                             // just reload the first section.
                             self.tableView.reloadSections(IndexSet(integer: 0), with: .fade)
                         }
+                        
+                        // Congratulate user when appropriate.
+                        self.congratulateIfComplete()
                     }
-                    
                 }
             }
 
@@ -229,8 +241,8 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
                 }
             }
         
-        // Get entries when the view controller loads.
-        getEntries()
+        // Get nest users and entries when the view controller loads.
+        getNestUsers(thenGetEntries: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -254,30 +266,43 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
         present(navigationController, animated: true, completion: nil)
     }
     
-    // Temp confetti code!!!
-    @IBAction func onLongPress(_ sender: UILongPressGestureRecognizer)
-    {
-        if let navigationController = self.navigationController {
-            
-            UIConstants.presentError(
-                message: "Everyone completed the challenge!!!",
-                inView: navigationController.view)
-        }
-        if let confettiView = confettiView {
-            
-            confettiView.drop(seconds: 1.8)
-        }
-    }
-    
-    func getNestUsers() {
+    // Set nestUsers[] array to the list of users in the authenticating user's
+    // nest. If shouldGetEntries parameter is true, call getEntries() after this
+    // function has succeeded.
+    func getNestUsers(
+        thenGetEntries shouldGetEntries: Bool, refreshControl: UIRefreshControl? = nil) {
+        
         let happinessService = HappinessService.sharedInstance
         
-        happinessService.getNestUsersForCurrentUser(success: { (users: [User]) in
-            self.nestUsers = users
-            self.tableView.reloadData()
-        }, failure: { (error: Error) in
-            print(error.localizedDescription)
-        })
+        willRequest()
+        
+        happinessService.getNestUsersForCurrentUser(
+            success: { (users: [User]) in
+            
+                self.nestUsers = users
+
+                // When calling getEntries(), do not end refreshing on
+                // refreshControl at this time.
+                self.requestDidSucceed(
+                    true, refreshControl: shouldGetEntries ? nil : refreshControl)
+                
+                DispatchQueue.main.async {
+                    
+                    if shouldGetEntries {
+                        
+                        self.getEntries(refreshControl: refreshControl)
+                    }
+                    else {
+                        
+                        self.tableView.reloadData()
+                    }
+                }
+            },
+            failure: { (error: Error) in
+            
+                self.requestDidSucceed(false, refreshControl: refreshControl)
+            }
+        )
     }
 
     // Get a collection of entries for the authenticating user.
@@ -294,7 +319,8 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
 
         willRequest()
             
-        happinessService.getEntries(skipTo: pagingCount,
+        happinessService.getEntries(
+            skipTo: pagingCount,
             success: { (entries: [Entry]) in
 
                 let shouldReloadData: Bool
@@ -321,9 +347,10 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
                     
                     DispatchQueue.main.async {
                     
-                        // self.tableView.reloadData()
-                        // Reload table after nest users are retreived for headers
-                        self.getNestUsers()
+                        self.tableView.reloadData()
+                        
+                        // Congratulate user when appropriate.
+                        self.congratulateIfComplete()
                     }
                 }
             },
@@ -343,7 +370,7 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
         var sectionYear = -1
         for entry in entries {
             
-            let (week, year) = getEntryWeekYear(date: entry.createdDate)
+            let (week, year) = UIConstants.getWeekYear(date: entry.createdDate)
             
             if section == nil || week != sectionWeek || year != sectionYear {
                 
@@ -357,7 +384,7 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
         }
         
         // Add section for the current week even if it has no entries.
-        let (thisWeek, thisYear) = getEntryWeekYear(date: Date())
+        let (thisWeek, thisYear) = UIConstants.getWeekYear(date: Date())
         if !(sections.count > 0 && sections[0].week == thisWeek && sections[0].year == thisYear) {
             
             section = TimelineSection(week: thisWeek, year: thisYear)
@@ -369,7 +396,7 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
     // if a new section was added, false otherwise.
     func addNewEntry(_ entry: Entry) -> Bool {
         
-        let (week, year) = getEntryWeekYear(date: entry.createdDate)
+        let (week, year) = UIConstants.getWeekYear(date: entry.createdDate)
         
         let section: TimelineSection
         let wasSectionAdded: Bool
@@ -413,30 +440,11 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
         }
         return nil
     }
-    
-    // Return the week and year of the specified entry.
-    func getEntryWeekYear(date: Date?) -> (Int, Int) {
         
-        let week: Int
-        let year: Int
-        if let date = date {
-            
-            week = Calendar.current.component(.weekOfYear, from: date)
-            year = Calendar.current.component(.yearForWeekOfYear, from: date)
-        }
-        else {
-            
-            week = 0
-            year = 0
-        }
-        
-        return (week, year)
-    }
-    
-    // Get entries when the user pulls to refresh.
+    // Get nest users and entries when the user pulls to refresh.
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
 
-        getEntries(refreshControl: refreshControl)
+        getNestUsers(thenGetEntries: true, refreshControl: refreshControl)
     }
     
     // Display progress HUD before the request is made.
@@ -477,6 +485,37 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
         NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.hideBottomTabBars.notification))
         navigationController?.pushViewController(viewEntryViewController, animated: true)
     }
+    
+    // Congratulate user if all nest users have completed the challenge and the
+    // user has not been congratulated yet for this week. Should be called after
+    // entries are added.
+    func congratulateIfComplete() {
+        
+        if sections.count > 0,
+            sections[0].getCountOfUsersWithEntries() == nestUsers.count {
+            
+            if Congrats.shared.congratulateShouldDisplayCongrats() {
+                
+                displayCongrats()
+            }
+        }
+    }
+    
+    // Display a congratulations banner and confetti.
+    func displayCongrats()
+    {
+        if let navigationController = self.navigationController {
+            
+            UIConstants.presentError(
+                message: "Everyone completed the challenge!!!",
+                inView: navigationController.view)
+        }
+        if let confettiView = confettiView {
+            
+            // Make it rain.
+            confettiView.drop(seconds: 1.8)
+        }
+    }
 }
 
 // UITableView methods
@@ -491,6 +530,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: UIConstants.CellReuseIdentifier.timelineHeaderCell) as! TimelineHeaderView
         headerView.delegate = self
         headerView.entryCountByUser = self.sections[section].getEntryCountByUser()
+        headerView.completedUserCount = self.sections[section].getCountOfUsersWithEntries()
         headerView.nestUsers = self.nestUsers
         headerView.titleLabel.text = sections[section].title
         return headerView
@@ -612,77 +652,4 @@ extension TimelineViewController: TimelineTableViewCellDelegate {
             pushViewEntryViewController(forEntry: entry)
         }
     }
-}
-
-extension TimelineViewController {
-    
-    // test function!!!
-    /*func getDummyEntries() -> [Entry]
-     {
-     var entries = [Entry]()
-     let entry0 = Entry()
-     entry0.question = nil
-     entry0.text = "Feeling grateful as I watch the sun rise over the rim of the Grand Canyon."
-     entry0.imageUrls = [URL(string: "https://i.imgur.com/m9KiEJs.jpg")!]
-     entry0.location = Location(locationObject: [:] as AnyObject)
-     entry0.location?.name = "Grand Canyon National Park, Arizona"
-     entry0.createdDate = Date() // today
-     entry0.happinessLevel = .happy
-     entries.append(entry0)
-     
-     let entry1 = Entry()
-     entry1.question = nil
-     entry1.text = "Such a happy day in Paris today. The Eiffel Tower was lit up with the colors of the South African flag in honour of Nelson Mandela."
-     entry1.imageUrls = [URL(string: "https://i.imgur.com/e25gpSJ.jpg")!]
-     entry1.location = Location(locationObject: [:] as AnyObject)
-     entry1.location?.name = "Paris, France"
-     var dateComponents = DateComponents()
-     dateComponents.day = 6
-     dateComponents.month = 12
-     dateComponents.year = 2015
-     entry1.createdDate = Calendar.current.date(from: dateComponents)
-     entry1.happinessLevel = .happy
-     entries.append(entry1)
-     
-     let entry2 = Entry()
-     entry2.question = nil
-     entry2.text = "Having kind of a down day. Made some cranberry and white chocolate chip cookies to cheer myself up."
-     entry2.imageUrls = [URL(string: "https://i.imgur.com/CEKaBVb.jpg")!]
-     entry2.location = Location(locationObject: [:] as AnyObject)
-     entry2.location?.name = "Menlo Park, CA"
-     dateComponents.day = 29
-     dateComponents.month = 1
-     dateComponents.year = 2015
-     entry2.createdDate = Calendar.current.date(from: dateComponents)
-     entry2.happinessLevel = .sad
-     entries.append(entry2)
-     
-     let entry3 = Entry()
-     entry3.question = nil
-     entry3.text = "Just landed in Bali for this year's rafting trip. Last year was a blast! I can't wait to get out there. So grateful to meet up with good friends in such a wonderful country. John is already here, and Lisa is arriving tomorrow."
-     entry3.imageUrls = [URL(string: "https://i.imgur.com/MW8zU.jpg")!]
-     entry3.location = Location(locationObject: [:] as AnyObject)
-     entry3.location?.name = "Badung, Bali, Indonesia"
-     dateComponents.day = 5
-     dateComponents.month = 1
-     dateComponents.year = 2015
-     entry3.createdDate = Calendar.current.date(from: dateComponents)
-     entry3.happinessLevel = .excited
-     entries.append(entry3)
-     
-     let entry4 = Entry()
-     entry4.question = nil
-     entry4.text = "San Francisco lit up city hall quite nicely with their green and red color-changing display. It took forever to get zero people in the shot, but it was worth the wait."
-     entry4.imageUrls = [URL(string: "https://i.imgur.com/I6nM7wb.jpg")!]
-     entry4.location = Location(locationObject: [:] as AnyObject)
-     entry4.location?.name = "San Francisco, CA"
-     dateComponents.day = 24
-     dateComponents.month = 12
-     dateComponents.year = 2014
-     entry4.createdDate = Calendar.current.date(from: dateComponents)
-     entry4.happinessLevel = .happy
-     entries.append(entry4)
-     
-     return entries
-     }*/
 }

@@ -152,6 +152,11 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     }
     
     func saveEntry() {
+        
+        // Dismiss the keyboard so that the animation is complete before any
+        // congratulations confetti is displayed.
+        dismissKeyboard()
+        
         if (entryExisting) {
             updateEntry()
         } else {
