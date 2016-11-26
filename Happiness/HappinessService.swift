@@ -19,7 +19,16 @@ class HappinessService: NSObject {
     let googleMapsBaseURL = "https://maps.googleapis.com/maps/api/geocode/json?"
     let googleMapsAPIKey = "AIzaSyC0SxpBokzPt8_s-Jf6q1yzzt7WPibKHZc"
     
-    let getEntriesQueryLimit = 100
+    // For scrolling to work correctly, getEntriesQueryLimit must be greater
+    // than maxEntriesPerWeek. If we enforce a limit of maxEntriesPerWeek in
+    // the UI, a situation can still occur where multiple users create entries
+    // at the same time, thus exceeding maxEntriesPerWeek. To account for this,
+    // we set getEntriesQueryLimit to maxEntriesPerWeek plus a padding value of
+    // maxEntriesPerWeekPadding.
+    static let maxEntriesPerWeek = 100
+    static let maxEntriesPerWeekPadding = 20
+    let getEntriesQueryLimit = maxEntriesPerWeek + maxEntriesPerWeekPadding
+    
     let getNestUsersQueryLimit = 20
     
     var loginSuccess:((User) -> ())?

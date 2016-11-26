@@ -19,7 +19,7 @@ The following **required** functionality is completed:
    - [x] Use getEntries() to retrieve nest entries from service
    - [x] Use getEntries() beforeCreatedDate for infinite scroll
    - [x] Divide entries into sections by week
-   - [ ] Discard entries for a partial week
+   - [X] Discard entries for a partial week
    - [x] Add section header for current milestone even if it has no entries
    - [x] Only display entries for milestone if user created entry for that milestone
    - [x] Only allow swipe to delete for current user's entries
