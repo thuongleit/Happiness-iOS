@@ -261,6 +261,21 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
     // When the compose is pressed, present the EditEntryViewController modally.
     @IBAction func onComposeButton(_ sender: UIBarButtonItem)
     {
+        // Enforce a limit of maxEntriesPerWeek.
+        if let firstSection = sections.first {
+            
+            if firstSection.rows + 1 > HappinessService.maxEntriesPerWeek {
+                
+                if let navigationController = self.navigationController {
+                    
+                    UIConstants.presentError(
+                        message: "Max entries per week reached.",
+                        inView: navigationController.view)
+                }
+                return
+            }
+        }
+
         let editEntryViewController = EditEntryViewController(nibName: nil, bundle: nil)
         let navigationController = UINavigationController(rootViewController: editEntryViewController)
         navigationController.navigationBar.isTranslucent = false
@@ -317,23 +332,24 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
             beforeCreatedDate: scrollLoadingData ? lastEntryCreatedDate : nil,
             success: { (entries: [Entry]) in
 
+                let entriesAdded: Int
                 let shouldReloadData: Bool
                 if self.scrollLoadingData {
                 
                     // Infinite scroll. Append entries to tableView.
                     self.scrollLoadingData = false
-                    self.appendEntries(entries: entries)
+                    entriesAdded = self.appendEntries(entries: entries)
                     shouldReloadData = entries.count > 0
                 }
                 else {
                     
                     // Set up the tableView based on entries.
-                    self.addEntries(entries: entries)
+                    entriesAdded = self.addEntries(entries: entries)
                     shouldReloadData = true
                 }
-                if entries.count > 0 {
+                if entriesAdded > 0 {
                     
-                    self.lastEntryCreatedDate = entries.last?.createdDate
+                    self.lastEntryCreatedDate = entries[entriesAdded - 1].createdDate
                 }
                 
                 self.requestDidSucceed(true, refreshControl: refreshControl)
@@ -357,10 +373,11 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
     }
     
     // Replace the contents of the tableView with the specified entries.
-    func addEntries(entries: [Entry]) {
+    // Returns the number of entries added.
+    func addEntries(entries: [Entry]) -> Int {
         
         sections.removeAll()
-        appendEntries(entries: entries)
+        let entriesAdded = appendEntries(entries: entries)
         
         // Add section for the current week even if it has no entries.
         let (thisWeek, thisYear) = UIConstants.getWeekYear(date: Date())
@@ -369,12 +386,16 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
             let section = TimelineSection(week: thisWeek, year: thisYear)
             sections.insert(section, at: 0)
         }
+        
+        return entriesAdded
     }
     
-    // Append the specified entries to the tableView.
-    func appendEntries(entries: [Entry]) {
+    // Append the specified entries to the tableView. Returns the number of
+    // entries added.
+    func appendEntries(entries: [Entry]) -> Int {
         
         var section = sections.last
+        var sectionsAdded = 0
         for entry in entries {
             
             let (week, year) = UIConstants.getWeekYear(date: entry.createdDate)
@@ -383,10 +404,28 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
                 
                 section = TimelineSection(week: week, year: year)
                 sections.append(section!)
+                sectionsAdded = sectionsAdded + 1
             }
             
             section!.append(entry: entry)
         }
+
+        // If these entries are not the final entries in the database, discard
+        // the final section, since it may not be complete. This code makes the
+        // assumption that there is always less than getEntriesQueryLimit entries
+        // in a section. This is enforced elsewhere using maxEntriesPerWeek.
+        var entriesAdded = entries.count
+        let endOfDatabase = entriesAdded < HappinessService.sharedInstance.getEntriesQueryLimit
+        if sectionsAdded > 0 && !endOfDatabase {
+            
+            if let lastSection = sections.last {
+                
+                entriesAdded -= lastSection.rows
+                sections.removeLast()
+            }
+        }
+        
+        return entriesAdded
     }
     
     // Add the specified new entry to the tableView sections. Returns true
