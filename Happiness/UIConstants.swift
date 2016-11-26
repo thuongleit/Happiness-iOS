@@ -253,6 +253,25 @@ class UIConstants: NSObject {
         textField.placeholder = placeholder
     }
     
+    // Return the week and year of the specified date.
+    static func getWeekYear(date: Date?) -> (Int, Int) {
+        
+        let week: Int
+        let year: Int
+        if let date = date {
+            
+            week = Calendar.current.component(.weekOfYear, from: date)
+            year = Calendar.current.component(.yearForWeekOfYear, from: date)
+        }
+        else {
+            
+            week = 0
+            year = 0
+        }
+        
+        return (week, year)
+    }
+
     class CellReuseIdentifier {
         static let timelineHeaderCell = "TimelineHeaderCell"
         static let timelineCell = "TimelineCell"
