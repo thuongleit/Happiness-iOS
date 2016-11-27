@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MBProgressHUD
 
 // Represents a section in a timeline table.
 class TimelineSection
@@ -130,6 +129,7 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
     
     var sections = [TimelineSection]()
     var nestUsers = [User]()
+    var progressHud: ProgressHUD?
     var scrollLoadingData = false
     var lastEntryCreatedDate: Date?
 
@@ -165,13 +165,6 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
                 target: self,
                 action: #selector(onComposeButton))
             navigationItem.rightBarButtonItem  = composeButton
-            
-            // Add confetti view.
-            confettiView = ConfettiView(frame: view.bounds)
-            if let confettiView = confettiView {
-                
-                view.addSubview(confettiView)
-            }
         }
         
         // Set up the tableView.
@@ -192,6 +185,20 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
             self, action: #selector(refreshControlAction(_:)),
             for: UIControlEvents.valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
+        
+        // Set up the ProgressHUD.
+        progressHud = ProgressHUD(view: view)
+        if let progressHud = progressHud {
+            
+            view.addSubview(progressHud)
+        }
+        
+        // Set up confetti view.
+        confettiView = ConfettiView(frame: view.bounds)
+        if let confettiView = confettiView {
+            
+            view.addSubview(confettiView)
+        }
         
         // When an entry is created, add it to the table.
         NotificationCenter.default.addObserver(
@@ -297,16 +304,19 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
             
                 self.nestUsers = users
 
-                // When calling getEntries(), do not end refreshing on
-                // refreshControl at this time.
-                self.requestDidSucceed(
-                    true, refreshControl: shouldGetEntries ? nil : refreshControl)
+                // When calling getEntries(), do not hide progressHud or end
+                // refreshing on refreshControl at this time.
+                if !shouldGetEntries {
+                    
+                    self.requestDidSucceed(
+                        true, refreshControl: shouldGetEntries ? nil : refreshControl)
+                }
                 
                 DispatchQueue.main.async {
                     
                     if shouldGetEntries {
                         
-                        self.getEntries(refreshControl: refreshControl)
+                        self.getEntries(willRequestCalled: true, refreshControl: refreshControl)
                     }
                     else {
                         
@@ -322,11 +332,14 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
     }
 
     // Get a collection of entries for the authenticating user.
-    func getEntries(refreshControl: UIRefreshControl? = nil) {
+    func getEntries(willRequestCalled: Bool = false, refreshControl: UIRefreshControl? = nil) {
         
         let happinessService = HappinessService.sharedInstance
         
-        willRequest()
+        if !willRequestCalled {
+            
+            willRequest()
+        }
         
         happinessService.getEntries(
             beforeCreatedDate: scrollLoadingData ? lastEntryCreatedDate : nil,
@@ -486,7 +499,10 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
     // Display progress HUD before the request is made.
     func willRequest() {
         
-        MBProgressHUD.showAdded(to: view, animated: true)
+        if let progressHud = progressHud {
+        
+            progressHud.show(animated: true)
+        }
     }
     
     // Show or hide the error banner based on success or failure. Hide the
@@ -504,7 +520,10 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
                 }
             }
             
-            MBProgressHUD.hide(for: self.view, animated: true)
+            if let progressHud = self.progressHud {
+                
+                progressHud.hide(animated: true)
+            }
             
             if let refreshControl = refreshControl {
                 

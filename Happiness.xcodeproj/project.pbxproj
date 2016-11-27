@@ -41,6 +41,7 @@
 		F704FCA419A24176385233FF /* Pods_Happiness.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 497F8C0D117519D30237A150 /* Pods_Happiness.framework */; };
 		FC86135F1DE667AC00497425 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC86135E1DE667AC00497425 /* ConfettiView.swift */; };
 		FC8613611DE9742300497425 /* Congrats.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8613601DE9742300497425 /* Congrats.swift */; };
+		FC8613631DEA5CF300497425 /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8613621DEA5CF300497425 /* ProgressHUD.swift */; };
 		FCEAD6C51DD7BBCA002ADFC2 /* TimelineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEAD6C41DD7BBCA002ADFC2 /* TimelineTableViewCell.swift */; };
 		FCEAD6C71DD7BCBA002ADFC2 /* TimelineTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCEAD6C61DD7BCBA002ADFC2 /* TimelineTableViewCell.xib */; };
 /* End PBXBuildFile section */
@@ -85,6 +86,7 @@
 		E1E579C81DD7F39D0032570C /* TabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		FC86135E1DE667AC00497425 /* ConfettiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		FC8613601DE9742300497425 /* Congrats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Congrats.swift; sourceTree = "<group>"; };
+		FC8613621DEA5CF300497425 /* ProgressHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
 		FCEAD6C41DD7BBCA002ADFC2 /* TimelineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewCell.swift; sourceTree = "<group>"; };
 		FCEAD6C61DD7BCBA002ADFC2 /* TimelineTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -207,6 +209,7 @@
 				E1E579C61DD7F36D0032570C /* TabBarView.xib */,
 				E1E579C81DD7F39D0032570C /* TabBarView.swift */,
 				FC86135E1DE667AC00497425 /* ConfettiView.swift */,
+				FC8613621DEA5CF300497425 /* ProgressHUD.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -380,6 +383,7 @@
 				E18E2CB81DC95FD500BA02C4 /* AppDelegate.swift in Sources */,
 				E17ACFB11DD70E2200E826FE /* LoginSignupViewController.swift in Sources */,
 				E1B6F6561DD4380700B01B9E /* BaseViewController.swift in Sources */,
+				FC8613631DEA5CF300497425 /* ProgressHUD.swift in Sources */,
 				E1B6F64F1DD4142900B01B9E /* Location.swift in Sources */,
 				E1B6F6491DD411D200B01B9E /* User.swift in Sources */,
 				E1B6F6721DD4403E00B01B9E /* CalendarViewController.swift in Sources */,

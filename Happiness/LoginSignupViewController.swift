@@ -8,7 +8,6 @@
 
 import UIKit
 import ParseUI
-import MBProgressHUD
 
 class LoginSignupViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
@@ -36,6 +35,8 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate, UINaviga
     @IBOutlet weak var buttonsTopConstraint: NSLayoutConstraint!
     
     var isSignup: Bool!
+
+    var progressHud: ProgressHUD?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +71,13 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate, UINaviga
         tapBackground.numberOfTapsRequired = 1
         tapBackground.addTarget(self, action: #selector(dismissKeyboard))
         self.view.addGestureRecognizer(tapBackground)
+
+        // Set up the ProgressHUD.
+        progressHud = ProgressHUD(view: view)
+        if let progressHud = progressHud {
+            
+            view.addSubview(progressHud)
+        }
     }
     
     func onProfileImageTap() {
@@ -165,12 +173,20 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate, UINaviga
             }
         }
         
-        MBProgressHUD.showAdded(to: self.view, animated: true)
+        // Display progress HUD before the request is made.
+        if let progressHud = progressHud {
+            
+            progressHud.show(animated: true)
+        }
         
         if (isLoginFlow()) {
             
             HappinessService.sharedInstance.login(email: emailTextField.text!, password: passwordTextField.text!, success: { (user: User) in
-                MBProgressHUD.hide(for: self.view, animated: true)
+                // Hide progress HUD after request is complete.
+                if let progressHud = self.progressHud {
+                    
+                    progressHud.hide(animated: true)
+                }
                 print("log in success with name \(user.name)")
                 
                 // store user's email address for push notification
@@ -180,7 +196,11 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate, UINaviga
                 
                 NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogin.notification, object: nil)
             }, failure: { (error: Error) in
-                MBProgressHUD.hide(for: self.view, animated: true)
+                // Hide progress HUD after request is complete.
+                if let progressHud = self.progressHud {
+                    
+                    progressHud.hide(animated: true)
+                }
                 UIConstants.presentError(message: "Incorrect email and password.", inView: self.view)
                 print("login fail with error: \(error)")
             })
@@ -188,12 +208,20 @@ class LoginSignupViewController: UIViewController, UITextFieldDelegate, UINaviga
             
             HappinessService.sharedInstance.signup(email: emailTextField.text!, password: passwordTextField.text!, name: nameTextField.text!, profileImage: profileImageView.image, success: { (user: User) in
                 
-                MBProgressHUD.hide(for: self.view, animated: true)
+                // Hide progress HUD after request is complete.
+                if let progressHud = self.progressHud {
+                    
+                    progressHud.hide(animated: true)
+                }
                 print("sign up success with name \(user.name)")
                 NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogin.notification, object: nil)
                 
             }, failure: { (error: Error) in
-                MBProgressHUD.hide(for: self.view, animated: true)
+                // Hide progress HUD after request is complete.
+                if let progressHud = self.progressHud {
+                    
+                    progressHud.hide(animated: true)
+                }
                 print("sign up fail with error: \(error)")
             })
         }
