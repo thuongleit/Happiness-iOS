@@ -256,7 +256,7 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         
         // Display the tab bar.
-        NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.unhideBottomTabBars.notification))
+        //NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.unhideBottomTabBars.notification))
     }
  
     // When the settings is pressed, log out.
@@ -537,7 +537,7 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
         
         let viewEntryViewController = ViewEntryViewController(nibName: nil, bundle: nil)
         viewEntryViewController.entry = entry
-        NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.hideBottomTabBars.notification))
+        //NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.hideBottomTabBars.notification))
         navigationController?.pushViewController(viewEntryViewController, animated: true)
     }
     
