@@ -212,7 +212,7 @@ class UIConstants: NSObject {
         let data = NSData(contentsOf: url! as URL)
         if let data = data  {
             let json = try! JSONSerialization.jsonObject(with: data as Data, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
-            if let result = json["results"] as? NSArray {
+            if let result = json["results"] as? NSArray, result.count > 0 {
                 if let addressArray = result[0] as? NSDictionary {
                     address = addressArray["formatted_address"] as? String
                     if let addressComponents = addressArray["address_components"] as? NSArray {
@@ -288,6 +288,7 @@ class UIConstants: NSObject {
         static let confettiHappy = "happy-20"
         static let confettiReallyHappy = "really_happy-20"
         static let confettiHeart = "heartRed"
+        static let reallyHappy = "really_happy"
     }
     
 }
