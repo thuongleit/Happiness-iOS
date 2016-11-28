@@ -9,7 +9,6 @@
 import UIKit
 import CoreLocation
 import ParseUI
-import MBProgressHUD
 
 class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextViewDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
@@ -24,6 +23,8 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     
     @IBOutlet weak var uploadImageButton: UIButton!
     
+    var progressHud: ProgressHUD?
+
     let locationManager = CLLocationManager()
     var placeOfInterest:String?
     
@@ -70,6 +71,13 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(EditEntryViewController.cancelEntry))
         navigationItem.leftBarButtonItem = cancelButton
         
+        // Set up the ProgressHUD.
+        progressHud = ProgressHUD(view: view)
+        if let progressHud = progressHud {
+            
+            view.addSubview(progressHud)
+        }
+
         // Ask for location permission
         self.locationManager.requestWhenInUseAuthorization()
         
@@ -152,6 +160,11 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     }
     
     func saveEntry() {
+        
+        // Dismiss the keyboard so that the animation is complete before any
+        // congratulations confetti is displayed.
+        dismissKeyboard()
+        
         if (entryExisting) {
             updateEntry()
         } else {
@@ -161,16 +174,25 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             }
             
             // Display progress HUD before the request is made.
-            MBProgressHUD.showAdded(to: view, animated: true)
+            if let progressHud = progressHud {
+                
+                progressHud.show(animated: true)
+            }
             
             let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
             HappinessService.sharedInstance.create(text: textView.text, images: entryMedia, happinessLevel: Int(feelingSlider.value), placemark: placeOfInterest, location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
                 // Hide progress HUD after request is complete.
-                MBProgressHUD.hide(for: self.view, animated: true)
+                if let progressHud = self.progressHud {
+                    
+                    progressHud.hide(animated: true)
+                }
                 self.dismiss(animated: true, completion: {})
             }) { (error: Error) in
                 // Hide progress HUD after request is complete.
-                MBProgressHUD.hide(for: self.view, animated: true)
+                if let progressHud = self.progressHud {
+                    
+                    progressHud.hide(animated: true)
+                }
                 let alertController = UIAlertController(title: "Error saving entry", message:
                     "Happiness monster hugged our server just a little too hard...", preferredStyle: UIAlertControllerStyle.alert)
                 alertController.addAction(UIAlertAction(title: "Delete entry", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
@@ -198,16 +220,25 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         entry?.happinessLevel = Entry.getHappinessLevel(happinessLevelInt: Int(feelingSlider.value))
         
         // Display progress HUD before the request is made.
-        MBProgressHUD.showAdded(to: view, animated: true)
+        if let progressHud = progressHud {
+            
+            progressHud.show(animated: true)
+        }
         
         let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
         HappinessService.sharedInstance.update(entry: entry!, images: entryMedia, location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
             // Hide progress HUD after request is complete.
-            MBProgressHUD.hide(for: self.view, animated: true)
+            if let progressHud = self.progressHud {
+                
+                progressHud.hide(animated: true)
+            }
             self.dismiss(animated: true, completion: {})
         }) { (error: Error) in
             // Hide progress HUD after request is complete.
-            MBProgressHUD.hide(for: self.view, animated: true)
+            if let progressHud = self.progressHud {
+                
+                progressHud.hide(animated: true)
+            }
             let alertController = UIAlertController(title: "Error saving entry", message:
                 "Happiness monster hugged our server just a little too hard...", preferredStyle: UIAlertControllerStyle.alert)
             alertController.addAction(UIAlertAction(title: "Delete entry", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in

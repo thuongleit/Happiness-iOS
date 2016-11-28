@@ -15,11 +15,11 @@ The following **required** functionality is completed:
    - [x] Hide tab bar, since timeline is the only main view
 - [x] Timeline navigation bar
    - [x] Settings button on left for sign out
-- [ ] Timeline section and row management
+- [x] Timeline section and row management
    - [x] Use getEntries() to retrieve nest entries from service
-   - [ ] Use getEntries() skip count for infinite scroll
+   - [x] Use getEntries() beforeCreatedDate for infinite scroll
    - [x] Divide entries into sections by week
-   - [ ] Discard entries for a partial week
+   - [X] Discard entries for a partial week
    - [x] Add section header for current milestone even if it has no entries
    - [x] Only display entries for milestone if user created entry for that milestone
    - [x] Only allow swipe to delete for current user's entries
@@ -60,6 +60,10 @@ The following **required** functionality is completed:
 The following **optional** features are nice to have:
 
 - [x] Change app name to "Happynest"
+- [x] Progress indicator uses spinning emoji
+- [x] Confetti when everyone completes milestone (display only one time)
+   - [x] Show confetti for last user who completes milestone
+   - [x] Also show confetti for users who have already completed milestone when they next open the app
 - [ ] Display milestone deadline date if you haven't written yet. E.g. "3 days left!"
 
 

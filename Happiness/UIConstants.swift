@@ -212,7 +212,7 @@ class UIConstants: NSObject {
         let data = NSData(contentsOf: url! as URL)
         if let data = data  {
             let json = try! JSONSerialization.jsonObject(with: data as Data, options: JSONSerialization.ReadingOptions.allowFragments) as! NSDictionary
-            if let result = json["results"] as? NSArray {
+            if let result = json["results"] as? NSArray, result.count > 0 {
                 if let addressArray = result[0] as? NSDictionary {
                     address = addressArray["formatted_address"] as? String
                     if let addressComponents = addressArray["address_components"] as? NSArray {
@@ -253,6 +253,25 @@ class UIConstants: NSObject {
         textField.placeholder = placeholder
     }
     
+    // Return the week and year of the specified date.
+    static func getWeekYear(date: Date?) -> (Int, Int) {
+        
+        let week: Int
+        let year: Int
+        if let date = date {
+            
+            week = Calendar.current.component(.weekOfYear, from: date)
+            year = Calendar.current.component(.yearForWeekOfYear, from: date)
+        }
+        else {
+            
+            week = 0
+            year = 0
+        }
+        
+        return (week, year)
+    }
+
     class CellReuseIdentifier {
         static let timelineHeaderCell = "TimelineHeaderCell"
         static let timelineCell = "TimelineCell"
@@ -266,6 +285,10 @@ class UIConstants: NSObject {
     class ImageName {
         static let composeButton = "compose-22"
         static let settingsButton = "settings-22"
+        static let confettiHappy = "happy-20"
+        static let confettiReallyHappy = "really_happy-20"
+        static let confettiHeart = "heartRed"
+        static let reallyHappy = "really_happy"
     }
     
 }

@@ -19,6 +19,18 @@ class HappinessService: NSObject {
     let googleMapsBaseURL = "https://maps.googleapis.com/maps/api/geocode/json?"
     let googleMapsAPIKey = "AIzaSyC0SxpBokzPt8_s-Jf6q1yzzt7WPibKHZc"
     
+    // For scrolling to work correctly, getEntriesQueryLimit must be greater
+    // than maxEntriesPerWeek. If we enforce a limit of maxEntriesPerWeek in
+    // the UI, a situation can still occur where multiple users create entries
+    // at the same time, thus exceeding maxEntriesPerWeek. To account for this,
+    // we set getEntriesQueryLimit to maxEntriesPerWeek plus a padding value of
+    // maxEntriesPerWeekPadding.
+    static let maxEntriesPerWeek = 100
+    static let maxEntriesPerWeekPadding = 20
+    let getEntriesQueryLimit = maxEntriesPerWeek + maxEntriesPerWeekPadding
+    
+    let getNestUsersQueryLimit = 20
+    
     var loginSuccess:((User) -> ())?
     var callFailure:((Error) -> ())?
     
@@ -322,7 +334,7 @@ class HappinessService: NSObject {
     }
     
     // Returns all entries for current user
-    func getEntries(skipTo: Int?, success: @escaping (_ entries: [Entry]) -> (), failure: @escaping (Error) -> ()) {
+    func getEntries(beforeCreatedDate: Date?, success: @escaping (_ entries: [Entry]) -> (), failure: @escaping (Error) -> ()) {
         getEntriesSuccess = success
         callFailure = failure
         
@@ -342,13 +354,17 @@ class HappinessService: NSObject {
             query.whereKey("author", equalTo: PFUser.current()!)//return only signed in user's entries
         }
         
+        // If the optional parameter beforeCreatedDate was supplied for paging,
+        // return entries before that date.
+        if let beforeCreatedDate = beforeCreatedDate {
+            
+            query.whereKey("createdAt", lessThan: beforeCreatedDate)
+        }
+        
         query.includeKey("author")
         query.includeKey("nest")
         query.includeKey("author.nest")
-        query.limit = 100
-        if let skipCount = skipTo{
-            query.skip = skipCount//for paging
-        }
+        query.limit = getEntriesQueryLimit
         
         // fetch data asynchronously
         query.findObjectsInBackground { (entries: [PFObject]?, error: Error?) in
@@ -379,7 +395,7 @@ class HappinessService: NSObject {
             query.whereKey("nest", equalTo: nestObj)
         }
         
-        query.limit = 20
+        query.limit = getNestUsersQueryLimit
         query.includeKey("nest")
         //query.skip = skipCount//for paging
         
@@ -393,7 +409,7 @@ class HappinessService: NSObject {
                 var nestUsers = [User]()
                 for pfobj in objects! {
                     let curUser = User(obj: pfobj as AnyObject)
-                    print(curUser.name)
+                    //print(curUser.name)
                     nestUsers.append(curUser)
                 }
                 self.getNestUsersSuccess!(nestUsers)
