@@ -24,7 +24,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     @IBOutlet weak var uploadImageButton: UIButton!
     
     var progressHud: ProgressHUD?
-
+    
     let locationManager = CLLocationManager()
     var placeOfInterest:String?
     
@@ -77,7 +77,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             
             view.addSubview(progressHud)
         }
-
+        
         // Ask for location permission
         self.locationManager.requestWhenInUseAuthorization()
         
@@ -135,17 +135,19 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             }
         }
         
-        let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
-        placeOfInterest = UIConstants.getAddressForLatLng(latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude))
-        locationTextField.placeholder = placeOfInterest
-        //first show google maps state and city, and then try reverse geocoding to try apple maps for placemarks
-        
-        UIConstants.getAreaOfInterest(location: locationManager.location!, completion: {(areaOfInterest:String?, error: Error?) -> Void in
-            if(error == nil) {
-                self.placeOfInterest = areaOfInterest
-                self.locationTextField.placeholder = self.placeOfInterest
-            }
-        })
+        if let locationCoordinate = locationManager.location?.coordinate{
+            
+            placeOfInterest = UIConstants.getAddressForLatLng(latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude))
+            locationTextField.placeholder = placeOfInterest
+            //first show google maps state and city, and then try reverse geocoding to try apple maps for placemarks
+            
+            UIConstants.getAreaOfInterest(location: locationManager.location!, completion: {(areaOfInterest:String?, error: Error?) -> Void in
+                if(error == nil) {
+                    self.placeOfInterest = areaOfInterest
+                    self.locationTextField.placeholder = self.placeOfInterest
+                }
+            })
+        }
     }
     
     override func didReceiveMemoryWarning() {
