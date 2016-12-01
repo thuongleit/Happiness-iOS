@@ -78,20 +78,23 @@ class TimelineSection
         return entries[atRow]
     }
     
-    // Return the entry with the specified ID, or nil if no such entry is
-    // found.
-    func get(entryWithId entryId: String) -> Entry? {
+    // Update the entry with an ID matching the specified entry, if found.
+    // Return true if an entry was updated, false otherwise.
+    func update(entry newEntry: Entry) -> Bool {
         
-        for entry in entries {
+        for (index, entry) in entries.enumerated() {
             
-            if entry.id == entryId {
+            if entry.id == newEntry.id {
                 
-                return entry
+                // entries[index] and newEntry may or may not reference the
+                // same Entry object, so we copy newEntry to entries[index].
+                entries[index] = newEntry
+                return true
             }
         }
-        return nil
+        return false
     }
-    
+
     // Return the count of entries for the specified user, or nil if no
     // such user has entries.
     func getEntryCount(userWithId userId: String) -> Int? {
@@ -470,22 +473,15 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
     // section index of the updated entry, or nil if no entry was updated.
     func updateEntry(_ entry: Entry) -> Int? {
         
-        if let entryId = entry.id
-        {
-            var sectionIndex = 0
-            for section in sections {
+        var sectionIndex = 0
+        for section in sections {
                 
-                var foundEntry = section.get(entryWithId: entryId)
-                if foundEntry != nil
-                {
+            let foundEntry = section.update(entry: entry)
+            if foundEntry {
                     
-                    // foundEntry and entry may or may not reference the same
-                    // Entry object, so we copy entry to foundEntry.
-                    foundEntry = entry
-                    return sectionIndex
-                }
-                sectionIndex = sectionIndex + 1
+                return sectionIndex
             }
+            sectionIndex = sectionIndex + 1
         }
         return nil
     }
@@ -732,3 +728,4 @@ extension TimelineViewController: TimelineTableViewCellDelegate {
         }
     }
 }
+
