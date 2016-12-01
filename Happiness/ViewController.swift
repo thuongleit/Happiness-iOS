@@ -7,9 +7,13 @@
 //
 
 import UIKit
-import ParseUI
+//import ParseUI
+import AFNetworking
+import AVFoundation
+import CoreVideo
+import CoreGraphics
 
-class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class ViewController: UIViewController {
     
     @IBOutlet weak var alreadyAUserSwitch: UISwitch!
     @IBOutlet weak var emailField: UITextField!
@@ -18,19 +22,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     @IBOutlet weak var signupButton: UIButton!
     @IBOutlet weak var nameTextField: UITextField!
     
-
-    @IBOutlet weak var profileImageFromCamera: UIImageView!
-    @IBOutlet weak var profilePFImageView: PFImageView!
     
-    @IBOutlet weak var firstNestUserLabel: UILabel!
-    @IBOutlet weak var secondNestUserLabel: UILabel!
-    @IBOutlet weak var thirdNestUserLabel: UILabel!
-    
-    @IBOutlet weak var firstNestUserProfileImageVIew: PFImageView!
-    
-    @IBOutlet weak var secondNestUserProfileImageVIew: PFImageView!
-
-    @IBOutlet weak var thirdNestUserProfileImageVIew: PFImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
         loginButton.layer.cornerRadius = 5
@@ -41,7 +33,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     @IBAction func onAlreadyAUserChange(_ sender: Any) {
         setUpFieldsVisibility()
     }
-
+    
     func setUpFieldsVisibility(){
         if(alreadyAUserSwitch.isOn)
         {
@@ -65,95 +57,68 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     @IBAction func onSignup(_ sender: Any) {
-        HappinessService.sharedInstance.signup(email: emailField.text!, password: passwordField.text!, name: nameTextField.text!, profileImage: profileImageFromCamera.image,  success: {(user: User) in
-            print(user.name!)
+        HappinessService.sharedInstance.signup(email: emailField.text!, password: passwordField.text!, name: nameTextField.text!, profileImage: nil,  success: {(user: User) in
             
-            if let photoFile = user.profileImage {
-                self.profilePFImageView.file = photoFile
-                self.profilePFImageView.loadInBackground()
-                self.profilePFImageView.clipsToBounds = true
-            } else {
-                self.profilePFImageView.image = nil
-            }
-
+            print(user.name!)
             
         }, failure: {(error: Error) in
             print(error.localizedDescription)
         })
     }
     
-    @IBAction func onProfileImageUpload(_ sender: Any) {
-        let picker = UIImagePickerController()
-        picker.delegate = self
-        picker.allowsEditing = true
-        picker.sourceType = .photoLibrary
-        present(picker, animated: true)
-    }
     
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        profileImageFromCamera.contentMode = .scaleAspectFit
-        profileImageFromCamera.image = chosenImage
-        dismiss(animated: true, completion: nil)
-    }
-    
-    
-    @IBAction func getNestUsers(_ sender: Any) {
-        
+    @IBAction func onMakeVideo(_ sender: Any) {
+               
         let curUser = User.currentUser
         
-        let nestId = curUser?.nest?.id
-        
-        HappinessService.sharedInstance.getAllNestUsers(nestObjID: nestId, success: {(nestUsers: [User]) in
+        if(curUser != nil){
             
-            var i = 0;
-            for nUser in nestUsers{
-                if(i == 0){
-                    self.firstNestUserLabel.text = nUser.name
-                    if let photoFile = nUser.profileImage {
-                        self.firstNestUserProfileImageVIew.file = photoFile
-                        self.firstNestUserProfileImageVIew.loadInBackground()
-                        self.firstNestUserProfileImageVIew.clipsToBounds = true
-                    } else {
-                        self.firstNestUserProfileImageVIew.image = nil
-                    }
-                }
-
-                if(i == 1){
-                    self.secondNestUserLabel.text = nUser.name
-                    if let photoFile = nUser.profileImage {
-                        self.secondNestUserProfileImageVIew.file = photoFile
-                        self.secondNestUserProfileImageVIew.loadInBackground()
-                        self.secondNestUserProfileImageVIew.clipsToBounds = true
-                    } else {
-                        self.secondNestUserProfileImageVIew.image = nil
-                    }
-                }
-
-                if(i == 2){
-                    self.thirdNestUserLabel.text = nUser.name
-                    if let photoFile = nUser.profileImage {
-                        self.thirdNestUserProfileImageVIew.file = photoFile
-                        self.thirdNestUserProfileImageVIew.loadInBackground()
-                        self.thirdNestUserProfileImageVIew.clipsToBounds = true
-                    } else {
-                        self.thirdNestUserProfileImageVIew.image = nil
-                    }
+            HappinessService.sharedInstance.getEntries(beforeCreatedDate: nil, success: { (entries: [Entry]) in
+                
+                
+                let settings = RenderSettings()
+                let imageAnimator = ImageAnimator(renderSettings: settings)
+                imageAnimator.images = self.loadImages(nestEntries: entries)
+                imageAnimator.render() {
+                    print("yes")
                 }
                 
-                i = i + 1
-            }
+            }, failure: { (error: Error) in
+                print(error.localizedDescription)
+            })
             
-        },failure: {(error: Error) in
-            print(error.localizedDescription)
-
-        })
-        
+        }
     }
+
+    func loadImages(nestEntries: [Entry]) -> [UIImage]{
+        
+        var imagesArray = [UIImage]()
+        
+        for entry in nestEntries {
+            if(entry.media != nil){
+                let urlPath = entry.media?.url
+                let url = URL(string: urlPath!)
+                let imgData = NSData.init(contentsOf: url!)
+                let image = UIImage.init(data: imgData as! Data)
+                imagesArray.append(image!)
+            }
+        }
+        return imagesArray
+    }
+    
+    func loadImage(imageURLPath: String) {
+        var request = URLRequest(url: URL(string: imageURLPath)!)
+        request.httpMethod = "POST"
+        let session = URLSession.shared
+        
+        session.dataTask(with: request) {data, response, err in
+            print("Entered the completionHandler")
+            let image = UIImage.init(data: data!)
+            
+            }.resume()
+
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

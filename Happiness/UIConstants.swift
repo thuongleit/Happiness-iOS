@@ -14,16 +14,16 @@ class UIConstants: NSObject {
     // MARK: - Colors
 
     // light blue
-    static let primaryThemeColor = UIColor(red: 117/255, green: 201/255, blue: 177/255, alpha: 1)
+    static let primaryThemeColor = UIColor(red: 128/255, green: 222/255, blue: 234/255, alpha: 1)
     
     // deep light blue
-    static let primarySelectedThemeColor = UIColor(red: 99/255, green: 206/255, blue: 199/255, alpha: 1) // 107, 224, 216
+    static let primarySelectedThemeColor = UIColor(red: 77/255, green: 208/255, blue: 225/255, alpha: 1) // 107, 224, 216
     
     // pink
-    static let secondaryThemeColor = UIColor(red: 255/255, green: 128/255, blue: 117/255, alpha: 1)
+    static let secondaryThemeColor = UIColor(red: 248/255, green: 187/255, blue: 208/255, alpha: 1)
     
     // deep pink
-    static let secondarySelectedThemeColor = UIColor(red: 226/255, green: 38/255, blue: 77/255, alpha: 1)
+    static let secondarySelectedThemeColor = UIColor(red: 244/255, green: 143/255, blue: 177/255, alpha: 1)
     
     // white
     static let textLightColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)

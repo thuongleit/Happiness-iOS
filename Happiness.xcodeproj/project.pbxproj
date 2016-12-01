@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		ACBC50D41DE24FBD006F8D1B /* TimelineHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACBC50D21DE24FBD006F8D1B /* TimelineHeaderView.swift */; };
 		ACBC50D51DE24FBD006F8D1B /* TimelineHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACBC50D31DE24FBD006F8D1B /* TimelineHeaderView.xib */; };
+		CB4381711DEBDC35005B7958 /* ImageAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4381701DEBDC35005B7958 /* ImageAnimator.swift */; };
+		CB4381731DEBDCE3005B7958 /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4381721DEBDCE3005B7958 /* VideoWriter.swift */; };
 		CBE5F76A1DDEA56D00C134FA /* Nest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE5F7691DDEA56D00C134FA /* Nest.swift */; };
 		E17ACFB11DD70E2200E826FE /* LoginSignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17ACFAF1DD70E2200E826FE /* LoginSignupViewController.swift */; };
 		E17ACFB21DD70E2200E826FE /* LoginSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E17ACFB01DD70E2200E826FE /* LoginSignupViewController.xib */; };
@@ -52,6 +54,8 @@
 		7408CEF910F5ADEE5474CF54 /* Pods-Happiness.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Happiness.release.xcconfig"; path = "Pods/Target Support Files/Pods-Happiness/Pods-Happiness.release.xcconfig"; sourceTree = "<group>"; };
 		ACBC50D21DE24FBD006F8D1B /* TimelineHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineHeaderView.swift; sourceTree = "<group>"; };
 		ACBC50D31DE24FBD006F8D1B /* TimelineHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineHeaderView.xib; sourceTree = "<group>"; };
+		CB4381701DEBDC35005B7958 /* ImageAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAnimator.swift; sourceTree = "<group>"; };
+		CB4381721DEBDCE3005B7958 /* VideoWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoWriter.swift; sourceTree = "<group>"; };
 		CBE5F7691DDEA56D00C134FA /* Nest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nest.swift; sourceTree = "<group>"; };
 		E15855501DE26FD30045E1F2 /* Happynest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Happynest.entitlements; sourceTree = "<group>"; };
 		E17ACFAF1DD70E2200E826FE /* LoginSignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSignupViewController.swift; sourceTree = "<group>"; };
@@ -176,6 +180,8 @@
 				E1B6F64E1DD4142900B01B9E /* Location.swift */,
 				CBE5F7691DDEA56D00C134FA /* Nest.swift */,
 				FC8613601DE9742300497425 /* Congrats.swift */,
+				CB4381701DEBDC35005B7958 /* ImageAnimator.swift */,
+				CB4381721DEBDCE3005B7958 /* VideoWriter.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -258,7 +264,7 @@
 				TargetAttributes = {
 					E18E2CB31DC95FD500BA02C4 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = SCUP57ZH8V;
+						DevelopmentTeam = EEV6AZHDW2;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -369,6 +375,7 @@
 				E1E579C91DD7F39D0032570C /* TabBarView.swift in Sources */,
 				E183327D1DE41A0100DDD7C7 /* APNUtil.swift in Sources */,
 				FCEAD6C51DD7BBCA002ADFC2 /* TimelineTableViewCell.swift in Sources */,
+				CB4381711DEBDC35005B7958 /* ImageAnimator.swift in Sources */,
 				E1B6F64D1DD4135500B01B9E /* Question.swift in Sources */,
 				CBE5F76A1DDEA56D00C134FA /* Nest.swift in Sources */,
 				FC8613611DE9742300497425 /* Congrats.swift in Sources */,
@@ -379,6 +386,7 @@
 				E18E2CBA1DC95FD500BA02C4 /* ViewController.swift in Sources */,
 				E1B6F6531DD434AF00B01B9E /* UIConstants.swift in Sources */,
 				E1B6F65B1DD4387600B01B9E /* HappinessService.swift in Sources */,
+				CB4381731DEBDCE3005B7958 /* VideoWriter.swift in Sources */,
 				E1B6F65E1DD43ED700B01B9E /* InitialViewController.swift in Sources */,
 				E18E2CB81DC95FD500BA02C4 /* AppDelegate.swift in Sources */,
 				E17ACFB11DD70E2200E826FE /* LoginSignupViewController.swift in Sources */,
@@ -519,10 +527,10 @@
 				CODE_SIGN_ENTITLEMENTS = Happiness/Happynest.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Zihan Zhou (3B35NTJ7CA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = SCUP57ZH8V;
+				DEVELOPMENT_TEAM = EEV6AZHDW2;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.Happynest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deeksha.teamhappiness.Happynest;
 				PRODUCT_NAME = Happynest;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -539,10 +547,10 @@
 				CODE_SIGN_ENTITLEMENTS = Happiness/Happynest.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Zihan Zhou (3B35NTJ7CA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = SCUP57ZH8V;
+				DEVELOPMENT_TEAM = EEV6AZHDW2;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.Happynest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deeksha.teamhappiness.Happynest;
 				PRODUCT_NAME = Happynest;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
