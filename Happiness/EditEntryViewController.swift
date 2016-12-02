@@ -254,13 +254,27 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     }
     
     // MARK: - User Action
-    
     @IBAction func onUploadButton(_ sender: Any) {
+        
         let picker = UIImagePickerController()
         picker.delegate = self
-        picker.allowsEditing = true
-        picker.sourceType = .photoLibrary
-        present(picker, animated: true)
+        picker.allowsEditing = false
+        
+        let optionMenu = UIAlertController(title: nil, message: "Please choose a photo source", preferredStyle: .actionSheet)
+        let cameraOption = UIAlertAction(title: "Camera", style: .default, handler: { (action) -> Void in
+            picker.sourceType = .camera
+            self.present(picker, animated: true)
+        })
+        let albumOption = UIAlertAction(title: "Photo Album", style: .default, handler: { (action) -> Void in
+            picker.sourceType = .photoLibrary
+            self.present(picker, animated: true)
+        })
+        let cancelOption = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) -> Void in
+        })
+        optionMenu.addAction(cameraOption)
+        optionMenu.addAction(albumOption)
+        optionMenu.addAction(cancelOption)
+        present(optionMenu, animated: true, completion: nil)
     }
     
     @IBAction func onFeelingSliderChange(_ sender: UISlider) {
@@ -268,7 +282,6 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         let happinessLevel = Entry.getHappinessLevel(happinessLevelInt: happinessLevelInt)
         feelingImageView.image = UIConstants.happinessLevelImage(happinessLevel)
     }
-    
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
@@ -278,7 +291,7 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage //2
         //cameraImageView.contentMode = .scaleAspectFit //3
         //cameraImageView.image = chosenImage //4
-        uploadImageButton.imageView?.contentMode = .scaleAspectFit
+        uploadImageButton.imageView?.contentMode = .scaleAspectFill
         uploadImageButton.setImage(chosenImage, for: .normal)
         dismiss(animated: true, completion: nil)
     }
@@ -297,7 +310,6 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
                 }
             }
         }
-        
     }
     
     func keyboardWillHide(notification: NSNotification) {
