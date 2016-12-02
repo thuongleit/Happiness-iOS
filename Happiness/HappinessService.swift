@@ -238,8 +238,8 @@ class HappinessService: NSObject {
         // check if image is not nil
         if let image = image {
             // get image data and check if that is not nil
-            if let imageData = UIImagePNGRepresentation(image) {
-                return PFFile(name: "image.png", data: imageData)
+            if let imageData = UIImageJPEGRepresentation(image, 1.0){
+                return PFFile(name: "image.jpg", data: imageData)
             }
         }
         return nil
