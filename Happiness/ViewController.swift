@@ -113,7 +113,7 @@ class ViewController: UIViewController {
         
         session.dataTask(with: request) {data, response, err in
             print("Entered the completionHandler")
-            let image = UIImage.init(data: data!)
+            _ = UIImage.init(data: data!)
             
             }.resume()
 
