@@ -1,6 +1,15 @@
 # Happiness-iOS
    An app that lets you save your precious moments and then reflect on them to make you smile or feel happy.
 
+## Sprint 3
+
+## User Stories
+
+The following **required** functionality is completed:
+
+- [ ] Bug fixes
+   - [x] Fix problem where Timeline is not updated correctly after entry is edited
+
 ## Sprint 2
 
 <img src="https://github.com/TeamHappiness/Happiness-iOS/blob/master/Sprint2.gif" alt="sprint2"/>
