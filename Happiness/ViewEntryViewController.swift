@@ -12,7 +12,6 @@ import ParseUI
 class ViewEntryViewController: UIViewController {
     
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var textLabel: UILabel!
 
     @IBOutlet weak var locationIconImageView: UIImageView!
@@ -55,9 +54,6 @@ class ViewEntryViewController: UIViewController {
             }
             if let date = entry.createdDate {
                 dateLabel.text = UIConstants.dateString(from: date)
-            }
-            if let question = entry.question {
-                questionLabel.text = question.text
             }
             if let text = entry.text {
                 textLabel.text = text

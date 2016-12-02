@@ -13,7 +13,6 @@ import ParseUI
 class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextViewDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
     
     @IBOutlet weak var locationTextField: UITextField!
@@ -100,7 +99,6 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         // If new entry, use current date and current day's question.
         if entry == nil {
             dateLabel.text = UIConstants.dateString(from: Date())
-            questionLabel.text = QuestionsList.getCurrentQuestion().text
             
             // Placeholder entry text
             textView.text = textViewPlaceholderText
@@ -111,9 +109,6 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         if let entry = entry {
             if let date = entry.createdDate {
                 dateLabel.text = UIConstants.dateString(from: date)
-            }
-            if let question = entry.question {
-                questionLabel.text = question.text
             }
             if let text = entry.text {
                 textView.text = text
