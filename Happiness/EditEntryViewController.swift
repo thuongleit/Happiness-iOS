@@ -95,6 +95,9 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         //        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         //        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
+        // Style text view
+        textView.layer.cornerRadius = 3.0
+        textView.clipsToBounds = true
         
         // If new entry, use current date and current day's question.
         if entry == nil {
