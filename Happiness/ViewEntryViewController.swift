@@ -12,12 +12,12 @@ import ParseUI
 class ViewEntryViewController: UIViewController {
     
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var textLabel: UILabel!
 
     @IBOutlet weak var locationIconImageView: UIImageView!
     @IBOutlet weak var locationLabel: UILabel!
-    @IBOutlet weak var feelingImageView: UIImageView!
+    
+    var feelingImageView: UIImageView!
 
     @IBOutlet weak var profileImageView: PFImageView!
     @IBOutlet weak var photoImageView: PFImageView!
@@ -55,9 +55,6 @@ class ViewEntryViewController: UIViewController {
             if let date = entry.createdDate {
                 dateLabel.text = UIConstants.dateString(from: date)
             }
-            if let question = entry.question {
-                questionLabel.text = question.text
-            }
             if let text = entry.text {
                 textLabel.text = text
             }
@@ -65,7 +62,27 @@ class ViewEntryViewController: UIViewController {
                 locationLabel.text = placemark
             }
             if let happinessLevel = entry.happinessLevel {
+                feelingImageView = UIImageView(frame: self.profileImageView.frame)
+                self.view.addSubview(self.feelingImageView)
                 feelingImageView.image = UIConstants.happinessLevelImage(happinessLevel)
+                
+                UIView.animate(withDuration: 2, animations: { 
+                    self.feelingImageView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+                    
+                    let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
+                    rotateAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+                    rotateAnimation.fromValue = 0.0
+                    rotateAnimation.toValue = CGFloat(M_PI * 8.0)
+                    rotateAnimation.duration = 2.0
+                    rotateAnimation.repeatCount = 1
+                    self.feelingImageView.layer.add(rotateAnimation, forKey: nil)
+                    
+                    let rightBottomPoint = CGPoint(x: self.profileImageView.frame.maxX - 10, y: self.profileImageView.frame.maxY - 10)
+                    self.feelingImageView.center = rightBottomPoint
+                }, completion: { (finish) in
+                    self.feelingImageView.layer.removeAllAnimations()
+                })
+                
             }
             if let photoFile = entry.media {
                 photoImageView.file = photoFile
@@ -102,15 +119,4 @@ class ViewEntryViewController: UIViewController {
             viewDidLoad()
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
