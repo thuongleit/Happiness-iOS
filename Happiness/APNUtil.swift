@@ -15,11 +15,17 @@ class APNUtil: NSObject {
     
     // MARK: - Nudging
     static func sendNudging(targetEmail: String, withMessage message: String, completionBlock: @escaping (_ isSuccess: Bool) -> ()) {
-        let query = PFUser.query()
+        
+        let query = PFInstallation.query()
         query?.whereKey(emailKey, equalTo: targetEmail)
-        PFPush.sendMessageToQuery(inBackground: query as! PFQuery<PFInstallation>, withMessage: message, block: { (result, error) in
-            completionBlock(result)
-        })
+        let push = PFPush()
+        push.setQuery(query as! PFQuery<PFInstallation>)
+        var data = [AnyHashable : Any]()
+        data["sound"] = "notification.caf"
+        data["alert"] = message
+        push.setData(data)
+        
+        push.sendInBackground()
     }
     
     

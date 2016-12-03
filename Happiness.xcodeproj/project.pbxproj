@@ -15,6 +15,7 @@
 		E17ACFB11DD70E2200E826FE /* LoginSignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17ACFAF1DD70E2200E826FE /* LoginSignupViewController.swift */; };
 		E17ACFB21DD70E2200E826FE /* LoginSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E17ACFB01DD70E2200E826FE /* LoginSignupViewController.xib */; };
 		E183327D1DE41A0100DDD7C7 /* APNUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = E183327C1DE41A0100DDD7C7 /* APNUtil.swift */; };
+		E18DAF991DF2748800F54F8E /* notification.caf in Resources */ = {isa = PBXBuildFile; fileRef = E18DAF981DF2748800F54F8E /* notification.caf */; };
 		E18E2CB81DC95FD500BA02C4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18E2CB71DC95FD500BA02C4 /* AppDelegate.swift */; };
 		E18E2CBA1DC95FD500BA02C4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E18E2CB91DC95FD500BA02C4 /* ViewController.swift */; };
 		E18E2CBD1DC95FD500BA02C4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E18E2CBB1DC95FD500BA02C4 /* Main.storyboard */; };
@@ -61,6 +62,7 @@
 		E17ACFAF1DD70E2200E826FE /* LoginSignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSignupViewController.swift; sourceTree = "<group>"; };
 		E17ACFB01DD70E2200E826FE /* LoginSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginSignupViewController.xib; sourceTree = "<group>"; };
 		E183327C1DE41A0100DDD7C7 /* APNUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APNUtil.swift; sourceTree = "<group>"; };
+		E18DAF981DF2748800F54F8E /* notification.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = notification.caf; sourceTree = "<group>"; };
 		E18E2CB41DC95FD500BA02C4 /* Happynest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Happynest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E18E2CB71DC95FD500BA02C4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E18E2CB91DC95FD500BA02C4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 		E18E2CB61DC95FD500BA02C4 /* Happiness */ = {
 			isa = PBXGroup;
 			children = (
+				E18DAF981DF2748800F54F8E /* notification.caf */,
 				E15855501DE26FD30045E1F2 /* Happynest.entitlements */,
 				E17ACFAA1DD70ACD00E826FE /* Login/Signup View Controllers */,
 				E1B6F6591DD4384E00B01B9E /* API */,
@@ -265,7 +268,7 @@
 					E18E2CB31DC95FD500BA02C4 = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = EEV6AZHDW2;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 1;
@@ -303,6 +306,7 @@
 				E17ACFB21DD70E2200E826FE /* LoginSignupViewController.xib in Resources */,
 				E1B6F66B1DD43F8600B01B9E /* ViewEntryViewController.xib in Resources */,
 				E18E2CC21DC95FD500BA02C4 /* LaunchScreen.storyboard in Resources */,
+				E18DAF991DF2748800F54F8E /* notification.caf in Resources */,
 				E1B6F6731DD4403E00B01B9E /* CalendarViewController.xib in Resources */,
 				FCEAD6C71DD7BCBA002ADFC2 /* TimelineTableViewCell.xib in Resources */,
 				ACBC50D51DE24FBD006F8D1B /* TimelineHeaderView.xib in Resources */,
@@ -530,10 +534,10 @@
 				DEVELOPMENT_TEAM = EEV6AZHDW2;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.deeksha.teamhappiness.Happynest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.happiness.Happynest;
 				PRODUCT_NAME = Happynest;
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "c086fc09-d033-424b-a60c-8c3fb0d51dad";
+				PROVISIONING_PROFILE_SPECIFIER = happynest12/2;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -547,10 +551,10 @@
 				CODE_SIGN_ENTITLEMENTS = Happiness/Happynest.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Zihan Zhou (3B35NTJ7CA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = EEV6AZHDW2;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.deeksha.teamhappiness.Happynest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.happiness.Happynest;
 				PRODUCT_NAME = Happynest;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
