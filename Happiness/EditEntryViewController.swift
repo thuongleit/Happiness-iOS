@@ -13,7 +13,6 @@ import ParseUI
 class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextViewDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
     
     @IBOutlet weak var locationTextField: UITextField!
@@ -87,11 +86,13 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
         //        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         //        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
+        // Style text view
+        textView.layer.cornerRadius = 3.0
+        textView.clipsToBounds = true
         
         // If new entry, use current date and current day's question.
         if entry == nil {
             dateLabel.text = UIConstants.dateString(from: Date())
-            questionLabel.text = QuestionsList.getCurrentQuestion().text
             
             // Placeholder entry text
             textView.text = textViewPlaceholderText
@@ -102,9 +103,6 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
         if let entry = entry {
             if let date = entry.createdDate {
                 dateLabel.text = UIConstants.dateString(from: date)
-            }
-            if let question = entry.question {
-                questionLabel.text = question.text
             }
             if let text = entry.text {
                 textView.text = text
@@ -201,13 +199,27 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
     }
     
     // MARK: - User Action
-    
     @IBAction func onUploadButton(_ sender: Any) {
+        
         let picker = UIImagePickerController()
         picker.delegate = self
-        picker.allowsEditing = true
-        picker.sourceType = .photoLibrary
-        present(picker, animated: true)
+        picker.allowsEditing = false
+        
+        let optionMenu = UIAlertController(title: nil, message: "Please choose a photo source", preferredStyle: .actionSheet)
+        let cameraOption = UIAlertAction(title: "Camera", style: .default, handler: { (action) -> Void in
+            picker.sourceType = .camera
+            self.present(picker, animated: true)
+        })
+        let albumOption = UIAlertAction(title: "Photo Album", style: .default, handler: { (action) -> Void in
+            picker.sourceType = .photoLibrary
+            self.present(picker, animated: true)
+        })
+        let cancelOption = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) -> Void in
+        })
+        optionMenu.addAction(cameraOption)
+        optionMenu.addAction(albumOption)
+        optionMenu.addAction(cancelOption)
+        present(optionMenu, animated: true, completion: nil)
     }
     
     @IBAction func onFeelingSliderChange(_ sender: UISlider) {
@@ -215,7 +227,6 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
         let happinessLevel = Entry.getHappinessLevel(happinessLevelInt: happinessLevelInt)
         feelingImageView.image = UIConstants.happinessLevelImage(happinessLevel)
     }
-    
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
@@ -225,7 +236,7 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage //2
         //cameraImageView.contentMode = .scaleAspectFit //3
         //cameraImageView.image = chosenImage //4
-        uploadImageButton.imageView?.contentMode = .scaleAspectFit
+        uploadImageButton.imageView?.contentMode = .scaleAspectFill
         uploadImageButton.setImage(chosenImage, for: .normal)
         dismiss(animated: true, completion: nil)
     }
@@ -244,7 +255,6 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
                 }
             }
         }
-        
     }
     
     func keyboardWillHide(notification: NSNotification) {
