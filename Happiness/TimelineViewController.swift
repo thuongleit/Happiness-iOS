@@ -8,123 +8,7 @@
 
 import UIKit
 
-// Represents a section in a timeline table.
-class TimelineSection
-{
-    let week: Int
-    let year: Int
-    let title: String
-    private var entries = [Entry]()
-    private var userEntryCount = [String: Int]() // maps user IDs to entry counts
-    
-    var rows: Int {
-        
-        var currentUserEntryCount = 0
-        if let currentUserId = User.currentUser?.id,
-            let _currentUserEntryCount = userEntryCount[currentUserId] {
-                
-            currentUserEntryCount = _currentUserEntryCount
-        }
-        
-        // Only display entries for milestone if current user created an
-        // entry for that milestone.
-        return currentUserEntryCount > 0 ? entries.count : 0
-    }
-    
-    init(week: Int, year: Int) {
-        
-        self.week = week
-        self.year = year
-        self.title = String(format: "Week %d, %d", week, year)
-    }
-    
-    // Add the specified entry to the end of the entries array.
-    func append(entry: Entry) {
-        
-        if let userId = entry.author?.id {
-            
-            userEntryCount[userId] = (userEntryCount[userId] ?? 0) + 1
-        }
-
-        entries.append(entry)
-    }
-    
-    // Add the specified entry to the start of the entries array.
-    func prepend(entry: Entry) {
-        
-        if let userId = entry.author?.id {
-            
-            userEntryCount[userId] = (userEntryCount[userId] ?? 0) + 1
-        }
-        
-        entries.insert(entry, at: 0)
-    }
-    
-    // Remove the specified entry from the entries array.
-    func remove(entryAtRow atRow: Int) {
-
-        let entry = entries[atRow]
-        if let userId = entry.author?.id {
-            
-            userEntryCount[userId] = (userEntryCount[userId] ?? 0) - 1
-        }
-        
-        entries.remove(at: atRow)
-    }
-    
-    // Return the specified entry from the entries array.
-    func get(entryAtRow atRow: Int) -> Entry {
-        
-        return entries[atRow]
-    }
-    
-    // Update the entry with an ID matching the specified entry, if found.
-    // Return true if an entry was updated, false otherwise.
-    func update(entry newEntry: Entry) -> Bool {
-        
-        for (index, entry) in entries.enumerated() {
-            
-            if entry.id == newEntry.id {
-                
-                // entries[index] and newEntry may or may not reference the
-                // same Entry object, so we copy newEntry to entries[index].
-                entries[index] = newEntry
-                return true
-            }
-        }
-        return false
-    }
-
-    // Return the count of entries for the specified user, or nil if no
-    // such user has entries.
-    func getEntryCount(userWithId userId: String) -> Int? {
-        
-        return userEntryCount[userId]
-    }
-    
-    // Return the count of users who have at least one entry.
-    func getCountOfUsersWithEntries() -> Int {
-        
-        var countOfUsersWithEntries = 0
-        for (_, entryCount) in userEntryCount {
-            
-            if entryCount > 0 {
-                
-                countOfUsersWithEntries = countOfUsersWithEntries + 1
-            }
-        }
-        return countOfUsersWithEntries
-    }
-    
-    // Returns a dictionary of user id to count of entries written for each user
-    // in the current user's nest.
-    func getEntryCountByUser() -> [String: Int]? {
-        
-        return userEntryCount
-    }
-}
-
-class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
+class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -171,8 +55,11 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
         }
         
         // Set up the tableView.
-        tableView.estimatedSectionHeaderHeight = 80
-        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        tableView.estimatedSectionHeaderHeight = 130
+        // Changed sectionHeaderHeight from UITableViewAutomaticDimension to 130
+        // to prevent exception: "'NSInternalInconsistencyException', reason:
+        // 'Missing cell for newly visible row X'"
+        tableView.sectionHeaderHeight = 130 //UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 438
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.register(
@@ -208,50 +95,90 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
             forName: AppDelegate.GlobalEventEnum.newEntryNotification.notification,
             object: nil,
             queue: OperationQueue.main)
-            { (notification: Notification) in
+        { (notification: Notification) in
                 
-                if let entry = notification.object as? Entry {
+            if let entry = notification.object as? Entry {
                     
-                    let wasSectionAdded = self.addNewEntry(entry)
+                let sectionWasAdded = self.addNewEntry(entry)
                     
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
                         
-                        if wasSectionAdded {
+                    if sectionWasAdded {
                             
-                            // When a section is added, reload the entire table.
-                            self.tableView.reloadData()
-                        }
-                        else {
-                            
-                            // When the entry was added to the first section,
-                            // just reload the first section.
-                            self.tableView.reloadSections(IndexSet(integer: 0), with: .fade)
-                        }
-                        
-                        // Congratulate user when appropriate.
-                        self.congratulateIfComplete()
+                        // When a section is added, reload the entire table.
+                        self.tableView.reloadData()
                     }
+                    else {
+                            
+                        // When the entry was added to the first section,
+                        // just reload the first section.
+                        self.tableView.reloadSections(IndexSet(integer: 0), with: .fade)
+                    }
+                    
+                    // Scroll to top when an entry is created.
+                    self.tableView.setContentOffset(CGPoint(x: 0, y: 0 - self.tableView.contentInset.top), animated: true)
+                    
+                    // Congratulate user when appropriate.
+                    self.congratulateIfComplete()
                 }
             }
+        }
 
-        // When an entry is updated, update it in the table.
+        // When an entry is replaced, update it in the table.
         NotificationCenter.default.addObserver(
-            forName: AppDelegate.GlobalEventEnum.updateEntryNotification.notification,
+            forName: AppDelegate.GlobalEventEnum.replaceEntryNotification.notification,
             object: nil,
             queue: OperationQueue.main)
-            { (notification: Notification) in
+        { (notification: Notification) in
             
-                if let entry = notification.object as? Entry,
-                    let updatedSectionIndex = self.updateEntry(entry) {
-                    
-                    DispatchQueue.main.async {
+            if let replaceEntryObject = notification.object as? ReplaceEntryNotificationObject,
+                let entryReplacedInSectionIndex = self.replaceEntry(withId: replaceEntryObject.entryId, replacementEntry: replaceEntryObject.replacementEntry) {
+                
+                DispatchQueue.main.async {
                         
-                        // Reload the updated section.
-                        self.tableView.reloadSections(IndexSet(integer: updatedSectionIndex), with: .fade)
+                    // Reload the section containing the replaced entry.
+                    // Save/restore the contentOffset, since when this is not
+                    // done the table sometimes scrolls away from an updated
+                    // entry. Saving/restoring does not completely fix this,
+                    // but it helps.
+                    let contentOffset = self.tableView.contentOffset
+                    if replaceEntryObject.useFadeAnimation {
+                        
+                        self.tableView.reloadSections(IndexSet(integer: entryReplacedInSectionIndex), with: .fade)
                     }
+                    else {
+                        
+                        // Reload the updated section without animating, since a
+                        // replacement when the timeline is visible will often be
+                        // of an updated entry replacing a local entry, so they will
+                        // be identical.
+                        UIView.performWithoutAnimation({
+                            self.tableView.reloadSections(IndexSet(integer: entryReplacedInSectionIndex), with: .none)
+                        })
+                    }
+                    self.tableView.contentOffset = contentOffset
                 }
             }
+        }
         
+        // When an entry is deleted, remove it from the table.
+        NotificationCenter.default.addObserver(
+            forName: AppDelegate.GlobalEventEnum.deleteEntryNotification.notification,
+            object: nil,
+            queue: OperationQueue.main)
+        { (notification: Notification) in
+            
+            if let entry = notification.object as? Entry,
+                let entryDeletedInSectionIndex = self.deleteEntry(entry) {
+                
+                DispatchQueue.main.async {
+                    
+                    // Reload the section the entry was deleted from.
+                    self.tableView.reloadSections(IndexSet(integer: entryDeletedInSectionIndex), with: .fade)
+                }
+            }
+        }
+
         // Get nest users and entries when the view controller loads.
         getNestUsers(thenGetEntries: true)
     }
@@ -451,44 +378,75 @@ class TimelineViewController: UIViewController, TimelineHeaderViewDelegate {
         let (week, year) = UIConstants.getWeekYear(date: entry.createdDate)
         
         let section: TimelineSection
-        let wasSectionAdded: Bool
+        let sectionWasAdded: Bool
         if sections.count > 0 && sections[0].week == week && sections[0].year == year {
             
             section = sections[0]
-            wasSectionAdded = false
+            sectionWasAdded = false
         }
         else {
             
             section = TimelineSection(week: week, year: year)
             sections.insert(section, at: 0)
-            wasSectionAdded = true
+            sectionWasAdded = true
         }
         
         section.prepend(entry: entry)
         
-        return wasSectionAdded
+        return sectionWasAdded
     }
     
-    // Updates the specified entry in the tableView, if found. Returns the
-    // section index of the updated entry, or nil if no entry was updated.
-    func updateEntry(_ entry: Entry) -> Int? {
+    // Replaces the specified entry in the tableView, if found. Returns the
+    // section index of the replaced entry, or nil if no entry was replaced.
+    func replaceEntry(withId entryId: String, replacementEntry: Entry) -> Int? {
         
-        var sectionIndex = 0
-        for section in sections {
-                
-            let foundEntry = section.update(entry: entry)
-            if foundEntry {
+        for (sectionIndex, section) in sections.enumerated() {
+            
+            let entryWasReplaced = section.replace(entryWithId: entryId, replacementEntry: replacementEntry)
+            if entryWasReplaced {
                     
                 return sectionIndex
             }
-            sectionIndex = sectionIndex + 1
         }
         return nil
     }
         
+    // Deletes the specified entry from the tableView, if found. Returns the
+    // section index of the deleted entry, or nil if no entry was deleted.
+    func deleteEntry(_ entry: Entry) -> Int? {
+        
+        for (sectionIndex, section) in sections.enumerated() {
+            
+            // To simplify the tableView reloading code, we currently do not
+            // remove a section with zero entries.
+            let entryWasDeleted = section.remove(entry: entry)
+            if entryWasDeleted {
+                
+                return sectionIndex
+            }
+        }
+        return nil
+    }
+    
     // Get nest users and entries when the user pulls to refresh.
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
 
+        // Disable pull to refresh when there are temporary "local" entries.
+        var hasLocalEntries = false
+        for section in sections {
+            
+            if section.localEntriesCount > 0 {
+                
+                hasLocalEntries = true
+                break
+            }
+        }
+        if hasLocalEntries {
+
+            refreshControl.endRefreshing()
+            return
+        }
+        
         getNestUsers(thenGetEntries: true, refreshControl: refreshControl)
     }
     
@@ -603,8 +561,22 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         
         // Set the cell contents.
         cell.setData(entry: sections[indexPath.section].get(entryAtRow: indexPath.row), delegate: self)
-        
+                
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        let entry = sections[indexPath.section].get(entryAtRow: indexPath.row)
+        if entry.isLocal && entry.isLocalMarkedForDelete {
+            
+            // Hide cells of entries marked for deletion.
+            return 0
+        }
+        else {
+            
+            return tableView.rowHeight
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -619,14 +591,15 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         
-        // Only allow swipe to delete for current user's entries.
+        // Only allow swipe to delete for current user's entries which are
+        // not temporary "local" entries.
         let entry = sections[indexPath.section].get(entryAtRow: indexPath.row)
         if let entryUserId = entry.author?.id,
             let currentUserId = User.currentUser?.id,
-            entryUserId == currentUserId {
+            entryUserId == currentUserId,
+            !entry.isLocal {
             
             return true
-         
         }
         else {
             
@@ -637,36 +610,11 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         // Swipe to delete
-        if editingStyle == .delete
-        {
-            let happinessService = HappinessService.sharedInstance
+        if editingStyle == .delete {
             
-            willRequest()
-            
-            happinessService.delete(
-                entry: sections[indexPath.section].get(entryAtRow: indexPath.row),
-                success: { () in
-                    
-                    // Remove the entry from the section. To simplify the
-                    // tableView reloading code, we currently do not remove
-                    // a section with zero entries.
-                    self.sections[indexPath.section].remove(entryAtRow: indexPath.row)
-
-                    self.requestDidSucceed(true, refreshControl: nil)
-                    
-                    DispatchQueue.main.async {
-                        
-                        self.tableView.reloadSections(IndexSet(integer: indexPath.section), with: .fade)
-                    }
-                },
-                failure: { (Error) in
-                    
-                    self.requestDidSucceed(false, refreshControl: nil)
-                }
-            )
-
+            EntryBroker.shared.deleteEntry(entry: sections[indexPath.section].get(entryAtRow: indexPath.row))
         }
-    }
+     }
     
     func timelineHeaderView(headerView: TimelineHeaderView, didTapOnProfileImage toNudgeUser: User?) {
         let name = toNudgeUser!.name!

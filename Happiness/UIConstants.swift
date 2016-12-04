@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import ParseUI
 
 class UIConstants: NSObject {
     
@@ -141,6 +142,42 @@ class UIConstants: NSObject {
         }
     }
     
+    static func fadeInImage(imageView: UIImageView, image: UIImage, withDuration: TimeInterval) {
+        
+        UIView.animate(
+            withDuration:  imageView.image != nil ? (withDuration / 2.0) : 0.0,
+            animations: {
+                
+                imageView.alpha = 0.0
+            },
+            completion: { (Bool) in
+                
+                UIView.animate(
+                    withDuration: withDuration / 2.0,
+                    animations: {
+                        
+                        imageView.image = image
+                        imageView.alpha = 1.0
+                    }
+                )
+            }
+        )
+    }
+    
+    static func fadeInParseImage(imageView: UIImageView, imageFile: PFFile, withDuration: TimeInterval) {
+        
+        imageFile.getDataInBackground { (data: Data?, error: Error?) in
+            
+            if error == nil, let data = data, let image = UIImage(data: data) {
+                
+                DispatchQueue.main.async {
+                    
+                    fadeInImage(imageView: imageView, image: image, withDuration: withDuration)
+                }
+            }
+        }
+    }
+
     // MARK: - Date
     static func dateString(from date: Date) -> String {
         let formatter = DateFormatter()

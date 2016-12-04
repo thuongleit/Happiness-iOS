@@ -7,6 +7,9 @@
 
 The following **required** functionality is completed:
 
+- [x] Create/Edit/Delete entry
+   - [x] Make updates to timeline immediately, not waiting for database call to succeed. If database call fails, undo updates.
+   - [x] When making updates to timeline immediately, disable pull to refresh, edit, and delete as appropriate.
 - [ ] Bug fixes
    - [x] Fix problem where Timeline is not updated correctly after entry is edited
 
