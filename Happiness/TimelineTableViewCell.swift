@@ -143,12 +143,52 @@ class TimelineTableViewCell: UITableViewCell {
             profileImageView.file = nil
             profileImageView.image = nil
         }
+        
+        if entry.isLocal {
+            
+            if let localImage = entry.localImage {
+                
+                setEntryImageViewAspectConstraint(hasImage: true, aspectRatio: entry.aspectRatio)
+                entryImageView.file = nil
+                entryImageView.image = localImage
+            }
+            else {
+                
+                setEntryImageViewAspectConstraint(hasImage: false, aspectRatio: nil)
+                entryImageView.file = nil
+                entryImageView.image = nil
+            }
+        }
+        else {
 
-        if let entryImageFile = entry.media {
+            if let entryImageFile = entry.media {
+            
+                setEntryImageViewAspectConstraint(hasImage: true, aspectRatio: entry.aspectRatio)
+                entryImageView.image = nil
+                entryImageView.file = entryImageFile
+                entryImageView.loadInBackground()
+            }
+            else {
+            
+                setEntryImageViewAspectConstraint(hasImage: false, aspectRatio: nil)
+                entryImageView.file = nil
+                entryImageView.image = nil
+            }
+        }
+        
+        // Hide cells for which the entry is marked for deletion. Note that this
+        // only hides the content of the cell, it does not change the cell height.
+        isHidden = entry.isLocal && entry.isLocalMarkedForDelete
+    }
+    
+    // Set the entryImageView aspect ratio constraint based on the image.
+    func setEntryImageViewAspectConstraint(hasImage: Bool, aspectRatio: Double?) {
+        
+        if hasImage {
             
             // Create entryImageView aspect ratio constraint to match
             // image aspect ratio.
-            let aspect: CGFloat = CGFloat(entry.aspectRatio ?? 4.0 / 3.0)
+            let aspect: CGFloat = CGFloat(aspectRatio ?? (4.0 / 3.0))
             entryImageViewAspectConstraint = NSLayoutConstraint(
                 item: entryImageView,
                 attribute: NSLayoutAttribute.width,
@@ -157,10 +197,6 @@ class TimelineTableViewCell: UITableViewCell {
                 attribute: NSLayoutAttribute.height,
                 multiplier: aspect,
                 constant: 0.0)
-
-            entryImageView.image = nil
-            entryImageView.file = entryImageFile
-            entryImageView.loadInBackground()
         }
         else {
             
@@ -174,9 +210,6 @@ class TimelineTableViewCell: UITableViewCell {
                 attribute: NSLayoutAttribute.notAnAttribute,
                 multiplier: 1,
                 constant: 0)
-            
-            entryImageView.file = nil
-            entryImageView.image = nil
         }
     }
 }
