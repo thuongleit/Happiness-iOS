@@ -20,8 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         case didLogout = "userDidLogoutNotification"
         case hideBottomTabBars = "hideBottomTabBars"
         case unhideBottomTabBars = "unhideBottomTabBars"
-        case newEntryNotification = "newEntryCreated"
-        case updateEntryNotification = "entryUpdated"
+        case newEntryNotification = "newEntry"
+        case replaceEntryNotification = "replaceEntry"
+        case deleteEntryNotification = "deleteEntry"
         
         var notification : Notification.Name {
             return Notification.Name(rawValue: self.rawValue)

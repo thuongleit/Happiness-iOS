@@ -9,7 +9,7 @@
 import UIKit
 import ParseUI
 
-class ViewEntryViewController: UIViewController {
+class ViewEntryViewController: ViewControllerBase {
     
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var questionLabel: UILabel!
@@ -42,7 +42,7 @@ class ViewEntryViewController: UIViewController {
         // Location Icon
         locationIconImageView.image = locationIconImageView.image?.withRenderingMode(.alwaysTemplate)
         
-        // Set entry data
+        // Set static entry data
         if let entry = entry {
             if let profileImageFile = entry.author?.profileImage {
                 profileImageView.file = profileImageFile
@@ -52,6 +52,24 @@ class ViewEntryViewController: UIViewController {
             } else {
                 profileImageView.image = nil
             }
+        }
+        
+        // Set variable entry data
+        setVariableEntryData()
+        
+        // Reload view if entry was updated
+        NotificationCenter.default.addObserver(self, selector: #selector(ViewEntryViewController.reloadView), name: AppDelegate.GlobalEventEnum.replaceEntryNotification.notification, object: nil)
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func setVariableEntryData() {
+        
+        if let entry = entry {
+            navigationItem.rightBarButtonItem?.isEnabled = !entry.isLocal
             if let date = entry.createdDate {
                 dateLabel.text = UIConstants.dateString(from: date)
             }
@@ -67,24 +85,30 @@ class ViewEntryViewController: UIViewController {
             if let happinessLevel = entry.happinessLevel {
                 feelingImageView.image = UIConstants.happinessLevelImage(happinessLevel)
             }
-            if let photoFile = entry.media {
-                photoImageView.file = photoFile
-                photoImageView.loadInBackground()
-                photoImageView.clipsToBounds = true
-            } else {
-                photoImageView.image = nil
+            if entry.isLocal {
+                if let localImage = entry.localImage {
+                    photoImageView.file = nil
+                    photoImageView.image = localImage
+                }
+                else {
+                    photoImageView.file = nil
+                    photoImageView.image = nil
+                }
+            }
+            else {
+                if let photoFile = entry.media {
+                    photoImageView.file = photoFile
+                    photoImageView.loadInBackground()
+                    photoImageView.clipsToBounds = true
+                }
+                else {
+                    photoImageView.file = nil
+                    photoImageView.image = nil
+                }
             }
         }
+    }
         
-        // Reload view if entry was updated
-         NotificationCenter.default.addObserver(self, selector: #selector(ViewEntryViewController.reloadView), name: AppDelegate.GlobalEventEnum.updateEntryNotification.notification, object: nil)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     // MARK: - Edit current entry
     func editEntry() {
         // Show the EditEntryViewController modally.
@@ -97,9 +121,9 @@ class ViewEntryViewController: UIViewController {
     
     // MARK: - Notification
     func reloadView(notification: NSNotification) {
-        if let entry = notification.object as? Entry {
-            self.entry = entry
-            viewDidLoad()
+        if let replaceEntryObject = notification.object as? ReplaceEntryNotificationObject {
+            self.entry = replaceEntryObject.replacementEntry
+            setVariableEntryData()
         }
     }
 
