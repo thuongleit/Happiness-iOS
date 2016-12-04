@@ -11,6 +11,9 @@
 		ACBC50D51DE24FBD006F8D1B /* TimelineHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACBC50D31DE24FBD006F8D1B /* TimelineHeaderView.xib */; };
 		CB4381711DEBDC35005B7958 /* ImageAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4381701DEBDC35005B7958 /* ImageAnimator.swift */; };
 		CB4381731DEBDCE3005B7958 /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4381721DEBDCE3005B7958 /* VideoWriter.swift */; };
+		CB83F7121DF27A390038CF56 /* JBKenBurnsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB83F7111DF27A390038CF56 /* JBKenBurnsView.swift */; };
+		CB83F7141DF4711C0038CF56 /* CompilationOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB83F7131DF4711C0038CF56 /* CompilationOverlayView.swift */; };
+		CB83F7161DF4712A0038CF56 /* CompilationOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB83F7151DF4712A0038CF56 /* CompilationOverlayView.xib */; };
 		CBE5F76A1DDEA56D00C134FA /* Nest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE5F7691DDEA56D00C134FA /* Nest.swift */; };
 		E17ACFB11DD70E2200E826FE /* LoginSignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17ACFAF1DD70E2200E826FE /* LoginSignupViewController.swift */; };
 		E17ACFB21DD70E2200E826FE /* LoginSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E17ACFB01DD70E2200E826FE /* LoginSignupViewController.xib */; };
@@ -56,6 +59,9 @@
 		ACBC50D31DE24FBD006F8D1B /* TimelineHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineHeaderView.xib; sourceTree = "<group>"; };
 		CB4381701DEBDC35005B7958 /* ImageAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAnimator.swift; sourceTree = "<group>"; };
 		CB4381721DEBDCE3005B7958 /* VideoWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoWriter.swift; sourceTree = "<group>"; };
+		CB83F7111DF27A390038CF56 /* JBKenBurnsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JBKenBurnsView.swift; sourceTree = "<group>"; };
+		CB83F7131DF4711C0038CF56 /* CompilationOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompilationOverlayView.swift; sourceTree = "<group>"; };
+		CB83F7151DF4712A0038CF56 /* CompilationOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CompilationOverlayView.xib; sourceTree = "<group>"; };
 		CBE5F7691DDEA56D00C134FA /* Nest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nest.swift; sourceTree = "<group>"; };
 		E15855501DE26FD30045E1F2 /* Happynest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Happynest.entitlements; sourceTree = "<group>"; };
 		E17ACFAF1DD70E2200E826FE /* LoginSignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSignupViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +162,7 @@
 		E18E2CB61DC95FD500BA02C4 /* Happiness */ = {
 			isa = PBXGroup;
 			children = (
+				CB83F7111DF27A390038CF56 /* JBKenBurnsView.swift */,
 				E15855501DE26FD30045E1F2 /* Happynest.entitlements */,
 				E17ACFAA1DD70ACD00E826FE /* Login/Signup View Controllers */,
 				E1B6F6591DD4384E00B01B9E /* API */,
@@ -216,6 +223,8 @@
 				E1E579C81DD7F39D0032570C /* TabBarView.swift */,
 				FC86135E1DE667AC00497425 /* ConfettiView.swift */,
 				FC8613621DEA5CF300497425 /* ProgressHUD.swift */,
+				CB83F7131DF4711C0038CF56 /* CompilationOverlayView.swift */,
+				CB83F7151DF4712A0038CF56 /* CompilationOverlayView.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -307,6 +316,7 @@
 				FCEAD6C71DD7BCBA002ADFC2 /* TimelineTableViewCell.xib in Resources */,
 				ACBC50D51DE24FBD006F8D1B /* TimelineHeaderView.xib in Resources */,
 				E1B6F6571DD4380700B01B9E /* BaseViewController.xib in Resources */,
+				CB83F7161DF4712A0038CF56 /* CompilationOverlayView.xib in Resources */,
 				E1E579C71DD7F36D0032570C /* TabBarView.xib in Resources */,
 				E1B6F66F1DD43FF800B01B9E /* EditEntryViewController.xib in Resources */,
 				E1B6F65F1DD43ED700B01B9E /* InitialViewController.xib in Resources */,
@@ -390,7 +400,9 @@
 				E1B6F65E1DD43ED700B01B9E /* InitialViewController.swift in Sources */,
 				E18E2CB81DC95FD500BA02C4 /* AppDelegate.swift in Sources */,
 				E17ACFB11DD70E2200E826FE /* LoginSignupViewController.swift in Sources */,
+				CB83F7141DF4711C0038CF56 /* CompilationOverlayView.swift in Sources */,
 				E1B6F6561DD4380700B01B9E /* BaseViewController.swift in Sources */,
+				CB83F7121DF27A390038CF56 /* JBKenBurnsView.swift in Sources */,
 				FC8613631DEA5CF300497425 /* ProgressHUD.swift in Sources */,
 				E1B6F64F1DD4142900B01B9E /* Location.swift in Sources */,
 				E1B6F6491DD411D200B01B9E /* User.swift in Sources */,
