@@ -490,6 +490,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
     func pushViewEntryViewController(forEntry entry: Entry) {
         
         let viewEntryViewController = ViewEntryViewController(nibName: nil, bundle: nil)
+        viewEntryViewController.comingfromTimeline = true
         viewEntryViewController.entry = entry
         //NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.hideBottomTabBars.notification))
         navigationController?.pushViewController(viewEntryViewController, animated: true)
