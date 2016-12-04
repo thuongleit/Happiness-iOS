@@ -10,10 +10,9 @@ import UIKit
 import CoreLocation
 import ParseUI
 
-class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextViewDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextViewDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
     
     @IBOutlet weak var locationTextField: UITextField!
@@ -22,8 +21,6 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
     @IBOutlet weak var feelingSlider: UISlider!
     
     @IBOutlet weak var uploadImageButton: UIButton!
-    
-    var progressHud: ProgressHUD?
     
     let locationManager = CLLocationManager()
     var placeOfInterest:String?
@@ -71,13 +68,6 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(EditEntryViewController.cancelEntry))
         navigationItem.leftBarButtonItem = cancelButton
         
-        // Set up the ProgressHUD.
-        progressHud = ProgressHUD(view: view)
-        if let progressHud = progressHud {
-            
-            view.addSubview(progressHud)
-        }
-        
         // Ask for location permission
         self.locationManager.requestWhenInUseAuthorization()
         
@@ -96,11 +86,13 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         //        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         //        NotificationCenter.default.addObserver(self, selector: #selector(EditEntryViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
+        // Style text view
+        textView.layer.cornerRadius = 3.0
+        textView.clipsToBounds = true
         
         // If new entry, use current date and current day's question.
         if entry == nil {
             dateLabel.text = UIConstants.dateString(from: Date())
-            questionLabel.text = QuestionsList.getCurrentQuestion().text
             
             // Placeholder entry text
             textView.text = textViewPlaceholderText
@@ -111,9 +103,6 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
         if let entry = entry {
             if let date = entry.createdDate {
                 dateLabel.text = UIConstants.dateString(from: date)
-            }
-            if let question = entry.question {
-                questionLabel.text = question.text
             }
             if let text = entry.text {
                 textView.text = text
@@ -175,36 +164,16 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
                 entryMedia.append(uploadImageButton.image(for: .normal)!)
             }
             
-            // Display progress HUD before the request is made.
-            if let progressHud = progressHud {
-                
-                progressHud.show(animated: true)
-            }
-            
             let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
-            HappinessService.sharedInstance.create(text: textView.text, images: entryMedia, happinessLevel: Int(feelingSlider.value), placemark: placeOfInterest, location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
-                // Hide progress HUD after request is complete.
-                if let progressHud = self.progressHud {
-                    
-                    progressHud.hide(animated: true)
-                }
-                self.dismiss(animated: true, completion: {})
-            }) { (error: Error) in
-                // Hide progress HUD after request is complete.
-                if let progressHud = self.progressHud {
-                    
-                    progressHud.hide(animated: true)
-                }
-                let alertController = UIAlertController(title: "Error saving entry", message:
-                    "Happiness monster hugged our server just a little too hard...", preferredStyle: UIAlertControllerStyle.alert)
-                alertController.addAction(UIAlertAction(title: "Delete entry", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
-                    self.cancelEntry()
-                }))
-                alertController.addAction(UIAlertAction(title: "Try saving again", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
-                    self.saveEntry()
-                }))
-                self.present(alertController, animated: true, completion: nil)
-            }
+            
+            EntryBroker.shared.createEntry(
+                text: textView.text,
+                images: entryMedia,
+                happinessLevel: Int(feelingSlider.value),
+                placemark: placeOfInterest,
+                location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)))
+            
+            dismiss(animated: true, completion: nil)
         }
     }
     
@@ -216,41 +185,17 @@ class EditEntryViewController: UIViewController, UIScrollViewDelegate, UITextVie
             entryMedia.append(uploadImageButton.image(for: .normal)!)
         }
         
-        // Update entry
-        entry?.text = textView.text
-        entry?.placemark = locationTextField.text
-        entry?.happinessLevel = Entry.getHappinessLevel(happinessLevelInt: Int(feelingSlider.value))
-        
-        // Display progress HUD before the request is made.
-        if let progressHud = progressHud {
-            
-            progressHud.show(animated: true)
-        }
-        
         let locationCoordinate: CLLocationCoordinate2D = locationManager.location!.coordinate
-        HappinessService.sharedInstance.update(entry: entry!, images: entryMedia, location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)), success: { (entry: Entry) in
-            // Hide progress HUD after request is complete.
-            if let progressHud = self.progressHud {
-                
-                progressHud.hide(animated: true)
-            }
-            self.dismiss(animated: true, completion: {})
-        }) { (error: Error) in
-            // Hide progress HUD after request is complete.
-            if let progressHud = self.progressHud {
-                
-                progressHud.hide(animated: true)
-            }
-            let alertController = UIAlertController(title: "Error saving entry", message:
-                "Happiness monster hugged our server just a little too hard...", preferredStyle: UIAlertControllerStyle.alert)
-            alertController.addAction(UIAlertAction(title: "Delete entry", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
-                self.cancelEntry()
-            }))
-            alertController.addAction(UIAlertAction(title: "Try saving again", style: UIAlertActionStyle.default, handler: { (alert: UIAlertAction) in
-                self.saveEntry()
-            }))
-            self.present(alertController, animated: true, completion: nil)
-        }
+        
+        EntryBroker.shared.updateEntry(
+            originalEntry: entry!,
+            text: textView.text,
+            images: entryMedia,
+            happinessLevel: Int(feelingSlider.value),
+            placemark: locationTextField.text,
+            location: Location(name: locationTextField.text, latitude: Float(locationCoordinate.latitude), longitude: Float(locationCoordinate.longitude)))
+
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: - User Action

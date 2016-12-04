@@ -223,7 +223,6 @@ class HappinessService: NSObject {
                 query.getObjectInBackground(withId: entryObj.objectId!, block: { (object:PFObject?, error: Error?) in
                     if error == nil && object != nil {
                         let newEntry = Entry.init(entryObject: object!)
-                        NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.newEntryNotification.notification, object: newEntry)
                         self.createUpdateEntrySuccess!(newEntry)
                         
                     } else {
@@ -245,14 +244,14 @@ class HappinessService: NSObject {
         return nil
     }
     
-    func update(entry: Entry, images: [UIImage]?, location: Location?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {
+    func update(entryId: String, text: String, images: [UIImage]?, happinessLevel: Int?, placemark: String?, location: Location?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {
         
         createUpdateEntrySuccess = success
         callFailure = failure
         
         var query = PFQuery(className:"Entry")
         
-        query.getObjectInBackground(withId: entry.id!, block: { (entryObj: PFObject?, error: Error?) in
+        query.getObjectInBackground(withId: entryId, block: { (entryObj: PFObject?, error: Error?) in
             
             if error == nil && entryObj != nil {
                 
@@ -265,15 +264,17 @@ class HappinessService: NSObject {
                 }
                 
                 entryObj?.setObject(PFUser.current()!, forKey: "author")
-                entryObj?.setObject(entry.text!, forKey: "text")
-                if let happinessInt = entry.happinessLevel?.rawValue {
-                    entryObj?.setObject(happinessInt, forKey: "happinessLevel")
+                entryObj?.setObject(text, forKey: "text")
+                if let happinessLevel = happinessLevel {
+                    entryObj?.setObject(happinessLevel, forKey: "happinessLevel")
                 }
                 
                 if let location = location {
                     entryObj?.setObject(self.createLocationObject(location: location), forKey: "location")
                 }
-                entryObj?.setObject(entry.placemark!, forKey: "placemark")
+                if let placemark = placemark {
+                    entryObj?.setObject(placemark, forKey: "placemark")
+                }
                 
                 entryObj?.saveInBackground(block: { (succeded: Bool, error:Error?) in
                     if(succeded)
@@ -288,7 +289,6 @@ class HappinessService: NSObject {
                             if error == nil && object != nil {
                                 
                                 let editedEntry = Entry.init(entryObject: object!)
-                                NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.updateEntryNotification.notification, object: editedEntry)
                                 self.createUpdateEntrySuccess!(editedEntry)
                                 
                             } else {

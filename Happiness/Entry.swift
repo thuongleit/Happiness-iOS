@@ -24,14 +24,22 @@ class Entry: NSObject {
     var author: User?
     var question: Question?
     var text: String?
-    var imageUrls: [URL]?
     var media:PFFile?
     //var location: Location?
     var createdDate: Date?
     var happinessLevel: HappinessLevel?
-    var image: UIImage?
     var aspectRatio:Double?
     var placemark:String?//location stored as string
+    
+    // Indicates whether this is a temporary "local" entry which has not yet
+    // been saved to the database.
+    var isLocal = false
+    
+    // Image for a temporary "local" entry.
+    var localImage: UIImage?
+    
+    // Indicates whether this entry is currently in the process of being deleted.
+    var isLocalMarkedForDelete = false
     
     // Creates an Entry from the server data.
     init(entryObject: AnyObject?) {
@@ -66,7 +74,43 @@ class Entry: NSObject {
                 let happinessLevelValue = entryObject.value(forKey: "happinessLevel") as? Int
                 happinessLevel = Entry.getHappinessLevel(happinessLevelInt: happinessLevelValue!)
             }
+            
+            isLocal = false
+            localImage = nil
+            isLocalMarkedForDelete = false
         }
+    }
+    
+    // Creates a temporary "local" Entry.
+    init(text: String, images: [UIImage]?, happinessLevel: Int?, placemark: String?, createdDate: Date?) {
+        
+        self.id = "\(Int64(arc4random()))"
+        self.author = User.currentUser
+        self.question = nil
+        self.text = text
+        self.media = nil
+        self.createdDate = createdDate
+        if let happinessLevel = happinessLevel {
+            
+            self.happinessLevel = Entry.getHappinessLevel(happinessLevelInt: happinessLevel)
+        }
+        else {
+            
+            self.happinessLevel = nil
+        }
+        self.placemark = placemark
+        self.isLocal = true
+        if let images = images, images.count > 0 {
+            
+            self.localImage = images[0]
+            self.aspectRatio = Double(images[0].size.width / images[0].size.height)
+        }
+        else {
+            
+            self.localImage = nil
+            self.aspectRatio = nil
+        }
+        self.isLocalMarkedForDelete = false
     }
     
     // Creates an Entry with current date and current question.
@@ -75,6 +119,16 @@ class Entry: NSObject {
         createdDate = Date()
         // Set current question
         question = QuestionsList.getCurrentQuestion()
+    }
+    
+    // Mark or unmark this entry for deletion. If an entry is marked, that
+    // indicates that the entry is currently in the process of being deleted.
+    // Such entries are treated as temporary "local" entries so that features
+    // such as pull to refresh are disabled until the deletion is completed.
+    func markForDelete(_ mark: Bool) {
+     
+        isLocal = mark
+        isLocalMarkedForDelete = mark
     }
     
     class func getHappinessLevel(happinessLevelInt: Int) -> HappinessLevel {

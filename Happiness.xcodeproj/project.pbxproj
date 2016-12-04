@@ -42,11 +42,15 @@
 		E1E579C71DD7F36D0032570C /* TabBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1E579C61DD7F36D0032570C /* TabBarView.xib */; };
 		E1E579C91DD7F39D0032570C /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1E579C81DD7F39D0032570C /* TabBarView.swift */; };
 		F704FCA419A24176385233FF /* Pods_Happiness.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 497F8C0D117519D30237A150 /* Pods_Happiness.framework */; };
+		FC3783E01DF405FD004D636D /* ReplaceEntryNotificationObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC3783DF1DF405FD004D636D /* ReplaceEntryNotificationObject.swift */; };
 		FC86135F1DE667AC00497425 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC86135E1DE667AC00497425 /* ConfettiView.swift */; };
 		FC8613611DE9742300497425 /* Congrats.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8613601DE9742300497425 /* Congrats.swift */; };
 		FC8613631DEA5CF300497425 /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8613621DEA5CF300497425 /* ProgressHUD.swift */; };
 		FCEAD6C51DD7BBCA002ADFC2 /* TimelineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEAD6C41DD7BBCA002ADFC2 /* TimelineTableViewCell.swift */; };
 		FCEAD6C71DD7BCBA002ADFC2 /* TimelineTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCEAD6C61DD7BCBA002ADFC2 /* TimelineTableViewCell.xib */; };
+		FCF9FEF61DF1372300F3313E /* EntryBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF9FEF51DF1372300F3313E /* EntryBroker.swift */; };
+		FCF9FEF81DF13C4B00F3313E /* ViewControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF9FEF71DF13C4B00F3313E /* ViewControllerBase.swift */; };
+		FCF9FEFA1DF1D9B700F3313E /* TimelineSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF9FEF91DF1D9B700F3313E /* TimelineSection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,11 +94,15 @@
 		E1B6F6711DD4403E00B01B9E /* CalendarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarViewController.xib; sourceTree = "<group>"; };
 		E1E579C61DD7F36D0032570C /* TabBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TabBarView.xib; sourceTree = "<group>"; };
 		E1E579C81DD7F39D0032570C /* TabBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
+		FC3783DF1DF405FD004D636D /* ReplaceEntryNotificationObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplaceEntryNotificationObject.swift; sourceTree = "<group>"; };
 		FC86135E1DE667AC00497425 /* ConfettiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		FC8613601DE9742300497425 /* Congrats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Congrats.swift; sourceTree = "<group>"; };
 		FC8613621DEA5CF300497425 /* ProgressHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
 		FCEAD6C41DD7BBCA002ADFC2 /* TimelineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewCell.swift; sourceTree = "<group>"; };
 		FCEAD6C61DD7BCBA002ADFC2 /* TimelineTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineTableViewCell.xib; sourceTree = "<group>"; };
+		FCF9FEF51DF1372300F3313E /* EntryBroker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryBroker.swift; sourceTree = "<group>"; };
+		FCF9FEF71DF13C4B00F3313E /* ViewControllerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerBase.swift; sourceTree = "<group>"; };
+		FCF9FEF91DF1D9B700F3313E /* TimelineSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineSection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +172,7 @@
 				E1B6F6591DD4384E00B01B9E /* API */,
 				E1B6F6511DD4342B00B01B9E /* Views */,
 				E1B6F6501DD4338100B01B9E /* View Controllers */,
+				FCF9FEF41DF135C400F3313E /* Controllers */,
 				E1B6F6471DD411C400B01B9E /* Model */,
 				E18E2CB71DC95FD500BA02C4 /* AppDelegate.swift */,
 				E18E2CBB1DC95FD500BA02C4 /* Main.storyboard */,
@@ -183,6 +192,7 @@
 				E1B6F64E1DD4142900B01B9E /* Location.swift */,
 				CBE5F7691DDEA56D00C134FA /* Nest.swift */,
 				FC8613601DE9742300497425 /* Congrats.swift */,
+				FC3783DF1DF405FD004D636D /* ReplaceEntryNotificationObject.swift */,
 				CB4381701DEBDC35005B7958 /* ImageAnimator.swift */,
 				CB4381721DEBDCE3005B7958 /* VideoWriter.swift */,
 			);
@@ -192,6 +202,7 @@
 		E1B6F6501DD4338100B01B9E /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				FCF9FEF71DF13C4B00F3313E /* ViewControllerBase.swift */,
 				E18E2CB91DC95FD500BA02C4 /* ViewController.swift */,
 				E1B6F6541DD4380700B01B9E /* BaseViewController.swift */,
 				E1B6F6551DD4380700B01B9E /* BaseViewController.xib */,
@@ -232,6 +243,16 @@
 			name = API;
 			sourceTree = "<group>";
 		};
+		FCF9FEF41DF135C400F3313E /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				FCF9FEF51DF1372300F3313E /* EntryBroker.swift */,
+				FCF9FEF91DF1D9B700F3313E /* TimelineSection.swift */,
+			);
+			name = Controllers;
+			path = ..;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -269,6 +290,8 @@
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = EEV6AZHDW2;
 						ProvisioningStyle = Manual;
+						DevelopmentTeam = SCUP57ZH8V;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 1;
@@ -376,8 +399,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC86135F1DE667AC00497425 /* ConfettiView.swift in Sources */,
+				FCF9FEF61DF1372300F3313E /* EntryBroker.swift in Sources */,
 				E1E579C91DD7F39D0032570C /* TabBarView.swift in Sources */,
 				E183327D1DE41A0100DDD7C7 /* APNUtil.swift in Sources */,
+				FCF9FEFA1DF1D9B700F3313E /* TimelineSection.swift in Sources */,
 				FCEAD6C51DD7BBCA002ADFC2 /* TimelineTableViewCell.swift in Sources */,
 				CB4381711DEBDC35005B7958 /* ImageAnimator.swift in Sources */,
 				E1B6F64D1DD4135500B01B9E /* Question.swift in Sources */,
@@ -398,6 +423,8 @@
 				FC8613631DEA5CF300497425 /* ProgressHUD.swift in Sources */,
 				E1B6F64F1DD4142900B01B9E /* Location.swift in Sources */,
 				E1B6F6491DD411D200B01B9E /* User.swift in Sources */,
+				FCF9FEF81DF13C4B00F3313E /* ViewControllerBase.swift in Sources */,
+				FC3783E01DF405FD004D636D /* ReplaceEntryNotificationObject.swift in Sources */,
 				E1B6F6721DD4403E00B01B9E /* CalendarViewController.swift in Sources */,
 				E1B6F66A1DD43F8600B01B9E /* ViewEntryViewController.swift in Sources */,
 			);
@@ -531,10 +558,11 @@
 				CODE_SIGN_ENTITLEMENTS = Happiness/Happynest.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Zihan Zhou (3B35NTJ7CA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = EEV6AZHDW2;
+				DEVELOPMENT_TEAM = SCUP57ZH8V;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.happiness.Happynest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.Happynest;
 				PRODUCT_NAME = Happynest;
 				PROVISIONING_PROFILE = "c086fc09-d033-424b-a60c-8c3fb0d51dad";
 				PROVISIONING_PROFILE_SPECIFIER = happynest12/2;
@@ -555,6 +583,10 @@
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.happiness.Happynest;
+				DEVELOPMENT_TEAM = SCUP57ZH8V;
+				INFOPLIST_FILE = Happiness/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.Happynest;
 				PRODUCT_NAME = Happynest;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
