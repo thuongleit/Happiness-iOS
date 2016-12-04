@@ -289,8 +289,6 @@
 					E18E2CB31DC95FD500BA02C4 = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = EEV6AZHDW2;
-						ProvisioningStyle = Manual;
-						DevelopmentTeam = SCUP57ZH8V;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -558,14 +556,13 @@
 				CODE_SIGN_ENTITLEMENTS = Happiness/Happynest.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Zihan Zhou (3B35NTJ7CA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = SCUP57ZH8V;
+				DEVELOPMENT_TEAM = EEV6AZHDW2;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.happiness.Happynest;
-				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.Happynest;
 				PRODUCT_NAME = Happynest;
-				PROVISIONING_PROFILE = "c086fc09-d033-424b-a60c-8c3fb0d51dad";
-				PROVISIONING_PROFILE_SPECIFIER = happynest12/2;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -579,14 +576,10 @@
 				CODE_SIGN_ENTITLEMENTS = Happiness/Happynest.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Zihan Zhou (3B35NTJ7CA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = EEV6AZHDW2;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.happiness.Happynest;
-				DEVELOPMENT_TEAM = SCUP57ZH8V;
-				INFOPLIST_FILE = Happiness/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.Happynest;
 				PRODUCT_NAME = Happynest;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

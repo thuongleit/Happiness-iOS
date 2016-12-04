@@ -62,6 +62,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
+        let baseViewController = BaseViewController(nibName: "BaseViewController", bundle: nil)
+        window?.rootViewController = baseViewController
+        let editEntryViewController = EditEntryViewController(nibName: nil, bundle: nil)
+        let navigationController = UINavigationController(rootViewController: editEntryViewController)
+        navigationController.navigationBar.isTranslucent = false
+        baseViewController.present(navigationController, animated: true, completion: nil)
+        
     }
     
     func presentLoginSignupScreens() {

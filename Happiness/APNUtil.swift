@@ -27,8 +27,4 @@ class APNUtil: NSObject {
         
         push.sendInBackground()
     }
-    
-    
-
-
 }
