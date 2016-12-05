@@ -14,6 +14,7 @@
                 <outlet property="dateLabel" destination="m5P-5u-iH2" id="s7l-Va-lPg"/>
                 <outlet property="feelingImageView" destination="3K2-G8-PqW" id="mOJ-xl-079"/>
                 <outlet property="feelingSlider" destination="TAf-qY-uqt" id="QCK-pF-OeK"/>
+                <outlet property="locationIconImageView" destination="5na-3b-F6Q" id="SoL-gS-TZb"/>
                 <outlet property="locationTextField" destination="BvK-ia-fF4" id="Odj-3j-BRb"/>
                 <outlet property="textView" destination="29J-UZ-9Wf" id="qrK-xP-vg0"/>
                 <outlet property="uploadImageButton" destination="W3h-yQ-BdT" id="ReG-6o-tfW"/>
@@ -33,7 +34,7 @@
                 </label>
                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="4" minValue="0.0" maxValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="TAf-qY-uqt">
                     <rect key="frame" x="90" y="237.5" width="271" height="31"/>
-                    <color key="minimumTrackTintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="minimumTrackTintColor" red="0.18823529411764706" green="0.67450980392156867" blue="0.62745098039215685" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="maximumTrackTintColor" red="0.99607843139999996" green="0.80000000000000004" blue="0.1019607843" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="thumbTintColor" red="0.99607843137254903" green="0.80000000000000004" blue="0.10196078431372549" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
@@ -76,38 +77,39 @@
                     </connections>
                 </button>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="On the grass at Seven Seas Park" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BvK-ia-fF4">
-                    <rect key="frame" x="90" y="177" width="269" height="30"/>
+                    <rect key="frame" x="52" y="177" width="307" height="30"/>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="leD-hC-SmF">
-                    <rect key="frame" x="16" y="181.5" width="66" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location-240" translatesAutoresizingMaskIntoConstraints="NO" id="5na-3b-F6Q" userLabel="Location Icon ">
+                    <rect key="frame" x="16" y="180" width="24" height="24"/>
+                    <color key="tintColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="24" id="BNs-so-LRG"/>
+                        <constraint firstAttribute="height" constant="24" id="DC8-hy-hHN"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="0.94901960784313721" green="0.94509803921568625" blue="0.92549019607843142" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="TAf-qY-uqt" firstAttribute="leading" secondItem="3K2-G8-PqW" secondAttribute="trailing" constant="16" id="0Sr-qN-1hk"/>
                 <constraint firstItem="W3h-yQ-BdT" firstAttribute="top" secondItem="3K2-G8-PqW" secondAttribute="bottom" constant="20" id="3wZ-zW-gTl"/>
-                <constraint firstItem="leD-hC-SmF" firstAttribute="centerY" secondItem="BvK-ia-fF4" secondAttribute="centerY" id="4gL-f7-aVV"/>
                 <constraint firstAttribute="trailing" secondItem="TAf-qY-uqt" secondAttribute="trailing" constant="16" id="56l-5Y-n5S"/>
-                <constraint firstItem="BvK-ia-fF4" firstAttribute="leading" secondItem="leD-hC-SmF" secondAttribute="trailing" constant="8" id="7L9-8H-p8j"/>
                 <constraint firstItem="3K2-G8-PqW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="7um-mN-EYd"/>
                 <constraint firstItem="W3h-yQ-BdT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="AUS-ej-KTd"/>
                 <constraint firstAttribute="trailing" secondItem="29J-UZ-9Wf" secondAttribute="trailing" constant="16" id="Gp2-YT-YTO"/>
                 <constraint firstAttribute="trailing" secondItem="BvK-ia-fF4" secondAttribute="trailing" constant="16" id="IDf-PC-m44"/>
                 <constraint firstItem="29J-UZ-9Wf" firstAttribute="top" secondItem="m5P-5u-iH2" secondAttribute="bottom" constant="16" id="Kp1-sW-DkI"/>
                 <constraint firstItem="m5P-5u-iH2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="Loh-Vt-OoA"/>
+                <constraint firstItem="3K2-G8-PqW" firstAttribute="top" secondItem="BvK-ia-fF4" secondAttribute="bottom" constant="16" id="NXn-db-QJx"/>
+                <constraint firstItem="5na-3b-F6Q" firstAttribute="centerY" secondItem="BvK-ia-fF4" secondAttribute="centerY" id="PON-PX-9tv"/>
                 <constraint firstAttribute="trailing" secondItem="m5P-5u-iH2" secondAttribute="trailing" constant="16" id="TtI-8g-4OL"/>
                 <constraint firstAttribute="trailing" secondItem="W3h-yQ-BdT" secondAttribute="trailing" constant="16" id="Xr5-yC-GL7"/>
-                <constraint firstItem="leD-hC-SmF" firstAttribute="top" relation="greaterThanOrEqual" secondItem="29J-UZ-9Wf" secondAttribute="bottom" constant="20" id="XuK-aQ-Abv"/>
                 <constraint firstItem="TAf-qY-uqt" firstAttribute="centerY" secondItem="3K2-G8-PqW" secondAttribute="centerY" id="kJ4-NN-R3t"/>
-                <constraint firstItem="3K2-G8-PqW" firstAttribute="top" secondItem="leD-hC-SmF" secondAttribute="bottom" constant="20" id="mAx-ha-B6x"/>
                 <constraint firstItem="29J-UZ-9Wf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="s7W-Nf-rhr"/>
-                <constraint firstItem="leD-hC-SmF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="wt7-4g-10C"/>
+                <constraint firstItem="5na-3b-F6Q" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="sUl-JX-5LP"/>
+                <constraint firstItem="BvK-ia-fF4" firstAttribute="leading" secondItem="5na-3b-F6Q" secondAttribute="trailing" constant="12" id="uFp-Ry-6JJ"/>
                 <constraint firstItem="BvK-ia-fF4" firstAttribute="top" secondItem="29J-UZ-9Wf" secondAttribute="bottom" constant="20" id="ybO-Bn-92W"/>
             </constraints>
             <nil key="simulatedTopBarMetrics"/>
@@ -116,6 +118,7 @@
     </objects>
     <resources>
         <image name="camera" width="64" height="64"/>
+        <image name="location-240" width="240" height="240"/>
         <image name="really_happy" width="60" height="60"/>
     </resources>
 </document>
