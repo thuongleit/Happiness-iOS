@@ -15,6 +15,7 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
     
+    @IBOutlet weak var locationIconImageView: UIImageView!
     @IBOutlet weak var locationTextField: UITextField!
     
     @IBOutlet weak var feelingImageView: UIImageView!
@@ -80,6 +81,9 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
         // Hide keyboard on tap outside of text fields
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(EditEntryViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
+        
+        // Location Icon
+        locationIconImageView.image = locationIconImageView.image?.withRenderingMode(.alwaysTemplate)
         
         // Scroll up view on keyboard showing
         // TODO(cboo): Buggy, need to fix.
