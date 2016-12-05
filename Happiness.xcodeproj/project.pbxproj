@@ -14,6 +14,8 @@
 		CB83F7121DF27A390038CF56 /* JBKenBurnsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB83F7111DF27A390038CF56 /* JBKenBurnsView.swift */; };
 		CB83F7141DF4711C0038CF56 /* CompilationOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB83F7131DF4711C0038CF56 /* CompilationOverlayView.swift */; };
 		CB83F7161DF4712A0038CF56 /* CompilationOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB83F7151DF4712A0038CF56 /* CompilationOverlayView.xib */; };
+		CB83F7181DF516BB0038CF56 /* CompilationAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CB83F7171DF516BB0038CF56 /* CompilationAlertView.xib */; };
+		CB83F71A1DF516C60038CF56 /* CompilationAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB83F7191DF516C60038CF56 /* CompilationAlertView.swift */; };
 		CBE5F76A1DDEA56D00C134FA /* Nest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE5F7691DDEA56D00C134FA /* Nest.swift */; };
 		E17ACFB11DD70E2200E826FE /* LoginSignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17ACFAF1DD70E2200E826FE /* LoginSignupViewController.swift */; };
 		E17ACFB21DD70E2200E826FE /* LoginSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E17ACFB01DD70E2200E826FE /* LoginSignupViewController.xib */; };
@@ -66,6 +68,8 @@
 		CB83F7111DF27A390038CF56 /* JBKenBurnsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JBKenBurnsView.swift; sourceTree = "<group>"; };
 		CB83F7131DF4711C0038CF56 /* CompilationOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompilationOverlayView.swift; sourceTree = "<group>"; };
 		CB83F7151DF4712A0038CF56 /* CompilationOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CompilationOverlayView.xib; sourceTree = "<group>"; };
+		CB83F7171DF516BB0038CF56 /* CompilationAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CompilationAlertView.xib; sourceTree = "<group>"; };
+		CB83F7191DF516C60038CF56 /* CompilationAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompilationAlertView.swift; sourceTree = "<group>"; };
 		CBE5F7691DDEA56D00C134FA /* Nest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nest.swift; sourceTree = "<group>"; };
 		E15855501DE26FD30045E1F2 /* Happynest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Happynest.entitlements; sourceTree = "<group>"; };
 		E17ACFAF1DD70E2200E826FE /* LoginSignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSignupViewController.swift; sourceTree = "<group>"; };
@@ -236,6 +240,8 @@
 				FC8613621DEA5CF300497425 /* ProgressHUD.swift */,
 				CB83F7131DF4711C0038CF56 /* CompilationOverlayView.swift */,
 				CB83F7151DF4712A0038CF56 /* CompilationOverlayView.xib */,
+				CB83F7171DF516BB0038CF56 /* CompilationAlertView.xib */,
+				CB83F7191DF516C60038CF56 /* CompilationAlertView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -294,7 +300,7 @@
 				TargetAttributes = {
 					E18E2CB31DC95FD500BA02C4 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = SCUP57ZH8V;
+						DevelopmentTeam = EEV6AZHDW2;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -343,6 +349,7 @@
 				E1B6F65F1DD43ED700B01B9E /* InitialViewController.xib in Resources */,
 				E1B6F6631DD43F2100B01B9E /* TimelineViewController.xib in Resources */,
 				E18E2CBF1DC95FD500BA02C4 /* Assets.xcassets in Resources */,
+				CB83F7181DF516BB0038CF56 /* CompilationAlertView.xib in Resources */,
 				E18E2CBD1DC95FD500BA02C4 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -409,6 +416,7 @@
 				FCF9FEFA1DF1D9B700F3313E /* TimelineSection.swift in Sources */,
 				FCEAD6C51DD7BBCA002ADFC2 /* TimelineTableViewCell.swift in Sources */,
 				CB4381711DEBDC35005B7958 /* ImageAnimator.swift in Sources */,
+				CB83F71A1DF516C60038CF56 /* CompilationAlertView.swift in Sources */,
 				E1B6F64D1DD4135500B01B9E /* Question.swift in Sources */,
 				CBE5F76A1DDEA56D00C134FA /* Nest.swift in Sources */,
 				FC8613611DE9742300497425 /* Congrats.swift in Sources */,
@@ -564,10 +572,10 @@
 				CODE_SIGN_ENTITLEMENTS = Happiness/Happynest.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Zihan Zhou (3B35NTJ7CA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = SCUP57ZH8V;
+				DEVELOPMENT_TEAM = EEV6AZHDW2;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.Happynest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deeksha.teamhappiness.Happynest;
 				PRODUCT_NAME = Happynest;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -584,10 +592,10 @@
 				CODE_SIGN_ENTITLEMENTS = Happiness/Happynest.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Zihan Zhou (3B35NTJ7CA)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = SCUP57ZH8V;
+				DEVELOPMENT_TEAM = EEV6AZHDW2;
 				INFOPLIST_FILE = Happiness/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.teamhappiness.Happynest;
+				PRODUCT_BUNDLE_IDENTIFIER = com.deeksha.teamhappiness.Happynest;
 				PRODUCT_NAME = Happynest;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

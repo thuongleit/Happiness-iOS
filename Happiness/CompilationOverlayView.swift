@@ -8,17 +8,11 @@
 
 import UIKit
 
-@objc protocol CompilationOverlayViewDelegate {
-    @objc optional func startCompilation(inView: CompilationOverlayView)
-}
-
 class CompilationOverlayView: UIView {
     
     // Our custom view from the XIB file
     var view: UIView!
     @IBOutlet weak var kenBurnsView: JBKenBurnsView!
-    @IBOutlet weak var actionView: UIView!
-    weak var delegate:CompilationOverlayViewDelegate?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -40,10 +34,10 @@ class CompilationOverlayView: UIView {
     func initSubviews() {
         view = loadViewFromXibFile()
         view.frame = bounds
-//        view.translatesAutoresizingMaskIntoConstraints = false
+        view.translatesAutoresizingMaskIntoConstraints = false
         addSubview(view)
         
-//        self.translatesAutoresizingMaskIntoConstraints = false
+        self.translatesAutoresizingMaskIntoConstraints = false
         
         view.layer.cornerRadius = 4.0
         view.layer.shadowColor = UIColor.black.cgColor
@@ -53,27 +47,8 @@ class CompilationOverlayView: UIView {
     }
     
     func displayView(_ onView: UIView) {
-        self.alpha = 0.0
-        onView.addSubview(self)
         
-        onView.addConstraint(NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: onView, attribute: .centerY, multiplier: 1.0, constant: -80.0)) // move it a bit upwards
-        onView.addConstraint(NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: onView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
-        onView.needsUpdateConstraints()
-        
-        // display the view
-        transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-        UIView.animate(withDuration: 0.3, animations: { () -> Void in
-            self.alpha = 1.0
-            self.transform = CGAffineTransform.identity
-        }, completion: { (finished) -> Void in
-           
-        })
     }
-    
-    @IBAction func onStartKenBurns(_ sender: Any) {
-        delegate?.startCompilation!(inView: self)
-    }
-    
     
     func hideView() {
         UIView.animate(withDuration: 0.3, animations: { () -> Void in

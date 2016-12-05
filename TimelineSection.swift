@@ -14,7 +14,7 @@ class TimelineSection {
     let week: Int
     let year: Int
     let title: String
-    private var entries = [Entry]()
+    var entries = [Entry]()// why was it private
     private var userEntryCount = [String: Int]() // maps user IDs to entry counts
     private var _localEntriesCount = 0
     

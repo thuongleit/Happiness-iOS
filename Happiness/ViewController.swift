@@ -91,6 +91,12 @@ class ViewController: UIViewController {
             _ = UIImage.init(data: data!)
             
             }.resume()
+        
+        
+        
+        //synchronous
+        //                    let imgData = NSData.init(contentsOf: url!)
+        //                    let image = UIImage.init(data: imgData as! Data)
     }
     
     override func didReceiveMemoryWarning() {
