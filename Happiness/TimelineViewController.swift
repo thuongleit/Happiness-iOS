@@ -8,8 +8,8 @@
 
 import UIKit
 
-class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
-
+class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JBKenBurnsViewDelegate, CompilationAlertViewDelegate {
+    
     @IBOutlet weak var tableView: UITableView!
     
     var confettiView: ConfettiView?
@@ -19,11 +19,25 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
     var progressHud: ProgressHUD?
     var scrollLoadingData = false
     var lastEntryCreatedDate: Date?
-
+    
+    lazy var compilationView: CompilationOverlayView = {
+        let compilationView = CompilationOverlayView()
+        return compilationView
+    }()
+    var compilationImages = [UIImage]()
+    var noOfEntriesInCurrentWeek = 0
+    
+    lazy var compilationAlertView: CompilationAlertView = {
+        let compilationAlertView = CompilationAlertView()
+        return compilationAlertView
+    }()
+    
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
-
+        
+        
         // Set up the navigation bar.
         if let navigationController = navigationController {
             
@@ -44,7 +58,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
                 target: self,
                 action: #selector(onSettingsButton))
             navigationItem.leftBarButtonItem  = settingsButton
-
+            
             // Add the compose button.
             let composeButton = UIBarButtonItem(
                 image: UIImage(named: UIConstants.ImageName.composeButton),
@@ -96,20 +110,20 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
             object: nil,
             queue: OperationQueue.main)
         { (notification: Notification) in
-                
+            
             if let entry = notification.object as? Entry {
-                    
+                
                 let sectionWasAdded = self.addNewEntry(entry)
-                    
+                
                 DispatchQueue.main.async {
-                        
+                    
                     if sectionWasAdded {
-                            
+                        
                         // When a section is added, reload the entire table.
                         self.tableView.reloadData()
                     }
                     else {
-                            
+                        
                         // When the entry was added to the first section,
                         // just reload the first section.
                         self.tableView.reloadSections(IndexSet(integer: 0), with: .fade)
@@ -123,7 +137,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
                 }
             }
         }
-
+        
         // When an entry is replaced, update it in the table.
         NotificationCenter.default.addObserver(
             forName: AppDelegate.GlobalEventEnum.replaceEntryNotification.notification,
@@ -135,7 +149,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
                 let entryReplacedInSectionIndex = self.replaceEntry(withId: replaceEntryObject.entryId, replacementEntry: replaceEntryObject.replacementEntry) {
                 
                 DispatchQueue.main.async {
-                        
+                    
                     // Reload the section containing the replaced entry.
                     // Save/restore the contentOffset, since when this is not
                     // done the table sometimes scrolls away from an updated
@@ -178,7 +192,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
                 }
             }
         }
-
+        
         // Get nest users and entries when the view controller loads.
         getNestUsers(thenGetEntries: true)
     }
@@ -188,13 +202,84 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
         // Display the tab bar.
         //NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.unhideBottomTabBars.notification))
     }
- 
+    
     // When the settings is pressed, log out.
     @IBAction func onSettingsButton(_ sender: UIBarButtonItem)
     {
         NotificationCenter.default.post(name: AppDelegate.GlobalEventEnum.didLogout.notification, object: nil)
     }
-
+    
+    //for ken burns compilation on entry images
+    func loadImagesForCompilation() {
+        
+        self.compilationImages = [UIImage]()
+        if let firstSection = sections.first {
+            let streakEntries = firstSection.entries
+            noOfEntriesInCurrentWeek = streakEntries.count
+            
+            for entry in streakEntries {
+                if(entry.media != nil){
+                    
+                    //asynchronous
+                    entry.media?.getDataInBackground(block: { (data: Data?, error: Error?) in
+                        if(error == nil){
+                            
+                            let image = UIImage(data: data!)
+                            if(image != nil){
+                                self.compilationImages.append(image!)
+                                //after loading all images asynchronously check if you got all entries for the week and present compilation
+                                if(self.noOfEntriesInCurrentWeek == self.compilationImages.count){
+                                    self.presentUserCompilationViewPrompt()
+                                }
+                            }
+                        }
+                    })
+                    
+                }
+            }
+        }
+    }
+    
+    //custom view to show the prompt
+    func presentUserCompilationViewPrompt(){
+        compilationAlertView.compileAlertDelegate = self
+        compilationAlertView.displayView(onView: view)
+    }
+    
+    func compilationActionTakenByUser(isShow: Bool) {
+        if(isShow){
+            startCompilation()
+        }
+        self.compilationAlertView.hideView()
+    }
+    
+    func startCompilation() {
+        self.compilationView.kenBurnsView.kenBurnsDelegate = self
+        self.compilationView.alpha = 0.0
+        let parentFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        self.compilationView.frame = parentFrame
+        self.compilationView.kenBurnsView.frame = parentFrame
+        self.view.addSubview(self.compilationView)
+        
+        
+        UIView.animate(withDuration: 0.1, animations: { () -> Void in
+            self.compilationView.alpha = 1.0
+        }, completion: nil)
+        
+        self.compilationView.kenBurnsView.animateWithImages(compilationImages, imageAnimationDuration: 5, initialDelay: 0.6, shouldLoop: false)
+        
+        //        var imagesArray = [UIImage]()
+        //        imagesArray.append(UIImage(named: "1")!)
+        //        imagesArray.append(UIImage(named: "2")!)
+        //        imagesArray.append(UIImage(named: "3")!)
+        //        imagesArray.append(UIImage(named: "4")!)
+        //        self.compilationView.kenBurnsView.animateWithImages(imagesArray, imageAnimationDuration: 5, initialDelay: 0, shouldLoop: false)
+    }
+    
+    func finishedShowingLastImage() {
+        self.compilationView.removeFromSuperview()
+    }
+    
     // When the compose is pressed, present the EditEntryViewController modally.
     @IBAction func onComposeButton(_ sender: UIBarButtonItem)
     {
@@ -212,7 +297,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
                 return
             }
         }
-
+        
         let editEntryViewController = EditEntryViewController(nibName: nil, bundle: nil)
         let navigationController = UINavigationController(rootViewController: editEntryViewController)
         navigationController.navigationBar.isTranslucent = false
@@ -231,9 +316,9 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
         
         happinessService.getNestUsersForCurrentUser(
             success: { (users: [User]) in
-            
+                
                 self.nestUsers = users
-
+                
                 // When calling getEntries(), do not hide progressHud or end
                 // refreshing on refreshControl at this time.
                 if !shouldGetEntries {
@@ -253,14 +338,14 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
                         self.tableView.reloadData()
                     }
                 }
-            },
+        },
             failure: { (error: Error) in
-            
+                
                 self.requestDidSucceed(false, refreshControl: refreshControl)
-            }
+        }
         )
     }
-
+    
     // Get a collection of entries for the authenticating user.
     func getEntries(willRequestCalled: Bool = false, refreshControl: UIRefreshControl? = nil) {
         
@@ -274,11 +359,11 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
         happinessService.getEntries(
             beforeCreatedDate: scrollLoadingData ? lastEntryCreatedDate : nil,
             success: { (entries: [Entry]) in
-
+                
                 let entriesAdded: Int
                 let shouldReloadData: Bool
                 if self.scrollLoadingData {
-                
+                    
                     // Infinite scroll. Append entries to tableView.
                     self.scrollLoadingData = false
                     entriesAdded = self.appendEntries(entries: entries)
@@ -300,18 +385,18 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
                 if shouldReloadData {
                     
                     DispatchQueue.main.async {
-                    
+                        
                         self.tableView.reloadData()
                         
                         // Congratulate user when appropriate.
                         self.congratulateIfComplete()
                     }
                 }
-            },
+        },
             failure: { (Error) in
                 
                 self.requestDidSucceed(false, refreshControl: refreshControl)
-            }
+        }
         )
     }
     
@@ -352,7 +437,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
             
             section!.append(entry: entry)
         }
-
+        
         // If these entries are not the final entries in the database, discard
         // the final section, since it may not be complete. This code makes the
         // assumption that there is always less than getEntriesQueryLimit entries
@@ -404,13 +489,13 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
             
             let entryWasReplaced = section.replace(entryWithId: entryId, replacementEntry: replacementEntry)
             if entryWasReplaced {
-                    
+                
                 return sectionIndex
             }
         }
         return nil
     }
-        
+    
     // Deletes the specified entry from the tableView, if found. Returns the
     // section index of the deleted entry, or nil if no entry was deleted.
     func deleteEntry(_ entry: Entry) -> Int? {
@@ -430,7 +515,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
     
     // Get nest users and entries when the user pulls to refresh.
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
-
+        
         // Disable pull to refresh when there are temporary "local" entries.
         var hasLocalEntries = false
         for section in sections {
@@ -442,7 +527,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
             }
         }
         if hasLocalEntries {
-
+            
             refreshControl.endRefreshing()
             return
         }
@@ -454,7 +539,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
     func willRequest() {
         
         if let progressHud = progressHud {
-        
+            
             progressHud.show(animated: true)
         }
     }
@@ -467,7 +552,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
         DispatchQueue.main.async {
             
             if !success {
-            
+                
                 if let navigationController = self.navigationController {
                     
                     UIConstants.presentError(message: "Network Error", inView: navigationController.view)
@@ -504,7 +589,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate {
             sections[0].getCountOfUsersWithEntries() == nestUsers.count {
             
             if Congrats.shared.congratulateShouldDisplayCongrats() {
-                
+                self.loadImagesForCompilation() //load all images to show the ken burns effect.
                 displayCongrats()
             }
         }
@@ -546,7 +631,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-      
+        
         return 130 // TODO(cboo): Fix auto height. Not working even though I have it in self.viewDidLoad()
     }
     
@@ -561,7 +646,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         
         // Set the cell contents.
         cell.setData(entry: sections[indexPath.section].get(entryAtRow: indexPath.row), delegate: self)
-                
+        
         return cell
     }
     
@@ -614,7 +699,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
             
             EntryBroker.shared.deleteEntry(entry: sections[indexPath.section].get(entryAtRow: indexPath.row))
         }
-     }
+    }
     
     func timelineHeaderView(headerView: TimelineHeaderView, didTapOnProfileImage toNudgeUser: User?) {
         let name = toNudgeUser!.name!
