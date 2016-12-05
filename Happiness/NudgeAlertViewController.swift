@@ -47,6 +47,7 @@ class NudgeAlertViewController: UIViewController {
         promptLabel.textColor = UIColor.white
         promptLabel.textAlignment = .center
         promptLabel.font = UIFont(name: UIConstants.textFontName, size: 18)
+        promptLabel.adjustsFontSizeToFitWidth = true
         
         noButton.setTitle("Hmm, no.", for: .normal)
         noButton.layer.cornerRadius = 5
