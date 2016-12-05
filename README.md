@@ -152,3 +152,4 @@ Smiley icons by Freepik
 
 http://www.freepik.com/free-vector/several-emoticons-in-flat-style_950559.htm?utm_campaign=flaticon&utm_medium=banner
 
+<img src="https://image.freepik.com/free-vector/several-emoticons-in-flat-style_23-2147572596.jpg"/>
