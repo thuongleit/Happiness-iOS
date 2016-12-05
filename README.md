@@ -145,3 +145,9 @@ The following **optional** features are nice to have:
 https://github.com/TeamHappiness/Happiness-iOS/blob/master/smileFirstSprint.pdf
 
 
+
+
+## Credits & Attribution
+Smiley icons by Freepik
+http://www.freepik.com/free-vector/several-emoticons-in-flat-style_950559.htm?utm_campaign=flaticon&utm_medium=banner
+
