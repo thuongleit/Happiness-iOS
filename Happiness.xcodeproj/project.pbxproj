@@ -12,6 +12,8 @@
 		CB4381711DEBDC35005B7958 /* ImageAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4381701DEBDC35005B7958 /* ImageAnimator.swift */; };
 		CB4381731DEBDCE3005B7958 /* VideoWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4381721DEBDCE3005B7958 /* VideoWriter.swift */; };
 		CBE5F76A1DDEA56D00C134FA /* Nest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE5F7691DDEA56D00C134FA /* Nest.swift */; };
+		E12F7FAF1DF49B0300BD9406 /* NudgeAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12F7FAD1DF49B0300BD9406 /* NudgeAlertViewController.swift */; };
+		E12F7FB01DF49B0300BD9406 /* NudgeAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E12F7FAE1DF49B0300BD9406 /* NudgeAlertViewController.xib */; };
 		E17ACFB11DD70E2200E826FE /* LoginSignupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17ACFAF1DD70E2200E826FE /* LoginSignupViewController.swift */; };
 		E17ACFB21DD70E2200E826FE /* LoginSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E17ACFB01DD70E2200E826FE /* LoginSignupViewController.xib */; };
 		E183327D1DE41A0100DDD7C7 /* APNUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = E183327C1DE41A0100DDD7C7 /* APNUtil.swift */; };
@@ -62,6 +64,8 @@
 		CB4381701DEBDC35005B7958 /* ImageAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAnimator.swift; sourceTree = "<group>"; };
 		CB4381721DEBDCE3005B7958 /* VideoWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoWriter.swift; sourceTree = "<group>"; };
 		CBE5F7691DDEA56D00C134FA /* Nest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nest.swift; sourceTree = "<group>"; };
+		E12F7FAD1DF49B0300BD9406 /* NudgeAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NudgeAlertViewController.swift; sourceTree = "<group>"; };
+		E12F7FAE1DF49B0300BD9406 /* NudgeAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NudgeAlertViewController.xib; sourceTree = "<group>"; };
 		E15855501DE26FD30045E1F2 /* Happynest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Happynest.entitlements; sourceTree = "<group>"; };
 		E17ACFAF1DD70E2200E826FE /* LoginSignupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSignupViewController.swift; sourceTree = "<group>"; };
 		E17ACFB01DD70E2200E826FE /* LoginSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginSignupViewController.xib; sourceTree = "<group>"; };
@@ -214,6 +218,8 @@
 				E1B6F66D1DD43FF800B01B9E /* EditEntryViewController.xib */,
 				E1B6F6701DD4403E00B01B9E /* CalendarViewController.swift */,
 				E1B6F6711DD4403E00B01B9E /* CalendarViewController.xib */,
+				E12F7FAD1DF49B0300BD9406 /* NudgeAlertViewController.swift */,
+				E12F7FAE1DF49B0300BD9406 /* NudgeAlertViewController.xib */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -336,6 +342,7 @@
 				E1B6F66F1DD43FF800B01B9E /* EditEntryViewController.xib in Resources */,
 				E1B6F65F1DD43ED700B01B9E /* InitialViewController.xib in Resources */,
 				E1B6F6631DD43F2100B01B9E /* TimelineViewController.xib in Resources */,
+				E12F7FB01DF49B0300BD9406 /* NudgeAlertViewController.xib in Resources */,
 				E18E2CBF1DC95FD500BA02C4 /* Assets.xcassets in Resources */,
 				E18E2CBD1DC95FD500BA02C4 /* Main.storyboard in Resources */,
 			);
@@ -405,6 +412,7 @@
 				CB4381711DEBDC35005B7958 /* ImageAnimator.swift in Sources */,
 				E1B6F64D1DD4135500B01B9E /* Question.swift in Sources */,
 				CBE5F76A1DDEA56D00C134FA /* Nest.swift in Sources */,
+				E12F7FAF1DF49B0300BD9406 /* NudgeAlertViewController.swift in Sources */,
 				FC8613611DE9742300497425 /* Congrats.swift in Sources */,
 				ACBC50D41DE24FBD006F8D1B /* TimelineHeaderView.swift in Sources */,
 				E1B6F6621DD43F2100B01B9E /* TimelineViewController.swift in Sources */,

@@ -25,6 +25,8 @@ class APNUtil: NSObject {
         data["alert"] = message
         push.setData(data)
         
-        push.sendInBackground()
+        push.sendInBackground(block: {(result, error) in
+            completionBlock(result)
+        })
     }
 }
