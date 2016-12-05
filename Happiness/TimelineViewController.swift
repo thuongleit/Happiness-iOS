@@ -23,6 +23,9 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, Nu
     
     var nudgeView: UIView!
     var nudgeAlertVC: NudgeAlertViewController!
+    
+    var centerX: CGFloat = UIScreen.main.bounds.width / 2
+    var centerY: CGFloat = UIScreen.main.bounds.height / 2
 
     override func viewDidLoad() {
         
@@ -623,21 +626,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
     
     func timelineHeaderView(headerView: TimelineHeaderView, didTapOnProfileImage toNudgeUser: User?, profileImageView: PFImageView) {
         
-        let name = toNudgeUser!.name!
-        let email = toNudgeUser!.email!
-        
-        
-        
-//        let nudgingAlert = UIAlertController(title: , message: "", preferredStyle: .alert)
-//        nudgingAlert.addAction(UIAlertAction(title: "Sure!", style: .default, handler: { (alert) in
-//            
-//
-//        }))
-//        nudgingAlert.addAction(UIAlertAction(title: "Hmm no", style: .cancel, handler: { (alert) in
-//            
-//        }))
-//        present(nudgingAlert, animated: true, completion: nil)
-        
+        self.view.layer.removeAllAnimations()
         
         nudgeView = UIView()
         self.view.addSubview(nudgeView)
@@ -665,13 +654,16 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
             let width = UIScreen.main.bounds.width - 50
             let height = 260
         
-            
             self.nudgeView.frame = CGRect(x: 0, y: 0, width: Int(width), height: height)
-            self.nudgeView.center = self.view.center
+            
+            if self.view.frame.minY != 0 {
+                self.centerY = self.centerY - self.view.frame.minY
+            }
+            
+            self.nudgeView.center = CGPoint(x: self.centerX, y: self.centerY)
             
         }, completion: { (finish) in
-            
-            
+           
         })
         
     }
@@ -692,19 +684,23 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         
         UIView.animate(withDuration: 0.1, animations: {
             
-            self.nudgeView.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 30)
+            self.nudgeView.center = CGPoint(x: self.nudgeView.center.x, y: self.nudgeView.center.y - 50)
             
         }, completion: { (finished) in
             
             UIView.animate(withDuration: 0.5, animations: {
                 
-                self.nudgeView.center = CGPoint(x: self.view.center.x, y: self.view.center.y + 500)
+                self.nudgeView.center = CGPoint(x: self.centerX, y: self.centerY + 500)
                 
             }, completion: { (finished) in
                 
+                self.centerY = UIScreen.main.bounds.height / 2
                 self.nudgeAlertVC.willMove(toParentViewController: nil)
                 self.nudgeAlertVC.view.removeFromSuperview()
+                self.nudgeAlertVC.removeFromParentViewController()
                 self.nudgeAlertVC.didMove(toParentViewController: nil)
+                self.nudgeAlertVC = nil
+                self.nudgeView = nil
             
             })
         })

@@ -23,6 +23,7 @@ class APNUtil: NSObject {
         var data = [AnyHashable : Any]()
         data["sound"] = "notification.caf"
         data["alert"] = message
+        data["nudge"] = true
         push.setData(data)
         
         push.sendInBackground(block: {(result, error) in
