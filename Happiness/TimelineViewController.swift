@@ -85,6 +85,12 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
             logoImageView.contentMode = .scaleAspectFit
             self.navigationItem.titleView = logoImageView
             
+            let logoDoubleTap = UITapGestureRecognizer()
+            logoDoubleTap.numberOfTapsRequired = 2
+            logoDoubleTap.addTarget(self, action: #selector(triggerCompilationAlert))
+            logoImageView.isUserInteractionEnabled = true
+            logoImageView.addGestureRecognizer(logoDoubleTap)
+            
             // Add the settings button.
             let settingsButton = UIBarButtonItem(
                 image: UIImage(named: UIConstants.ImageName.settingsButton),
@@ -240,6 +246,11 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         //NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.unhideBottomTabBars.notification))
     }
     
+    func triggerCompilationAlert() {
+        self.loadImagesForCompilation()
+        self.presentUserCompilationViewPrompt()
+    }
+    
     // When the settings is pressed, log out.
     @IBAction func onSettingsButton(_ sender: UIBarButtonItem)
     {
@@ -285,7 +296,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
     }
     
     //custom view to show the prompt
-    func presentUserCompilationViewPrompt(){
+    func presentUserCompilationViewPrompt() {
         compilationAlertView.compileAlertDelegate = self
         compilationAlertView.displayView(onView: view)
     }
