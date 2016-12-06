@@ -1,5 +1,5 @@
 //
-//  TimelineTableViewCell.swift
+//  ViewEntryTableViewCell.swift
 //  Happiness
 //
 //  Created by Dylan Miller on 11/10/16.
@@ -10,18 +10,9 @@ import UIKit
 import AFNetworking
 import ParseUI
 
-protocol TimelineTableViewCellDelegate: class {
-    
-    func timelineCellWasTapped(_ cell: TimelineTableViewCell)
-}
+class ViewEntryTableViewCell: UITableViewCell {
 
-class TimelineTableViewCell: UITableViewCell {
-
-    @IBOutlet weak var happinessColorView: UIView!
-    @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var monthNameLabel: UILabel!
-    @IBOutlet weak var dayNameLabel: UILabel!
-    @IBOutlet weak var dayNumberLabel: UILabel!
+    @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var happinessImageView: UIImageView!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var locationImageView: UIImageView!
@@ -29,6 +20,8 @@ class TimelineTableViewCell: UITableViewCell {
     @IBOutlet weak var profileImageView: PFImageView!
     @IBOutlet weak var entryImageView: PFImageView!
     
+    var happinessImageView2: UIImageView!
+
     var entryImageViewAspectConstraint : NSLayoutConstraint? {
         
         didSet {
@@ -46,9 +39,6 @@ class TimelineTableViewCell: UITableViewCell {
     }
     
     var entry: Entry?
-    weak var delegate : TimelineTableViewCellDelegate?
-    let monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    let dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     
     override func awakeFromNib() {
         
@@ -61,75 +51,61 @@ class TimelineTableViewCell: UITableViewCell {
         profileImageView.clipsToBounds = true
         entryImageView.layer.cornerRadius = 3
         entryImageView.clipsToBounds = true
-
-        // Add a gesture recogizer programatically, since the following
-        // error occurs otherwise: "invalid nib registered for identifier
-        // (XXXCell) - nib must contain exactly one top level object which
-        // must be a UITableViewCell instance."
-        let tapGestureRecognizer =
-            UITapGestureRecognizer(target: self, action: #selector(onTextViewTap(_:)))
-        tapGestureRecognizer.cancelsTouchesInView = true
-        tapGestureRecognizer.numberOfTapsRequired = 1
-        textView.addGestureRecognizer(tapGestureRecognizer)
-    }
-
-    @IBAction func onTextViewTap(_ sender: UITapGestureRecognizer) {
-        
-        // We use a tap gesture recognizer for the text view, since
-        // otherwise taps on the UITextView will not register as selecting
-        // a cell.
-        if sender.state == .ended
-        {
-            if let delegate = delegate
-            {
-                delegate.timelineCellWasTapped(self)
-            }
-        }
     }
 
     // Set the cell contents based on the specified parameters.
-    func setData(entry: Entry, delegate: TimelineTableViewCellDelegate) {
+    func setData(entry: Entry, isComingFromTimeline: Bool) {
         
         self.entry = entry
-        self.delegate = delegate
         
-        userNameLabel.text = entry.author?.name
-
         if let happinessLevel = entry.happinessLevel {
-        
-            happinessColorView.backgroundColor = UIConstants.happinessLevelColor(happinessLevel)
-            happinessImageView.image = UIConstants.happinessLevelImage(happinessLevel)
+            
+            if isComingFromTimeline {
+                
+                happinessImageView.image = UIConstants.happinessLevelImage(happinessLevel)
+                happinessImageView.transform = CGAffineTransform(
+                    scaleX: profileImageView.bounds.width / happinessImageView.bounds.width,
+                    y: profileImageView.bounds.height / happinessImageView.bounds.height)
+                happinessImageView.center = profileImageView.center
+                
+                UIView.animate(
+                    withDuration: 1.5,
+                    animations: {
+                    
+                        self.happinessImageView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
+                        let rightBottomPoint = CGPoint(x: self.profileImageView.frame.maxX - 4, y: self.profileImageView.frame.maxY - 4)
+                        self.happinessImageView.center = rightBottomPoint
+                    },
+                    completion: { (finish) in
+                    
+                        self.happinessImageView.layer.removeAllAnimations()
+                    }
+                )
+            }
         }
         else {
-        
-            happinessColorView.backgroundColor = happinessColorView.superview?.backgroundColor
+            
             happinessImageView.image = nil
         }
         
         if let createdDate = entry.createdDate {
             
-            let month = Calendar.current.component(.month, from: createdDate)
-            monthNameLabel.text = monthNames[month-1]
-
-            let day = Calendar.current.component(.day, from: createdDate)
-            dayNumberLabel.text = String(format: "%02d", day)
-
-            let weekday = Calendar.current.component(.weekday, from: createdDate)
-            dayNameLabel.text = dayNames[weekday-1]            
+            dateLabel.text = UIConstants.dateString(from: createdDate)
         }
         else {
-        
-            dayNameLabel.text = nil
-            dayNumberLabel.text = nil
+            
+            dateLabel.text = nil
         }
-        
+
         textView.text = entry.text
         
         if let placemark = entry.placemark {
+            
             locationLabel.text = placemark
             locationImageView.isHidden = false
         }
         else {
+            
             locationLabel.text = nil
             locationImageView.isHidden = true
         }
@@ -166,7 +142,6 @@ class TimelineTableViewCell: UITableViewCell {
             if let entryImageFile = entry.media {
             
                 setEntryImageViewAspectConstraint(hasImage: true, aspectRatio: entry.aspectRatio)
-                entryImageView.image = nil
                 entryImageView.file = entryImageFile
                 entryImageView.loadInBackground()
             }
@@ -177,10 +152,6 @@ class TimelineTableViewCell: UITableViewCell {
                 entryImageView.image = nil
             }
         }
-        
-        // Hide cells for which the entry is marked for deletion. Note that this
-        // only hides the content of the cell, it does not change the cell height.
-        isHidden = entry.isLocal && entry.isLocalMarkedForDelete
     }
     
     // Set the entryImageView aspect ratio constraint based on the image.
