@@ -10,7 +10,7 @@ import UIKit
 import ParseUI
 
 @objc protocol TimelineHeaderViewDelegate {
-    @objc optional func timelineHeaderView(headerView: TimelineHeaderView, didTapOnProfileImage toNudgeUser: User?)
+    @objc optional func timelineHeaderView(headerView: TimelineHeaderView, didTapOnProfileImage toNudgeUser: User?, profileImageView: PFImageView)
 }
 
 class TimelineHeaderView: UITableViewHeaderFooterView {
@@ -121,7 +121,7 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
     
     func profileImageTap(sender: UITapGestureRecognizer) {
         let user = nestUsers?[(sender.view?.tag)!]
-        delegate?.timelineHeaderView?(headerView: self, didTapOnProfileImage: user)
+        delegate?.timelineHeaderView?(headerView: self, didTapOnProfileImage: user, profileImageView: sender.view as! PFImageView)
     }
     
     override func awakeFromNib() {

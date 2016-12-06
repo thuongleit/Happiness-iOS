@@ -40,6 +40,11 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
     var topY: CGFloat = 0
     var keyboardHeight: CGFloat = 0
     
+    deinit {
+        // Remove all of this object's observer entries.
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

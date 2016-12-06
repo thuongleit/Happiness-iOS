@@ -29,6 +29,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
+    deinit {
+        // Remove all of this object's observer entries.
+        NotificationCenter.default.removeObserver(self)
+    }
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
@@ -61,6 +66,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        
+        if userInfo["nudge"] as! Bool == true {
+            let baseViewController = BaseViewController(nibName: "BaseViewController", bundle: nil)
+            window?.rootViewController = baseViewController
+            let editEntryViewController = EditEntryViewController(nibName: nil, bundle: nil)
+            let navigationController = UINavigationController(rootViewController: editEntryViewController)
+            navigationController.navigationBar.isTranslucent = false
+            baseViewController.present(navigationController, animated: true, completion: nil)
+        }
         
     }
     

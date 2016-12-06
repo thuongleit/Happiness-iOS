@@ -21,10 +21,17 @@ class ViewEntryViewController: ViewControllerBase {
 
     @IBOutlet weak var profileImageView: PFImageView!
     @IBOutlet weak var photoImageView: PFImageView!
+    
+    var comingfromTimeline = false
 
 
     var entry: Entry!
 
+    deinit {
+        // Remove all of this object's observer entries.
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -80,26 +87,30 @@ class ViewEntryViewController: ViewControllerBase {
                 locationLabel.text = placemark
             }
             if let happinessLevel = entry.happinessLevel {
-                feelingImageView = UIImageView(frame: self.profileImageView.frame)
-                self.view.addSubview(self.feelingImageView)
-                feelingImageView.image = UIConstants.happinessLevelImage(happinessLevel)
                 
-                UIView.animate(withDuration: 2, animations: { 
-                    self.feelingImageView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+                if (comingfromTimeline) {
                     
-                    let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
-                    rotateAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-                    rotateAnimation.fromValue = 0.0
-                    rotateAnimation.toValue = CGFloat(M_PI * 8.0)
-                    rotateAnimation.duration = 2.0
-                    rotateAnimation.repeatCount = 1
-                    self.feelingImageView.layer.add(rotateAnimation, forKey: nil)
+                    feelingImageView = UIImageView(frame: self.profileImageView.frame)
+                    self.view.addSubview(self.feelingImageView)
+                    feelingImageView.image = UIConstants.happinessLevelImage(happinessLevel)
                     
-                    let rightBottomPoint = CGPoint(x: self.profileImageView.frame.maxX - 10, y: self.profileImageView.frame.maxY - 10)
-                    self.feelingImageView.center = rightBottomPoint
-                }, completion: { (finish) in
-                    self.feelingImageView.layer.removeAllAnimations()
-                })
+                    UIView.animate(withDuration: 2, animations: {
+                        self.feelingImageView.transform = CGAffineTransform(scaleX: 0.4, y: 0.4)
+                        
+                        //                    let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
+                        //                    rotateAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+                        //                    rotateAnimation.fromValue = 0.0
+                        //                    rotateAnimation.toValue = CGFloat(M_PI * 8.0)
+                        //                    rotateAnimation.duration = 2.0
+                        //                    rotateAnimation.repeatCount = 1
+                        //                    self.feelingImageView.layer.add(rotateAnimation, forKey: nil)
+                        
+                        let rightBottomPoint = CGPoint(x: self.profileImageView.frame.maxX - 5, y: self.profileImageView.frame.maxY - 5)
+                        self.feelingImageView.center = rightBottomPoint
+                    }, completion: { (finish) in
+                        self.feelingImageView.layer.removeAllAnimations()
+                    })
+                }
                 
             }
             if entry.isLocal {
@@ -134,6 +145,7 @@ class ViewEntryViewController: ViewControllerBase {
         let navigationController = UINavigationController(rootViewController: editEntryViewController)
         navigationController.navigationBar.isTranslucent = false
         present(navigationController, animated: true, completion: nil)
+        self.comingfromTimeline = false
     }
     
     // MARK: - Notification

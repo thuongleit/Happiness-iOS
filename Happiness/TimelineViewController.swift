@@ -8,9 +8,10 @@
 
 import UIKit
 import Parse
+import ParseUI
 
-class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JBKenBurnsViewDelegate, CompilationAlertViewDelegate {
-    
+class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JBKenBurnsViewDelegate, CompilationAlertViewDelegate, NudgeAlertViewControllerDelegate {
+
     @IBOutlet weak var tableView: UITableView!
     
     var confettiView: ConfettiView?
@@ -21,6 +22,12 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
     var scrollLoadingData = false
     var lastEntryCreatedDate: Date?
     
+    var nudgeView: UIView!
+    var nudgeAlertVC: NudgeAlertViewController!
+    
+    var centerX: CGFloat = UIScreen.main.bounds.width / 2
+    var centerY: CGFloat = UIScreen.main.bounds.height / 2
+
     lazy var compilationView: CompilationOverlayView = {
         let compilationView = CompilationOverlayView()
         return compilationView
@@ -34,6 +41,27 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         return compilationAlertView
     }()
     
+    var newEntryObserver: NSObjectProtocol?
+    var replaceEntryObserver: NSObjectProtocol?
+    var deleteEntryObserver: NSObjectProtocol?
+
+    deinit {
+
+        // Remove all of this object's observers. For block-based observers,
+        // we need a separate removeObserver(observer:) call for each observer.
+        if let newEntryObserver = newEntryObserver {
+
+            NotificationCenter.default.removeObserver(newEntryObserver)
+        }
+        if let replaceEntryObserver = replaceEntryObserver {
+
+            NotificationCenter.default.removeObserver(replaceEntryObserver)
+        }
+        if let deleteEntryObserver = deleteEntryObserver {
+            
+            NotificationCenter.default.removeObserver(deleteEntryObserver)
+        }
+    }
     
     override func viewDidLoad() {
         
@@ -107,48 +135,50 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         }
         
         // When an entry is created, add it to the table.
-        NotificationCenter.default.addObserver(
+        newEntryObserver = NotificationCenter.default.addObserver(
             forName: AppDelegate.GlobalEventEnum.newEntryNotification.notification,
             object: nil,
             queue: OperationQueue.main)
-        { (notification: Notification) in
+        { [weak self] (notification: Notification) in
             
-            if let entry = notification.object as? Entry {
+            if let _self = self,
+                let entry = notification.object as? Entry {
                 
-                let sectionWasAdded = self.addNewEntry(entry)
+                let sectionWasAdded = _self.addNewEntry(entry)
                 
                 DispatchQueue.main.async {
                     
                     if sectionWasAdded {
                         
                         // When a section is added, reload the entire table.
-                        self.tableView.reloadData()
+                        _self.tableView.reloadData()
                     }
                     else {
                         
                         // When the entry was added to the first section,
                         // just reload the first section.
-                        self.tableView.reloadSections(IndexSet(integer: 0), with: .fade)
+                        _self.tableView.reloadSections(IndexSet(integer: 0), with: .fade)
                     }
                     
                     // Scroll to top when an entry is created.
-                    self.tableView.setContentOffset(CGPoint(x: 0, y: 0 - self.tableView.contentInset.top), animated: true)
+                    _self.tableView.setContentOffset(CGPoint(x: 0, y: 0 - _self.tableView.contentInset.top), animated: true)
                     
                     // Congratulate user when appropriate.
-                    self.congratulateIfComplete()
+                    _self.congratulateIfComplete()
                 }
             }
         }
         
         // When an entry is replaced, update it in the table.
-        NotificationCenter.default.addObserver(
+        replaceEntryObserver = NotificationCenter.default.addObserver(
             forName: AppDelegate.GlobalEventEnum.replaceEntryNotification.notification,
             object: nil,
             queue: OperationQueue.main)
-        { (notification: Notification) in
+        { [weak self] (notification: Notification) in
             
-            if let replaceEntryObject = notification.object as? ReplaceEntryNotificationObject,
-                let entryReplacedInSectionIndex = self.replaceEntry(withId: replaceEntryObject.entryId, replacementEntry: replaceEntryObject.replacementEntry) {
+            if let _self = self,
+                let replaceEntryObject = notification.object as? ReplaceEntryNotificationObject,
+                let entryReplacedInSectionIndex = _self.replaceEntry(withId: replaceEntryObject.entryId, replacementEntry: replaceEntryObject.replacementEntry) {
                 
                 DispatchQueue.main.async {
                     
@@ -157,10 +187,10 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
                     // done the table sometimes scrolls away from an updated
                     // entry. Saving/restoring does not completely fix this,
                     // but it helps.
-                    let contentOffset = self.tableView.contentOffset
+                    let contentOffset = _self.tableView.contentOffset
                     if replaceEntryObject.useFadeAnimation {
                         
-                        self.tableView.reloadSections(IndexSet(integer: entryReplacedInSectionIndex), with: .fade)
+                        _self.tableView.reloadSections(IndexSet(integer: entryReplacedInSectionIndex), with: .fade)
                     }
                     else {
                         
@@ -169,28 +199,29 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
                         // of an updated entry replacing a local entry, so they will
                         // be identical.
                         UIView.performWithoutAnimation({
-                            self.tableView.reloadSections(IndexSet(integer: entryReplacedInSectionIndex), with: .none)
+                            _self.tableView.reloadSections(IndexSet(integer: entryReplacedInSectionIndex), with: .none)
                         })
                     }
-                    self.tableView.contentOffset = contentOffset
+                    _self.tableView.contentOffset = contentOffset
                 }
             }
         }
         
         // When an entry is deleted, remove it from the table.
-        NotificationCenter.default.addObserver(
+        deleteEntryObserver = NotificationCenter.default.addObserver(
             forName: AppDelegate.GlobalEventEnum.deleteEntryNotification.notification,
             object: nil,
             queue: OperationQueue.main)
-        { (notification: Notification) in
+        { [weak self] (notification: Notification) in
             
-            if let entry = notification.object as? Entry,
-                let entryDeletedInSectionIndex = self.deleteEntry(entry) {
+            if let _self = self,
+                let entry = notification.object as? Entry,
+                let entryDeletedInSectionIndex = _self.deleteEntry(entry) {
                 
                 DispatchQueue.main.async {
                     
                     // Reload the section the entry was deleted from.
-                    self.tableView.reloadSections(IndexSet(integer: entryDeletedInSectionIndex), with: .fade)
+                    _self.tableView.reloadSections(IndexSet(integer: entryDeletedInSectionIndex), with: .fade)
                 }
             }
         }
@@ -238,6 +269,12 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
                         }
                     })
                     
+                } else if(entry.localImage != nil) {
+                    self.compilationImages.append(entry.localImage!)
+                    //after loading all images asynchronously check if you got all entries for the week and present compilation
+                    if(self.noOfEntriesInCurrentWeek == self.compilationImages.count){
+                        self.presentUserCompilationViewPrompt()
+                    }
                 }
             }
         }
@@ -597,6 +634,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
     func pushViewEntryViewController(forEntry entry: Entry) {
         
         let viewEntryViewController = ViewEntryViewController(nibName: nil, bundle: nil)
+        viewEntryViewController.comingfromTimeline = true
         viewEntryViewController.entry = entry
         //NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.hideBottomTabBars.notification))
         navigationController?.pushViewController(viewEntryViewController, animated: true)
@@ -625,12 +663,20 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
             UIConstants.presentError(
                 message: "Everyone completed the challenge!!!",
                 inView: navigationController.view)
+            
         }
+        
         if let confettiView = confettiView {
             
             // Make it rain.
             confettiView.drop(seconds: 1.8)
         }
+        
+        APNUtil.sendConratulations(toNestUsers: nestUsers, completionBlock: {(isSuccess) -> () in
+            
+        })
+        
+        
     }
 }
 
@@ -723,28 +769,89 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         }
     }
     
-    func timelineHeaderView(headerView: TimelineHeaderView, didTapOnProfileImage toNudgeUser: User?) {
-        let name = toNudgeUser!.name!
-        let email = toNudgeUser!.email!
-        let nudgeMessage = "\(User.currentUser!.name!) is reminding you to finish this week's challenge!"
-        let nudgingAlert = UIAlertController(title: "\(name) hasn't completed this week's challenge yet!", message: "Do you want to give \(name) a nudge?", preferredStyle: .alert)
-        nudgingAlert.addAction(UIAlertAction(title: "Sure!", style: .default, handler: { (alert) in
+    func timelineHeaderView(headerView: TimelineHeaderView, didTapOnProfileImage toNudgeUser: User?, profileImageView: PFImageView) {
+        
+        self.view.layer.removeAllAnimations()
+        
+        nudgeView = UIView()
+        self.view.addSubview(nudgeView)
+        
+        nudgeView.layer.cornerRadius = 3
+        nudgeView.clipsToBounds = true
+        
+        nudgeAlertVC = NudgeAlertViewController(nibName: "NudgeAlertViewController", bundle: nil)
+        nudgeAlertVC.delegate = self
+        nudgeAlertVC.user = toNudgeUser
+        
+        self.addChildViewController(nudgeAlertVC)
+        nudgeAlertVC.view.frame = nudgeView.bounds
+        nudgeAlertVC.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        nudgeView.addSubview(nudgeAlertVC.view)
+        nudgeAlertVC.didMove(toParentViewController: self)
+        
+        
+        let actualFrame = profileImageView.convert(profileImageView.bounds, to: self.view)
+        let centerPoint = CGPoint(x: actualFrame.minX + profileImageView.bounds.width / 2, y: actualFrame.minY + profileImageView.bounds.height / 2)
+        nudgeView.frame = CGRect(x: centerPoint.x, y: centerPoint.y, width: 0, height: 0)
+        
+        UIView.animate(withDuration: 0.7, animations: {
+
+            let width = UIScreen.main.bounds.width - 50
+            let height = 260
+        
+            self.nudgeView.frame = CGRect(x: 0, y: 0, width: Int(width), height: height)
             
-            APNUtil.sendNudging(targetEmail: email, withMessage: nudgeMessage, completionBlock: { (result) in
+            if self.view.frame.minY != 0 {
+                self.centerY = self.centerY - self.view.frame.minY
+            }
+            
+            self.nudgeView.center = CGPoint(x: self.centerX, y: self.centerY)
+            
+        }, completion: { (finish) in
+           
+        })
+        
+    }
+    
+    func nudgeAlertViewController(nudgeAlertViewController: NudgeAlertViewController, didRespond toNudge: Bool, toNudgeUser: User) {
+        
+        if (toNudge) {
+            let nudgeMessage = "\(User.currentUser!.name!) is reminding you to finish this week's challenge!"
+            APNUtil.sendNudging(targetEmail: toNudgeUser.email!, withMessage: nudgeMessage, completionBlock: { (result) in
                 if result == true {
-                    UIConstants.presentError(message: "\(name) is being reminded to finish the challenge!", inView: (self.navigationController?.view)!)
+                    UIConstants.presentError(message: "\(toNudgeUser.name!) is being reminded to finish the challenge!", inView: (self.navigationController?.view)!)
                 } else {
                     UIConstants.presentError(message: "Hmm something went wrong.", inView: (self.navigationController?.view)!)
                 }
             })
+
+        }
+        
+        UIView.animate(withDuration: 0.1, animations: {
             
-        }))
-        nudgingAlert.addAction(UIAlertAction(title: "Hmm no", style: .cancel, handler: { (alert) in
+            self.nudgeView.center = CGPoint(x: self.nudgeView.center.x, y: self.nudgeView.center.y - 50)
             
-        }))
-        present(nudgingAlert, animated: true, completion: nil)
+        }, completion: { (finished) in
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                
+                self.nudgeView.center = CGPoint(x: self.centerX, y: self.centerY + 500)
+                
+            }, completion: { (finished) in
+                
+                self.centerY = UIScreen.main.bounds.height / 2
+                self.nudgeAlertVC.willMove(toParentViewController: nil)
+                self.nudgeAlertVC.view.removeFromSuperview()
+                self.nudgeAlertVC.removeFromParentViewController()
+                self.nudgeAlertVC.didMove(toParentViewController: nil)
+                self.nudgeAlertVC = nil
+                self.nudgeView = nil
+            
+            })
+        })
     }
 }
+
 
 // UIScrollView methods
 extension TimelineViewController: UIScrollViewDelegate
