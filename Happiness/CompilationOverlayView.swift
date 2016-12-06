@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import ParseUI
 
 class CompilationOverlayView: UIView {
     
     // Our custom view from the XIB file
     var view: UIView!
     @IBOutlet weak var kenBurnsView: JBKenBurnsView!
+    @IBOutlet weak var profileImage: PFImageView!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -44,6 +46,10 @@ class CompilationOverlayView: UIView {
         view.layer.shadowOpacity = 0.2
         view.layer.shadowRadius = 4.0
         view.layer.shadowOffset = CGSize(width: 0.0, height: 8.0)
+        
+        profileImage.layer.cornerRadius = 40.0
+        profileImage.layer.borderColor = UIConstants.secondarySelectedThemeColor.cgColor
+        profileImage.layer.borderWidth = 1.0
     }
     
     func displayView(_ onView: UIView) {

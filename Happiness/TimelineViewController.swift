@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JBKenBurnsViewDelegate, CompilationAlertViewDelegate {
     
@@ -25,6 +26,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         return compilationView
     }()
     var compilationImages = [UIImage]()
+    var compilationUserProfileImages = [PFFile]()
     var noOfEntriesInCurrentWeek = 0
     
     lazy var compilationAlertView: CompilationAlertView = {
@@ -219,7 +221,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
             
             for entry in streakEntries {
                 if(entry.media != nil){
-                    
+                   
                     //asynchronous
                     entry.media?.getDataInBackground(block: { (data: Data?, error: Error?) in
                         if(error == nil){
@@ -227,6 +229,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
                             let image = UIImage(data: data!)
                             if(image != nil){
                                 self.compilationImages.append(image!)
+                                self.compilationUserProfileImages.append((entry.author?.profileImage)!)
                                 //after loading all images asynchronously check if you got all entries for the week and present compilation
                                 if(self.noOfEntriesInCurrentWeek == self.compilationImages.count){
                                     self.presentUserCompilationViewPrompt()
@@ -259,6 +262,9 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         let parentFrame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
         self.compilationView.frame = parentFrame
         self.compilationView.kenBurnsView.frame = parentFrame
+        
+        self.compilationView.profileImage.frame = CGRect(x: parentFrame.width - 80, y: parentFrame.height-80, width: 80, height: 80)
+        
         self.view.addSubview(self.compilationView)
         
         
@@ -274,6 +280,22 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         //        imagesArray.append(UIImage(named: "3")!)
         //        imagesArray.append(UIImage(named: "4")!)
         //        self.compilationView.kenBurnsView.animateWithImages(imagesArray, imageAnimationDuration: 5, initialDelay: 0, shouldLoop: false)
+    }
+    
+    func imageCollectionAdvanced(index: Int) {
+        compilationView.profileImage.image = nil
+        compilationView.profileImage.file = compilationUserProfileImages[index]
+        compilationView.profileImage.load { (image: UIImage?, error: Error?) in
+            if(error == nil){
+                self.compilationView.profileImage.alpha = 0
+                self.compilationView.profileImage.image = image
+                
+                UIView.animate(withDuration: 0.2, animations: { 
+                    self.compilationView.profileImage.alpha = 1
+                })
+                
+            }
+        }
     }
     
     func finishedShowingLastImage() {
