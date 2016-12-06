@@ -15,4 +15,13 @@ class ViewControllerBase: UIViewController {
         // EntryBroker keeps a reference to the current view controller.
         EntryBroker.shared.currentViewController = self
     }
+
+    override func viewWillDisappear(_ animated: Bool) {
+
+        // Remove EntryBroker reference to the current view controller.
+        if EntryBroker.shared.currentViewController == self {
+
+            EntryBroker.shared.currentViewController = nil
+        }
+    }
 }

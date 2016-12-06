@@ -31,25 +31,17 @@ class HappinessService: NSObject {
     
     let getNestUsersQueryLimit = 20
     
-    var loginSuccess:((User) -> ())?
-    var callFailure:((Error) -> ())?
-    
-    var createUpdateEntrySuccess:((Entry) -> ())?
-    var getEntriesSuccess:(([Entry]) -> ())?
-    var deleteSuccess: (() -> ())?
-    var getNestUsersSuccess:(([User]) -> ())?
-    
     func login(email: String, password: String, success: @escaping (_ user: User) -> (), failure: @escaping (Error) -> ()) {
         
-        loginSuccess = success
-        callFailure = failure
+        let loginSuccess = success
+        let callFailure = failure
         
         //email used as username in the app
         let username = email
         
         PFUser.logInWithUsername(inBackground: username, password: password, block: { (user: PFUser?, error: Error?) -> Void in
             if let error = error {
-                self.callFailure!(error)
+                callFailure(error)
                 print("User login failed.")
                 print(error.localizedDescription)
             } else {
@@ -63,14 +55,14 @@ class HappinessService: NSObject {
                 
                 query?.findObjectsInBackground(block: { (objects: [PFObject]?, error:Error?) in
                     if let error = error {
-                        self.callFailure!(error)
+                        callFailure(error)
                         print(error.localizedDescription)
                     }
                     else {
                         for pfobj in objects! {
                             let curUser = User(obj: pfobj as AnyObject)
                             User.currentUser = curUser
-                            self.loginSuccess!(curUser)
+                            loginSuccess(curUser)
                         }
                     }
                 })
@@ -80,8 +72,8 @@ class HappinessService: NSObject {
     
     func signup(email: String, password: String, name: String, profileImage: UIImage?, success: @escaping (_ user: User) -> (), failure: @escaping (Error) -> ()) {
         
-        loginSuccess = success
-        callFailure = failure
+        let loginSuccess = success
+        let callFailure = failure
         
         //email used as username in the app
         let username = email
@@ -102,7 +94,7 @@ class HappinessService: NSObject {
             newUser.signUpInBackground {
                 (succeeded: Bool, error: Error?) -> Void in
                 if let error = error {
-                    self.callFailure!(error)
+                    callFailure(error)
                     print(error.localizedDescription)
                 } else {
                     let pfCurrentUser = PFUser.current()
@@ -113,14 +105,14 @@ class HappinessService: NSObject {
                     
                     query?.findObjectsInBackground(block: { (objects: [PFObject]?, error:Error?) in
                         if let error = error {
-                            self.callFailure!(error)
+                            callFailure(error)
                             print(error.localizedDescription)
                         }
                         else {
                             for pfobj in objects! {
                                 let curUser = User(obj: pfobj as AnyObject)
                                 User.currentUser = curUser
-                                self.loginSuccess!(curUser)
+                                loginSuccess(curUser)
                             }
                         }
                     })
@@ -170,8 +162,8 @@ class HappinessService: NSObject {
     
     func create(text: String, images: [UIImage]?, happinessLevel: Int?, placemark: String?, location: Location?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {
         
-        createUpdateEntrySuccess = success
-        callFailure = failure
+        let createEntrySuccess = success
+        let callFailure = failure
         
         let entryObj = PFObject(className: "Entry")
         
@@ -211,7 +203,7 @@ class HappinessService: NSObject {
         // Save object (following function will save the object in Parse asynchronously)
         entryObj.saveInBackground { (succeeded: Bool, error: Error?) in
             if let error = error {
-                self.callFailure!(error)
+                callFailure(error)
                 print(error.localizedDescription)
             } else {
                 
@@ -223,10 +215,10 @@ class HappinessService: NSObject {
                 query.getObjectInBackground(withId: entryObj.objectId!, block: { (object:PFObject?, error: Error?) in
                     if error == nil && object != nil {
                         let newEntry = Entry.init(entryObject: object!)
-                        self.createUpdateEntrySuccess!(newEntry)
+                        createEntrySuccess(newEntry)
                         
                     } else {
-                        self.callFailure!(error!)
+                        callFailure(error!)
                     }
                 })
             }
@@ -246,8 +238,8 @@ class HappinessService: NSObject {
     
     func update(entryId: String, text: String, images: [UIImage]?, happinessLevel: Int?, placemark: String?, location: Location?, success: @escaping (_ entry: Entry) -> (), failure: @escaping (Error) -> ()) {
         
-        createUpdateEntrySuccess = success
-        callFailure = failure
+        let updateEntrySuccess = success
+        let callFailure = failure
         
         var query = PFQuery(className:"Entry")
         
@@ -289,27 +281,27 @@ class HappinessService: NSObject {
                             if error == nil && object != nil {
                                 
                                 let editedEntry = Entry.init(entryObject: object!)
-                                self.createUpdateEntrySuccess!(editedEntry)
+                                updateEntrySuccess(editedEntry)
                                 
                             } else {
-                                self.callFailure!(error!)
+                                callFailure(error!)
                             }
                         })
                     }
                     else{
-                        self.callFailure!(error!)
+                        callFailure(error!)
                     }
                 })
             } else {
-                self.callFailure!(error!)
+                callFailure(error!)
             }
         })
     }
     
     func delete(entry: Entry, success: @escaping () -> (), failure: @escaping (Error) -> ()) {
         
-        deleteSuccess = success
-        callFailure = failure
+        let deleteSuccess = success
+        let callFailure = failure
         
         let query = PFQuery(className:"Entry")
         
@@ -320,23 +312,23 @@ class HappinessService: NSObject {
                 entryObj?.deleteInBackground(block: { (succeded: Bool, error: Error?) in
                     if(succeded)
                     {
-                        self.deleteSuccess!()
+                        deleteSuccess()
                     }
                     else
                     {
-                        self.callFailure!(error!)
+                        callFailure(error!)
                     }
                 })//end of delete in background
             } else {
-                self.callFailure!(error!)
+                callFailure(error!)
             }
         })
     }
     
     // Returns all entries for current user
     func getEntries(beforeCreatedDate: Date?, success: @escaping (_ entries: [Entry]) -> (), failure: @escaping (Error) -> ()) {
-        getEntriesSuccess = success
-        callFailure = failure
+        let getEntriesSuccess = success
+        let callFailure = failure
         
         let query = PFQuery(className: "Entry")
         query.order(byDescending: "createdAt")
@@ -369,7 +361,7 @@ class HappinessService: NSObject {
         // fetch data asynchronously
         query.findObjectsInBackground { (entries: [PFObject]?, error: Error?) in
             if let error = error{
-                self.callFailure!(error)
+                callFailure(error)
             }
             else{
                 var userEntries = [Entry]()
@@ -377,15 +369,15 @@ class HappinessService: NSObject {
                     let entryObj = Entry.init(entryObject: pfEntryObj)
                     userEntries.append(entryObj)
                 }
-                self.getEntriesSuccess!(userEntries)
+                getEntriesSuccess(userEntries)
             }
         }
     }
     
     func getAllNestUsers(nestObjID: String?, success: @escaping (_ users: [User]) -> (), failure: @escaping (Error) -> ()){
         
-        getNestUsersSuccess = success
-        callFailure = failure
+        let getNestUsersSuccess = success
+        let callFailure = failure
         
         let query = PFQuery(className: "_User")
         
@@ -402,7 +394,7 @@ class HappinessService: NSObject {
         // fetch data asynchronously
         query.findObjectsInBackground(block: { (objects: [PFObject]?, error:Error?) in
             if let error = error {
-                self.callFailure!(error)
+                callFailure(error)
                 print(error.localizedDescription)
             }
             else {
@@ -412,7 +404,7 @@ class HappinessService: NSObject {
                     //print(curUser.name)
                     nestUsers.append(curUser)
                 }
-                self.getNestUsersSuccess!(nestUsers)
+                getNestUsersSuccess(nestUsers)
             }
         })
     }
