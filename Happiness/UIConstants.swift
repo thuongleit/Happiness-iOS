@@ -312,11 +312,13 @@ class UIConstants: NSObject {
     class CellReuseIdentifier {
         static let timelineHeaderCell = "TimelineHeaderCell"
         static let timelineCell = "TimelineCell"
+        static let viewEntryCell = "ViewEntryCell"
     }
     
     class ClassName {
         static let timelineTableHeaderViewCellXib = "TimelineHeaderView"
         static let timelineTableViewCellXib = "TimelineTableViewCell"
+        static let viewEntryTableViewCellXib = "ViewEntryTableViewCell"
     }
     
     class ImageName {

@@ -7,11 +7,24 @@
 
 The following **required** functionality is completed:
 
-- [x] Create/Edit/Delete entry
+- [x] Timeline and create/edit/delete entry
    - [x] Make updates to timeline immediately, not waiting for database call to succeed. If database call fails, undo updates.
    - [x] When making updates to timeline immediately, disable pull to refresh, edit, and delete as appropriate.
-- [ ] Bug fixes
+- [x] Timeline
+   - [x] Use round corners on images.
+- [x] Create/edit entry
+   - [x] Remove "What are you most grateful for today?"
+   - [x] Use camera image placeholder rather than current (landscape) image.
+   - [x] Allow user to take a picture from within the app.
+- [x] View entry
+   - [x] Make scrollable using UITableView.
+   - [x] Remove "What are you most grateful for today?"
+   - [x] Use a UITextView so that HTTP links are clickable.
+   - [x] Use round corners on images.
+   - [x] Start with emoji fully overlapping profile pic, then shrinking down to overlap in the corner as it is currently.
+- [x] Bug fixes
    - [x] Fix problem where Timeline is not updated correctly after entry is edited
+   - [x] Fix retain cycles and cleaned up reference usage
 
 ## Sprint 2
 
