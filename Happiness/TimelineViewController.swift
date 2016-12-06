@@ -66,8 +66,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
-        
+
         // Set up the navigation bar.
         if let navigationController = navigationController {
             
@@ -79,7 +78,12 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
             navigationController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIConstants.textLightColor]
             
             // Set the navigation bar title.
-            navigationItem.title = "Timeline"
+            navigationItem.title = nil
+            let logoImage = UIImage(named: "happinest_smiley")
+            let logoImageView = UIImageView(image: logoImage)
+            logoImageView.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
+            logoImageView.contentMode = .scaleAspectFit
+            self.navigationItem.titleView = logoImageView
             
             // Add the settings button.
             let settingsButton = UIBarButtonItem(
