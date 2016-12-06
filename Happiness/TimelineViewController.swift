@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import ParseUI
 
-class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JBKenBurnsViewDelegate, CompilationAlertViewDelegate {
-    
+class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JBKenBurnsViewDelegate, CompilationAlertViewDelegate, NudgeAlertViewControllerDelegate {
+
     @IBOutlet weak var tableView: UITableView!
     
     var confettiView: ConfettiView?
@@ -20,6 +21,12 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
     var scrollLoadingData = false
     var lastEntryCreatedDate: Date?
     
+    var nudgeView: UIView!
+    var nudgeAlertVC: NudgeAlertViewController!
+    
+    var centerX: CGFloat = UIScreen.main.bounds.width / 2
+    var centerY: CGFloat = UIScreen.main.bounds.height / 2
+
     lazy var compilationView: CompilationOverlayView = {
         let compilationView = CompilationOverlayView()
         return compilationView
@@ -259,6 +266,12 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
                         }
                     })
                     
+                } else if(entry.localImage != nil) {
+                    self.compilationImages.append(entry.localImage!)
+                    //after loading all images asynchronously check if you got all entries for the week and present compilation
+                    if(self.noOfEntriesInCurrentWeek == self.compilationImages.count){
+                        self.presentUserCompilationViewPrompt()
+                    }
                 }
             }
         }
@@ -599,6 +612,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
     func pushViewEntryViewController(forEntry entry: Entry) {
         
         let viewEntryViewController = ViewEntryViewController(nibName: nil, bundle: nil)
+        viewEntryViewController.comingfromTimeline = true
         viewEntryViewController.entry = entry
         //NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.hideBottomTabBars.notification))
         navigationController?.pushViewController(viewEntryViewController, animated: true)
@@ -627,12 +641,20 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
             UIConstants.presentError(
                 message: "Everyone completed the challenge!!!",
                 inView: navigationController.view)
+            
         }
+        
         if let confettiView = confettiView {
             
             // Make it rain.
             confettiView.drop(seconds: 1.8)
         }
+        
+        APNUtil.sendConratulations(toNestUsers: nestUsers, completionBlock: {(isSuccess) -> () in
+            
+        })
+        
+        
     }
 }
 
@@ -725,28 +747,89 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         }
     }
     
-    func timelineHeaderView(headerView: TimelineHeaderView, didTapOnProfileImage toNudgeUser: User?) {
-        let name = toNudgeUser!.name!
-        let email = toNudgeUser!.email!
-        let nudgeMessage = "\(User.currentUser!.name!) is reminding you to finish this week's challenge!"
-        let nudgingAlert = UIAlertController(title: "\(name) hasn't completed this week's challenge yet!", message: "Do you want to give \(name) a nudge?", preferredStyle: .alert)
-        nudgingAlert.addAction(UIAlertAction(title: "Sure!", style: .default, handler: { (alert) in
+    func timelineHeaderView(headerView: TimelineHeaderView, didTapOnProfileImage toNudgeUser: User?, profileImageView: PFImageView) {
+        
+        self.view.layer.removeAllAnimations()
+        
+        nudgeView = UIView()
+        self.view.addSubview(nudgeView)
+        
+        nudgeView.layer.cornerRadius = 3
+        nudgeView.clipsToBounds = true
+        
+        nudgeAlertVC = NudgeAlertViewController(nibName: "NudgeAlertViewController", bundle: nil)
+        nudgeAlertVC.delegate = self
+        nudgeAlertVC.user = toNudgeUser
+        
+        self.addChildViewController(nudgeAlertVC)
+        nudgeAlertVC.view.frame = nudgeView.bounds
+        nudgeAlertVC.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        nudgeView.addSubview(nudgeAlertVC.view)
+        nudgeAlertVC.didMove(toParentViewController: self)
+        
+        
+        let actualFrame = profileImageView.convert(profileImageView.bounds, to: self.view)
+        let centerPoint = CGPoint(x: actualFrame.minX + profileImageView.bounds.width / 2, y: actualFrame.minY + profileImageView.bounds.height / 2)
+        nudgeView.frame = CGRect(x: centerPoint.x, y: centerPoint.y, width: 0, height: 0)
+        
+        UIView.animate(withDuration: 0.7, animations: {
+
+            let width = UIScreen.main.bounds.width - 50
+            let height = 260
+        
+            self.nudgeView.frame = CGRect(x: 0, y: 0, width: Int(width), height: height)
             
-            APNUtil.sendNudging(targetEmail: email, withMessage: nudgeMessage, completionBlock: { (result) in
+            if self.view.frame.minY != 0 {
+                self.centerY = self.centerY - self.view.frame.minY
+            }
+            
+            self.nudgeView.center = CGPoint(x: self.centerX, y: self.centerY)
+            
+        }, completion: { (finish) in
+           
+        })
+        
+    }
+    
+    func nudgeAlertViewController(nudgeAlertViewController: NudgeAlertViewController, didRespond toNudge: Bool, toNudgeUser: User) {
+        
+        if (toNudge) {
+            let nudgeMessage = "\(User.currentUser!.name!) is reminding you to finish this week's challenge!"
+            APNUtil.sendNudging(targetEmail: toNudgeUser.email!, withMessage: nudgeMessage, completionBlock: { (result) in
                 if result == true {
-                    UIConstants.presentError(message: "\(name) is being reminded to finish the challenge!", inView: (self.navigationController?.view)!)
+                    UIConstants.presentError(message: "\(toNudgeUser.name!) is being reminded to finish the challenge!", inView: (self.navigationController?.view)!)
                 } else {
                     UIConstants.presentError(message: "Hmm something went wrong.", inView: (self.navigationController?.view)!)
                 }
             })
+
+        }
+        
+        UIView.animate(withDuration: 0.1, animations: {
             
-        }))
-        nudgingAlert.addAction(UIAlertAction(title: "Hmm no", style: .cancel, handler: { (alert) in
+            self.nudgeView.center = CGPoint(x: self.nudgeView.center.x, y: self.nudgeView.center.y - 50)
             
-        }))
-        present(nudgingAlert, animated: true, completion: nil)
+        }, completion: { (finished) in
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                
+                self.nudgeView.center = CGPoint(x: self.centerX, y: self.centerY + 500)
+                
+            }, completion: { (finished) in
+                
+                self.centerY = UIScreen.main.bounds.height / 2
+                self.nudgeAlertVC.willMove(toParentViewController: nil)
+                self.nudgeAlertVC.view.removeFromSuperview()
+                self.nudgeAlertVC.removeFromParentViewController()
+                self.nudgeAlertVC.didMove(toParentViewController: nil)
+                self.nudgeAlertVC = nil
+                self.nudgeView = nil
+            
+            })
+        })
     }
 }
+
 
 // UIScrollView methods
 extension TimelineViewController: UIScrollViewDelegate
