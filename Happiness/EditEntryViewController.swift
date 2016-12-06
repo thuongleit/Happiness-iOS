@@ -101,6 +101,9 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
         textView.layer.cornerRadius = 3.0
         textView.clipsToBounds = true
         
+        // Image button
+        uploadImageButton.imageView?.contentMode = .scaleAspectFit
+        
         // If new entry, use current date and current day's question.
         if entry == nil {
             dateLabel.text = UIConstants.dateString(from: Date())
@@ -130,6 +133,9 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
                     if error == nil {
                         let photo = UIImage(data: imageData!)
                         self.uploadImageButton.setImage(photo, for: .normal)
+                        if let uploadImageView = self.uploadImageButton.imageView {
+                            UIConstants.setRoundCornersForAspectFit(imageView: uploadImageView, radius: 3.0)
+                        }
                     }
                 })
             }
@@ -255,8 +261,10 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage //2
         //cameraImageView.contentMode = .scaleAspectFit //3
         //cameraImageView.image = chosenImage //4
-        uploadImageButton.imageView?.contentMode = .scaleAspectFill
         uploadImageButton.setImage(chosenImage, for: .normal)
+        if let uploadImageView = uploadImageButton.imageView {
+            UIConstants.setRoundCornersForAspectFit(imageView: uploadImageView, radius: 3.0)
+        }
         dismiss(animated: true, completion: nil)
     }
     

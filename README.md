@@ -14,15 +14,19 @@ The following **required** functionality is completed:
    - [x] Change image for "Compose" button.
    - [x] Use round corners on images.
 - [x] Create/edit entry
+   - [x] Make colors consistent with other views.
    - [x] Use images for "Cancel" and "Save" buttons instead of text.
    - [x] Remove "What are you most grateful for today?"
    - [x] Use round corners on text view. 
    - [x] Replace "Location" with location image used elsewhere in app.
    - [x] Use subtle cross-dissolve animation for happiness emoji changes.
+   - [x] Use round corners on image.
+   - [x] Aspect fit image into a 4:3 frame. Constraints fit iPhone 5.
    - [x] Use camera image placeholder rather than current (landscape) image.
    - [x] For photo picker, remove the unused square frame.
    - [x] Allow user to take a picture from within the app.
 - [x] View entry
+   - [x] Make colors consistent with other views.
    - [x] Use custom image for "Back" button.
    - [x] Use image for "Edit" button.
    - [x] Make scrollable using UITableView.
@@ -30,6 +34,9 @@ The following **required** functionality is completed:
    - [x] Use a UITextView so that HTTP links are clickable.
    - [x] Use round corners on images.
    - [x] Start with emoji fully overlapping profile pic, then shrinking down to overlap in the corner as it is currently.
+- [x] Nudge prompt
+   -[x] Use custom alert controller which includes profile image
+   -[x] Originate alert controller from the profile image in the section header.
 - [x] Bug fixes
    - [x] Fix problem where Timeline is not updated correctly after entry is edited
    - [x] Fix retain cycles and cleaned up reference usage
