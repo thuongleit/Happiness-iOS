@@ -112,13 +112,13 @@ class UIConstants: NSObject {
         errorBanner.addSubview(errorMessage)
         view.addSubview(errorBanner)
         
-        UIView.animate(withDuration: 1, animations: {
+        UIView.animate(withDuration: 2, animations: {
             
             errorBanner.center.y = errorBanner.center.y + errorBannerHeight
             
         }, completion: {(value: Bool) in
             
-            UIView.animate(withDuration: 1, delay: 2, options: [], animations: {
+            UIView.animate(withDuration: 1, delay: 4, options: [], animations: {
                 
                 errorBanner.center.y = errorBanner.center.y - errorBannerHeight
                 
@@ -318,11 +318,13 @@ class UIConstants: NSObject {
     class CellReuseIdentifier {
         static let timelineHeaderCell = "TimelineHeaderCell"
         static let timelineCell = "TimelineCell"
+        static let viewEntryCell = "ViewEntryCell"
     }
     
     class ClassName {
         static let timelineTableHeaderViewCellXib = "TimelineHeaderView"
         static let timelineTableViewCellXib = "TimelineTableViewCell"
+        static let viewEntryTableViewCellXib = "ViewEntryTableViewCell"
     }
     
     class ImageName {

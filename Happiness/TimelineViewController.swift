@@ -10,8 +10,7 @@ import UIKit
 import Parse
 import ParseUI
 
-
-class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JBKenBurnsViewDelegate, CompilationAlertViewDelegate, NudgeAlertViewControllerDelegate {
+class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JBKenBurnsViewDelegate, CompilationAlertViewDelegate  {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -400,11 +399,11 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
                         self.tableView.reloadData()
                     }
                 }
-        },
+            },
             failure: { (error: Error) in
                 
                 self.requestDidSucceed(false, refreshControl: refreshControl)
-        }
+            }
         )
     }
     
@@ -454,11 +453,11 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
                         self.congratulateIfComplete()
                     }
                 }
-        },
+            },
             failure: { (Error) in
                 
                 self.requestDidSucceed(false, refreshControl: refreshControl)
-        }
+            }
         )
     }
     
@@ -633,11 +632,11 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         }
     }
     
-    // Push the ViewEntryViewController for the specified entry.
+    // Push the ViewEntryScrollingViewController for the specified entry.
     func pushViewEntryViewController(forEntry entry: Entry) {
         
-        let viewEntryViewController = ViewEntryViewController(nibName: nil, bundle: nil)
-        viewEntryViewController.comingfromTimeline = true
+        let viewEntryViewController = ViewEntryScrollingViewController(nibName: nil, bundle: nil)
+        viewEntryViewController.isComingFromTimeline = true
         viewEntryViewController.entry = entry
         //NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.hideBottomTabBars.notification))
         navigationController?.pushViewController(viewEntryViewController, animated: true)
@@ -737,7 +736,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // Push the ViewEntryViewController.
+        // Push the ViewEntryScrollingViewController.
         pushViewEntryViewController(
             forEntry: sections[indexPath.section].get(entryAtRow: indexPath.row))
         
@@ -815,6 +814,10 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         })
         
     }
+}
+
+// NudgeAlertViewController methods
+extension TimelineViewController: NudgeAlertViewControllerDelegate {
     
     func nudgeAlertViewController(nudgeAlertViewController: NudgeAlertViewController, didRespond toNudge: Bool, toNudgeUser: User) {
         
@@ -854,7 +857,6 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
     }
 }
 
-
 // UIScrollView methods
 extension TimelineViewController: UIScrollViewDelegate
 {
@@ -884,7 +886,7 @@ extension TimelineViewController: TimelineTableViewCellDelegate {
     
     func timelineCellWasTapped(_ cell: TimelineTableViewCell) {
         
-        // Push the ViewEntryViewController when a cell was tapped, but
+        // Push the ViewEntryScrollingViewController when a cell was tapped, but
         // a tableView didSelectRowAt call did not occur.
         if let entry = cell.entry {
             
