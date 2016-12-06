@@ -30,4 +30,12 @@ class APNUtil: NSObject {
             completionBlock(result)
         })
     }
+    
+    // MARK: - Broadcasting congratulations
+    static func sendConratulations(toNest nest: Nest, completionBlock: @escaping(_ isSuccess: Bool) -> ()) {
+        
+        let query = PFInstallation.query()
+        
+    
+    }
 }
