@@ -635,12 +635,20 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
             UIConstants.presentError(
                 message: "Everyone completed the challenge!!!",
                 inView: navigationController.view)
+            
         }
+        
         if let confettiView = confettiView {
             
             // Make it rain.
             confettiView.drop(seconds: 1.8)
         }
+        
+        APNUtil.sendConratulations(toNestUsers: nestUsers, completionBlock: {(isSuccess) -> () in
+            
+        })
+        
+        
     }
 }
 
