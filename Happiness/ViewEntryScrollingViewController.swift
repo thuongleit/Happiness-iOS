@@ -57,7 +57,7 @@ class ViewEntryScrollingViewController: ViewControllerBase {
     // MARK: - Back button
     func onBackButton() {
         
-        navigationController?.popViewController(animated: true)
+        _ = navigationController?.popViewController(animated: true)
     }
 
     // MARK: - Edit button

@@ -236,7 +236,15 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
     @IBAction func onFeelingSliderChange(_ sender: UISlider) {
         let happinessLevelInt = Int(feelingSlider.value)
         let happinessLevel = Entry.getHappinessLevel(happinessLevelInt: happinessLevelInt)
-        feelingImageView.image = UIConstants.happinessLevelImage(happinessLevel)
+        let feelingImage = UIConstants.happinessLevelImage(happinessLevel)
+        if feelingImageView.image != feelingImage {
+            UIView.transition(
+                with: feelingImageView,
+                duration: 0.3,
+                options: .transitionCrossDissolve,
+                animations: { self.feelingImageView.image = feelingImage },
+                completion: nil)
+        }
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

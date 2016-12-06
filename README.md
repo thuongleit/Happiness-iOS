@@ -18,6 +18,7 @@ The following **required** functionality is completed:
    - [x] Remove "What are you most grateful for today?"
    - [x] Use round corners on text view. 
    - [x] Replace "Location" with location image used elsewhere in app.
+   - [x] Use subtle cross-dissolve animation for happiness emoji changes.
    - [x] Use camera image placeholder rather than current (landscape) image.
    - [x] For photo picker, remove the unused square frame.
    - [x] Allow user to take a picture from within the app.
