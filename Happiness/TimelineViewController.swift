@@ -266,6 +266,12 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
                         }
                     })
                     
+                } else if(entry.localImage != nil) {
+                    self.compilationImages.append(entry.localImage!)
+                    //after loading all images asynchronously check if you got all entries for the week and present compilation
+                    if(self.noOfEntriesInCurrentWeek == self.compilationImages.count){
+                        self.presentUserCompilationViewPrompt()
+                    }
                 }
             }
         }
