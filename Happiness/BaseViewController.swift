@@ -30,6 +30,11 @@ class BaseViewController: UIViewController, TabBarViewDelegate {
     
     @IBOutlet weak var tabBarsBottomConstraint: NSLayoutConstraint!
 
+    deinit {
+        // Remove all of this object's observer entries.
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
