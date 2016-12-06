@@ -14,7 +14,10 @@ The following **required** functionality is completed:
    - [x] Use round corners on images.
 - [x] Create/edit entry
    - [x] Remove "What are you most grateful for today?"
+   - [x] Use round corners on text view. 
+   - [x] Replace "Location" with location image used elsewhere in app.
    - [x] Use camera image placeholder rather than current (landscape) image.
+   - [x] For photo picker, remove the unused square frame.
    - [x] Allow user to take a picture from within the app.
 - [x] View entry
    - [x] Make scrollable using UITableView.
@@ -25,6 +28,7 @@ The following **required** functionality is completed:
 - [x] Bug fixes
    - [x] Fix problem where Timeline is not updated correctly after entry is edited
    - [x] Fix retain cycles and cleaned up reference usage
+   - [ ] Fix User.encode() "archive already finished, cannot encode anything more"
 
 ## Sprint 2
 
