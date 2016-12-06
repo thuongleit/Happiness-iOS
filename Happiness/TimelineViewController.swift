@@ -10,8 +10,9 @@ import UIKit
 import Parse
 import ParseUI
 
+
 class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JBKenBurnsViewDelegate, CompilationAlertViewDelegate, NudgeAlertViewControllerDelegate {
-    
+
     @IBOutlet weak var tableView: UITableView!
     
     var confettiView: ConfettiView?
@@ -27,7 +28,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
     
     var centerX: CGFloat = UIScreen.main.bounds.width / 2
     var centerY: CGFloat = UIScreen.main.bounds.height / 2
-    
+
     lazy var compilationView: CompilationOverlayView = {
         let compilationView = CompilationOverlayView()
         return compilationView
@@ -44,17 +45,17 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
     var newEntryObserver: NSObjectProtocol?
     var replaceEntryObserver: NSObjectProtocol?
     var deleteEntryObserver: NSObjectProtocol?
-    
+
     deinit {
-        
+
         // Remove all of this object's observers. For block-based observers,
         // we need a separate removeObserver(observer:) call for each observer.
         if let newEntryObserver = newEntryObserver {
-            
+
             NotificationCenter.default.removeObserver(newEntryObserver)
         }
         if let replaceEntryObserver = replaceEntryObserver {
-            
+
             NotificationCenter.default.removeObserver(replaceEntryObserver)
         }
         if let deleteEntryObserver = deleteEntryObserver {
@@ -795,10 +796,10 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         nudgeView.frame = CGRect(x: centerPoint.x, y: centerPoint.y, width: 0, height: 0)
         
         UIView.animate(withDuration: 0.7, animations: {
-            
+
             let width = UIScreen.main.bounds.width - 50
             let height = 260
-            
+        
             self.nudgeView.frame = CGRect(x: 0, y: 0, width: Int(width), height: height)
             
             if self.view.frame.minY != 0 {
@@ -808,7 +809,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
             self.nudgeView.center = CGPoint(x: self.centerX, y: self.centerY)
             
         }, completion: { (finish) in
-            
+           
         })
         
     }
@@ -824,11 +825,10 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
                     UIConstants.presentError(message: "Hmm something went wrong.", inView: (self.navigationController?.view)!)
                 }
             })
-            
+
         }
         
         UIView.animate(withDuration: 0.1, animations: {
-            
             
             self.nudgeView.center = CGPoint(x: self.nudgeView.center.x, y: self.nudgeView.center.y - 50)
             
@@ -847,7 +847,6 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
                 self.nudgeAlertVC.didMove(toParentViewController: nil)
                 self.nudgeAlertVC = nil
                 self.nudgeView = nil
-                
             })
         })
     }
