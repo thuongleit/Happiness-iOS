@@ -80,7 +80,9 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
             navigationController.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIConstants.textLightColor]
             
             // Set the navigation bar title.
-            navigationItem.title = "Timeline"
+            navigationItem.title = nil
+            let logo = UIImageView.init(image: UIImage.init(named: "happinest_smiley"))
+            navigationItem.titleView = logo
             
             // Add the settings button.
             let settingsButton = UIBarButtonItem(
