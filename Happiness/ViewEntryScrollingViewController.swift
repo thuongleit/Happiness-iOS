@@ -28,11 +28,17 @@ class ViewEntryScrollingViewController: ViewControllerBase {
 
         // Navigation bar
         navigationController?.navigationBar.isTranslucent = false
-        
-        // Navigation bar edit entry
+                
+        // Set the navigation bar back button.
+        let backButton = UIBarButtonItem(
+            image: UIImage(named: UIConstants.ImageName.backButton), style: .plain, target: self, action: #selector(ViewEntryScrollingViewController.onBackButton))
+        navigationItem.leftBarButtonItem = backButton
+
+        // Set the navigation bar edit button.
         if User.currentUser?.id == entry.author?.id {
             
-            let editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(ViewEntryScrollingViewController.editEntry))
+            let editButton = UIBarButtonItem(
+                image: UIImage(named: UIConstants.ImageName.composeButton), style: .plain, target: self, action: #selector(ViewEntryScrollingViewController.onEditButton))
             navigationItem.rightBarButtonItem = editButton
             navigationItem.rightBarButtonItem?.isEnabled = !entry.isLocal
         }
@@ -47,9 +53,15 @@ class ViewEntryScrollingViewController: ViewControllerBase {
         // Reload tableView if entry was edited.
         NotificationCenter.default.addObserver(self, selector: #selector(ViewEntryScrollingViewController.replaceEntry), name: AppDelegate.GlobalEventEnum.replaceEntryNotification.notification, object: nil)
     }
+    
+    // MARK: - Back button
+    func onBackButton() {
+        
+        navigationController?.popViewController(animated: true)
+    }
 
-    // MARK: - Edit current entry
-    func editEntry() {
+    // MARK: - Edit button
+    func onEditButton() {
         
         // Show the EditEntryViewController modally.
         let editEntryViewController = EditEntryViewController(nibName: nil, bundle: nil)

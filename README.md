@@ -11,8 +11,10 @@ The following **required** functionality is completed:
    - [x] Make updates to timeline immediately, not waiting for database call to succeed. If database call fails, undo updates.
    - [x] When making updates to timeline immediately, disable pull to refresh, edit, and delete as appropriate.
 - [x] Timeline
+   - [x] Change image for "Compose" button.
    - [x] Use round corners on images.
 - [x] Create/edit entry
+   - [x] Use images for "Cancel" and "Save" buttons instead of text.
    - [x] Remove "What are you most grateful for today?"
    - [x] Use round corners on text view. 
    - [x] Replace "Location" with location image used elsewhere in app.
@@ -20,6 +22,8 @@ The following **required** functionality is completed:
    - [x] For photo picker, remove the unused square frame.
    - [x] Allow user to take a picture from within the app.
 - [x] View entry
+   - [x] Use custom image for "Back" button.
+   - [x] Use image for "Edit" button.
    - [x] Make scrollable using UITableView.
    - [x] Remove "What are you most grateful for today?"
    - [x] Use a UITextView so that HTTP links are clickable.
