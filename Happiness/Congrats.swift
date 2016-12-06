@@ -16,19 +16,33 @@ class Congrats {
 
     private let congratsDateKey = "congratsDate"
     private var congratulatedThisWeek : Bool?
+    private var didLogoutObserver: NSObjectProtocol?
     
     init() {
         
         // Reset congrats date when user logs out.
-        NotificationCenter.default.addObserver(
+        didLogoutObserver = NotificationCenter.default.addObserver(
             forName: AppDelegate.GlobalEventEnum.didLogout.notification,
             object: nil,
             queue: OperationQueue.main)
-        { (notification: Notification) in
+        { [weak self] (notification: Notification) in
             
-            self.congratulatedThisWeek = nil
-            UserDefaults.standard.removeObject(forKey: Congrats.shared.congratsDateKey)
-            UserDefaults.standard.synchronize()
+            if let _self = self {
+                
+                _self.congratulatedThisWeek = nil
+                UserDefaults.standard.removeObject(forKey: Congrats.shared.congratsDateKey)
+                UserDefaults.standard.synchronize()
+            }
+        }
+    }
+    
+    deinit {
+
+        // Remove all of this object's observers. For block-based observers,
+        // we need a separate removeObserver(observer:) call for each observer.
+        if let didLogoutObserver = didLogoutObserver {
+
+            NotificationCenter.default.removeObserver(didLogoutObserver)
         }
     }
     

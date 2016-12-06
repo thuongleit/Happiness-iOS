@@ -53,11 +53,11 @@
 		FC86135F1DE667AC00497425 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC86135E1DE667AC00497425 /* ConfettiView.swift */; };
 		FC8613611DE9742300497425 /* Congrats.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8613601DE9742300497425 /* Congrats.swift */; };
 		FC8613631DEA5CF300497425 /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC8613621DEA5CF300497425 /* ProgressHUD.swift */; };
+		FC9ED9BB1DF643BB00722E46 /* EntryBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9ED9BA1DF643BB00722E46 /* EntryBroker.swift */; };
+		FC9ED9BD1DF643CA00722E46 /* TimelineSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9ED9BC1DF643CA00722E46 /* TimelineSection.swift */; };
 		FCEAD6C51DD7BBCA002ADFC2 /* TimelineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCEAD6C41DD7BBCA002ADFC2 /* TimelineTableViewCell.swift */; };
 		FCEAD6C71DD7BCBA002ADFC2 /* TimelineTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCEAD6C61DD7BCBA002ADFC2 /* TimelineTableViewCell.xib */; };
-		FCF9FEF61DF1372300F3313E /* EntryBroker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF9FEF51DF1372300F3313E /* EntryBroker.swift */; };
 		FCF9FEF81DF13C4B00F3313E /* ViewControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF9FEF71DF13C4B00F3313E /* ViewControllerBase.swift */; };
-		FCF9FEFA1DF1D9B700F3313E /* TimelineSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF9FEF91DF1D9B700F3313E /* TimelineSection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -112,11 +112,11 @@
 		FC86135E1DE667AC00497425 /* ConfettiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		FC8613601DE9742300497425 /* Congrats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Congrats.swift; sourceTree = "<group>"; };
 		FC8613621DEA5CF300497425 /* ProgressHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
+		FC9ED9BA1DF643BB00722E46 /* EntryBroker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EntryBroker.swift; path = Happiness/EntryBroker.swift; sourceTree = "<group>"; };
+		FC9ED9BC1DF643CA00722E46 /* TimelineSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TimelineSection.swift; path = Happiness/TimelineSection.swift; sourceTree = "<group>"; };
 		FCEAD6C41DD7BBCA002ADFC2 /* TimelineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineTableViewCell.swift; sourceTree = "<group>"; };
 		FCEAD6C61DD7BCBA002ADFC2 /* TimelineTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineTableViewCell.xib; sourceTree = "<group>"; };
-		FCF9FEF51DF1372300F3313E /* EntryBroker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryBroker.swift; sourceTree = "<group>"; };
 		FCF9FEF71DF13C4B00F3313E /* ViewControllerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerBase.swift; sourceTree = "<group>"; };
-		FCF9FEF91DF1D9B700F3313E /* TimelineSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineSection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -267,8 +267,8 @@
 		FCF9FEF41DF135C400F3313E /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				FCF9FEF51DF1372300F3313E /* EntryBroker.swift */,
-				FCF9FEF91DF1D9B700F3313E /* TimelineSection.swift */,
+				FC9ED9BC1DF643CA00722E46 /* TimelineSection.swift */,
+				FC9ED9BA1DF643BB00722E46 /* EntryBroker.swift */,
 			);
 			name = Controllers;
 			path = ..;
@@ -421,10 +421,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC86135F1DE667AC00497425 /* ConfettiView.swift in Sources */,
-				FCF9FEF61DF1372300F3313E /* EntryBroker.swift in Sources */,
 				E1E579C91DD7F39D0032570C /* TabBarView.swift in Sources */,
 				E183327D1DE41A0100DDD7C7 /* APNUtil.swift in Sources */,
-				FCF9FEFA1DF1D9B700F3313E /* TimelineSection.swift in Sources */,
 				FCEAD6C51DD7BBCA002ADFC2 /* TimelineTableViewCell.swift in Sources */,
 				CB4381711DEBDC35005B7958 /* ImageAnimator.swift in Sources */,
 				CB83F71A1DF516C60038CF56 /* CompilationAlertView.swift in Sources */,
@@ -437,6 +435,7 @@
 				E1B6F66E1DD43FF800B01B9E /* EditEntryViewController.swift in Sources */,
 				E1B6F64B1DD411E100B01B9E /* Entry.swift in Sources */,
 				E18E2CBA1DC95FD500BA02C4 /* ViewController.swift in Sources */,
+				FC9ED9BB1DF643BB00722E46 /* EntryBroker.swift in Sources */,
 				E1B6F6531DD434AF00B01B9E /* UIConstants.swift in Sources */,
 				E1B6F65B1DD4387600B01B9E /* HappinessService.swift in Sources */,
 				CB4381731DEBDCE3005B7958 /* VideoWriter.swift in Sources */,
@@ -444,6 +443,7 @@
 				E18E2CB81DC95FD500BA02C4 /* AppDelegate.swift in Sources */,
 				E17ACFB11DD70E2200E826FE /* LoginSignupViewController.swift in Sources */,
 				CB83F7141DF4711C0038CF56 /* CompilationOverlayView.swift in Sources */,
+				FC9ED9BD1DF643CA00722E46 /* TimelineSection.swift in Sources */,
 				E1B6F6561DD4380700B01B9E /* BaseViewController.swift in Sources */,
 				CB83F7121DF27A390038CF56 /* JBKenBurnsView.swift in Sources */,
 				FC8613631DEA5CF300497425 /* ProgressHUD.swift in Sources */,

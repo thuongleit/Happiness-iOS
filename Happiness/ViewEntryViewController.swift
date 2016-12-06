@@ -27,6 +27,11 @@ class ViewEntryViewController: ViewControllerBase {
 
     var entry: Entry!
 
+    deinit {
+        // Remove all of this object's observer entries.
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

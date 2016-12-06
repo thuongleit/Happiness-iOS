@@ -38,7 +38,29 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         let compilationAlertView = CompilationAlertView()
         return compilationAlertView
     }()
+    
+    var newEntryObserver: NSObjectProtocol?
+    var replaceEntryObserver: NSObjectProtocol?
+    var deleteEntryObserver: NSObjectProtocol?
 
+    deinit {
+
+        // Remove all of this object's observers. For block-based observers,
+        // we need a separate removeObserver(observer:) call for each observer.
+        if let newEntryObserver = newEntryObserver {
+
+            NotificationCenter.default.removeObserver(newEntryObserver)
+        }
+        if let replaceEntryObserver = replaceEntryObserver {
+
+            NotificationCenter.default.removeObserver(replaceEntryObserver)
+        }
+        if let deleteEntryObserver = deleteEntryObserver {
+            
+            NotificationCenter.default.removeObserver(deleteEntryObserver)
+        }
+    }
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -111,48 +133,50 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         }
         
         // When an entry is created, add it to the table.
-        NotificationCenter.default.addObserver(
+        newEntryObserver = NotificationCenter.default.addObserver(
             forName: AppDelegate.GlobalEventEnum.newEntryNotification.notification,
             object: nil,
             queue: OperationQueue.main)
-        { (notification: Notification) in
+        { [weak self] (notification: Notification) in
             
-            if let entry = notification.object as? Entry {
+            if let _self = self,
+                let entry = notification.object as? Entry {
                 
-                let sectionWasAdded = self.addNewEntry(entry)
+                let sectionWasAdded = _self.addNewEntry(entry)
                 
                 DispatchQueue.main.async {
                     
                     if sectionWasAdded {
                         
                         // When a section is added, reload the entire table.
-                        self.tableView.reloadData()
+                        _self.tableView.reloadData()
                     }
                     else {
                         
                         // When the entry was added to the first section,
                         // just reload the first section.
-                        self.tableView.reloadSections(IndexSet(integer: 0), with: .fade)
+                        _self.tableView.reloadSections(IndexSet(integer: 0), with: .fade)
                     }
                     
                     // Scroll to top when an entry is created.
-                    self.tableView.setContentOffset(CGPoint(x: 0, y: 0 - self.tableView.contentInset.top), animated: true)
+                    _self.tableView.setContentOffset(CGPoint(x: 0, y: 0 - _self.tableView.contentInset.top), animated: true)
                     
                     // Congratulate user when appropriate.
-                    self.congratulateIfComplete()
+                    _self.congratulateIfComplete()
                 }
             }
         }
         
         // When an entry is replaced, update it in the table.
-        NotificationCenter.default.addObserver(
+        replaceEntryObserver = NotificationCenter.default.addObserver(
             forName: AppDelegate.GlobalEventEnum.replaceEntryNotification.notification,
             object: nil,
             queue: OperationQueue.main)
-        { (notification: Notification) in
+        { [weak self] (notification: Notification) in
             
-            if let replaceEntryObject = notification.object as? ReplaceEntryNotificationObject,
-                let entryReplacedInSectionIndex = self.replaceEntry(withId: replaceEntryObject.entryId, replacementEntry: replaceEntryObject.replacementEntry) {
+            if let _self = self,
+                let replaceEntryObject = notification.object as? ReplaceEntryNotificationObject,
+                let entryReplacedInSectionIndex = _self.replaceEntry(withId: replaceEntryObject.entryId, replacementEntry: replaceEntryObject.replacementEntry) {
                 
                 DispatchQueue.main.async {
                     
@@ -161,10 +185,10 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
                     // done the table sometimes scrolls away from an updated
                     // entry. Saving/restoring does not completely fix this,
                     // but it helps.
-                    let contentOffset = self.tableView.contentOffset
+                    let contentOffset = _self.tableView.contentOffset
                     if replaceEntryObject.useFadeAnimation {
                         
-                        self.tableView.reloadSections(IndexSet(integer: entryReplacedInSectionIndex), with: .fade)
+                        _self.tableView.reloadSections(IndexSet(integer: entryReplacedInSectionIndex), with: .fade)
                     }
                     else {
                         
@@ -173,28 +197,29 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
                         // of an updated entry replacing a local entry, so they will
                         // be identical.
                         UIView.performWithoutAnimation({
-                            self.tableView.reloadSections(IndexSet(integer: entryReplacedInSectionIndex), with: .none)
+                            _self.tableView.reloadSections(IndexSet(integer: entryReplacedInSectionIndex), with: .none)
                         })
                     }
-                    self.tableView.contentOffset = contentOffset
+                    _self.tableView.contentOffset = contentOffset
                 }
             }
         }
         
         // When an entry is deleted, remove it from the table.
-        NotificationCenter.default.addObserver(
+        deleteEntryObserver = NotificationCenter.default.addObserver(
             forName: AppDelegate.GlobalEventEnum.deleteEntryNotification.notification,
             object: nil,
             queue: OperationQueue.main)
-        { (notification: Notification) in
+        { [weak self] (notification: Notification) in
             
-            if let entry = notification.object as? Entry,
-                let entryDeletedInSectionIndex = self.deleteEntry(entry) {
+            if let _self = self,
+                let entry = notification.object as? Entry,
+                let entryDeletedInSectionIndex = _self.deleteEntry(entry) {
                 
                 DispatchQueue.main.async {
                     
                     // Reload the section the entry was deleted from.
-                    self.tableView.reloadSections(IndexSet(integer: entryDeletedInSectionIndex), with: .fade)
+                    _self.tableView.reloadSections(IndexSet(integer: entryDeletedInSectionIndex), with: .fade)
                 }
             }
         }
