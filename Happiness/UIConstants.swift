@@ -26,6 +26,12 @@ class UIConstants: NSObject {
     // deep pink
     static let secondarySelectedThemeColor = UIColor(red: 244/255, green: 143/255, blue: 177/255, alpha: 1)
     
+    // light purple
+    static let terciaryThemeColor = UIColor(red: 215/255, green: 169/255, blue: 223/255, alpha: 1)
+    
+    // dark purple
+    static let terciarySelectedThemeColor = UIColor(red: 186/255, green: 102/255, blue: 198/255, alpha: 1)
+    
     // white
     static let textLightColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
 
@@ -96,23 +102,23 @@ class UIConstants: NSObject {
         errorBanner.frame = CGRect(x: 0, y: -errorBannerHeight, width: errorBannerWidth, height: errorBannerHeight)
         errorMessage.frame = errorBanner.bounds
         
-        errorBanner.backgroundColor = primaryThemeColor
+        errorBanner.backgroundColor = terciarySelectedThemeColor
         
         errorMessage.text = message
-        errorMessage.textColor = secondaryThemeColor
+        errorMessage.textColor = textLightColor
         errorMessage.font = UIFont(name: textFontName, size: 16)
         errorMessage.textAlignment = .center
         
         errorBanner.addSubview(errorMessage)
         view.addSubview(errorBanner)
         
-        UIView.animate(withDuration: 1, animations: {
+        UIView.animate(withDuration: 2, animations: {
             
             errorBanner.center.y = errorBanner.center.y + errorBannerHeight
             
         }, completion: {(value: Bool) in
             
-            UIView.animate(withDuration: 1, delay: 2, options: [], animations: {
+            UIView.animate(withDuration: 1, delay: 4, options: [], animations: {
                 
                 errorBanner.center.y = errorBanner.center.y - errorBannerHeight
                 

@@ -17,6 +17,7 @@ enum KenBurnsZoomMode: Int {
 
 protocol JBKenBurnsViewDelegate {
     func finishedShowingLastImage()
+    func imageCollectionAdvanced(index: Int)
 }
 
 class JBKenBurnsView: UIView {
@@ -194,6 +195,7 @@ class JBKenBurnsView: UIView {
     
     func currentImage() -> UIImage? {
         if imagesArray.count >= (currentImageIndex + 1) {
+            kenBurnsDelegate?.imageCollectionAdvanced(index: currentImageIndex)
             return imagesArray[currentImageIndex] ?? nil
         } else {
             return nil
