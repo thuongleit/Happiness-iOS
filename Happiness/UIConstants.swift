@@ -15,7 +15,9 @@ class UIConstants: NSObject {
     // MARK: - Colors
 
     // light blue
-    static let primaryThemeColor = UIColor(red: 128/255, green: 222/255, blue: 234/255, alpha: 1)
+    //static let primaryThemeColor = UIColor(red: 128/255, green: 222/255, blue: 234/255, alpha: 1)
+    // "Happy Mom" dark teal
+    static let primaryThemeColor = UIColor(red: 63/255, green: 184/255, blue: 175/255, alpha: 1)
     
     // deep light blue
     static let primarySelectedThemeColor = UIColor(red: 77/255, green: 208/255, blue: 225/255, alpha: 1) // 107, 224, 216
@@ -32,8 +34,8 @@ class UIConstants: NSObject {
     // dark purple
     static let terciarySelectedThemeColor = UIColor(red: 186/255, green: 102/255, blue: 198/255, alpha: 1)
     
-    // white
-    static let textLightColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+    // timeline white
+    static let textLightColor = UIColor(red: 251/255, green: 248/255, blue: 244/255, alpha: 1)
 
     // white
     static let whiteColor = UIColor.white
@@ -46,6 +48,9 @@ class UIConstants: NSObject {
     
     // black
     static let blackColor = UIColor.black
+    
+    // emoji yellow
+    static let emojiYellowColor = UIColor(red: 249/255, green: 206/255, blue: 50/255, alpha: 1)
 
     static func happinessLevelColor(_ happinessLevel: HappinessLevel) -> UIColor {
         switch happinessLevel {
@@ -330,6 +335,9 @@ class UIConstants: NSObject {
     class ImageName {
         static let composeButton = "compose-22"
         static let settingsButton = "settings-22"
+        static let saveButton = "save-22"
+        static let cancelButton = "cancel-22"
+        static let backButton = "back-22"
         static let confettiHappy = "happy-20"
         static let confettiReallyHappy = "really_happy-20"
         static let confettiHeart = "heartRed"

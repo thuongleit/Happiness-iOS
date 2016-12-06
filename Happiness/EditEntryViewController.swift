@@ -67,11 +67,13 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
         }
         
         // Navigation bar save button.
-        let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(EditEntryViewController.saveEntry))
+        let saveButton = UIBarButtonItem(
+            image: UIImage(named: UIConstants.ImageName.saveButton), style: .plain, target: self, action: #selector(EditEntryViewController.saveEntry))
         navigationItem.rightBarButtonItem = saveButton
         
         // Navigation bar cancel button.
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(EditEntryViewController.cancelEntry))
+        let cancelButton = UIBarButtonItem(
+            image: UIImage(named: UIConstants.ImageName.cancelButton), style: .plain, target: self, action: #selector(EditEntryViewController.cancelEntry))
         navigationItem.leftBarButtonItem = cancelButton
         
         // Ask for location permission

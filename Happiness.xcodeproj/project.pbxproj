@@ -40,8 +40,6 @@
 		E1B6F65F1DD43ED700B01B9E /* InitialViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1B6F65D1DD43ED700B01B9E /* InitialViewController.xib */; };
 		E1B6F6621DD43F2100B01B9E /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B6F6601DD43F2100B01B9E /* TimelineViewController.swift */; };
 		E1B6F6631DD43F2100B01B9E /* TimelineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1B6F6611DD43F2100B01B9E /* TimelineViewController.xib */; };
-		E1B6F66A1DD43F8600B01B9E /* ViewEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B6F6681DD43F8600B01B9E /* ViewEntryViewController.swift */; };
-		E1B6F66B1DD43F8600B01B9E /* ViewEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1B6F6691DD43F8600B01B9E /* ViewEntryViewController.xib */; };
 		E1B6F66E1DD43FF800B01B9E /* EditEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B6F66C1DD43FF800B01B9E /* EditEntryViewController.swift */; };
 		E1B6F66F1DD43FF800B01B9E /* EditEntryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1B6F66D1DD43FF800B01B9E /* EditEntryViewController.xib */; };
 		E1B6F6721DD4403E00B01B9E /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B6F6701DD4403E00B01B9E /* CalendarViewController.swift */; };
@@ -104,8 +102,6 @@
 		E1B6F65D1DD43ED700B01B9E /* InitialViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InitialViewController.xib; sourceTree = "<group>"; };
 		E1B6F6601DD43F2100B01B9E /* TimelineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
 		E1B6F6611DD43F2100B01B9E /* TimelineViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineViewController.xib; sourceTree = "<group>"; };
-		E1B6F6681DD43F8600B01B9E /* ViewEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewEntryViewController.swift; sourceTree = "<group>"; };
-		E1B6F6691DD43F8600B01B9E /* ViewEntryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewEntryViewController.xib; sourceTree = "<group>"; };
 		E1B6F66C1DD43FF800B01B9E /* EditEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditEntryViewController.swift; sourceTree = "<group>"; };
 		E1B6F66D1DD43FF800B01B9E /* EditEntryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditEntryViewController.xib; sourceTree = "<group>"; };
 		E1B6F6701DD4403E00B01B9E /* CalendarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
@@ -231,8 +227,6 @@
 				E1B6F6551DD4380700B01B9E /* BaseViewController.xib */,
 				E1B6F6601DD43F2100B01B9E /* TimelineViewController.swift */,
 				E1B6F6611DD43F2100B01B9E /* TimelineViewController.xib */,
-				E1B6F6681DD43F8600B01B9E /* ViewEntryViewController.swift */,
-				E1B6F6691DD43F8600B01B9E /* ViewEntryViewController.xib */,
 				FC0951701DF677A300D30C12 /* ViewEntryScrollingViewController.swift */,
 				FC0951711DF677A300D30C12 /* ViewEntryScrollingViewController.xib */,
 				E1B6F66C1DD43FF800B01B9E /* EditEntryViewController.swift */,
@@ -358,7 +352,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E17ACFB21DD70E2200E826FE /* LoginSignupViewController.xib in Resources */,
-				E1B6F66B1DD43F8600B01B9E /* ViewEntryViewController.xib in Resources */,
 				E18E2CC21DC95FD500BA02C4 /* LaunchScreen.storyboard in Resources */,
 				E18DAF991DF2748800F54F8E /* notification.caf in Resources */,
 				E1B6F6731DD4403E00B01B9E /* CalendarViewController.xib in Resources */,
@@ -468,7 +461,6 @@
 				FCF9FEF81DF13C4B00F3313E /* ViewControllerBase.swift in Sources */,
 				FC3783E01DF405FD004D636D /* ReplaceEntryNotificationObject.swift in Sources */,
 				E1B6F6721DD4403E00B01B9E /* CalendarViewController.swift in Sources */,
-				E1B6F66A1DD43F8600B01B9E /* ViewEntryViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
