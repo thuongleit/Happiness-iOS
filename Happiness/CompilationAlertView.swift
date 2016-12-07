@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CompilationAlertViewDelegate {
+protocol CompilationAlertViewDelegate: class {
     func compilationActionTakenByUser(isShow:Bool)
 }
 
@@ -20,7 +20,7 @@ class CompilationAlertView: UIView {
     
     @IBOutlet weak var promptTextLabel: UILabel!
     
-    var compileAlertDelegate: CompilationAlertViewDelegate?
+    weak var compileAlertDelegate: CompilationAlertViewDelegate?
     
     
     // Our custom view from the XIB file

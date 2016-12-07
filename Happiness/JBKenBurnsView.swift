@@ -15,7 +15,7 @@ enum KenBurnsZoomMode: Int {
     case random
 }
 
-protocol JBKenBurnsViewDelegate {
+protocol JBKenBurnsViewDelegate: class {
     func finishedShowingLastImage()
     func imageCollectionAdvanced(index: Int)
 }
@@ -41,7 +41,7 @@ class JBKenBurnsView: UIView {
     
     // MARK: - Variables
     
-    var kenBurnsDelegate: JBKenBurnsViewDelegate?
+    weak var kenBurnsDelegate: JBKenBurnsViewDelegate?
     var isPaused: Bool {
         get {
             return layer.speed == 0
