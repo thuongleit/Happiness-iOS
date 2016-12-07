@@ -706,8 +706,6 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         APNUtil.sendConratulations(toNestUsers: nestUsers, completionBlock: {(isSuccess) -> () in
             
         })
-        
-        
     }
 }
 
@@ -715,15 +713,13 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
 extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
 {
     func numberOfSections(in tableView: UITableView) -> Int {
-        
         return sections.count
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: UIConstants.CellReuseIdentifier.timelineHeaderCell) as! TimelineHeaderView
         headerView.delegate = self
-        headerView.entryCountByUser = self.sections[section].getEntryCountByUser()
-        headerView.completedUserCount = self.sections[section].getCountOfUsersWithEntries()
+        headerView.section = self.sections[section]
         headerView.nestUsers = self.nestUsers
         headerView.titleLabel.text = sections[section].title
         return headerView
@@ -825,7 +821,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         let centerPoint = CGPoint(x: actualFrame.minX + profileImageView.bounds.width / 2, y: actualFrame.minY + profileImageView.bounds.height / 2)
         nudgeView.frame = CGRect(x: centerPoint.x, y: centerPoint.y, width: 0, height: 0)
         
-        UIView.animate(withDuration: 0.7, animations: {
+        UIView.animate(withDuration: 0.4, animations: {
 
             let width = UIScreen.main.bounds.width - 50
             let height = 260
