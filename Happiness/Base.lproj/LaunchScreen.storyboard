@@ -21,15 +21,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="favoriteheart" translatesAutoresizingMaskIntoConstraints="NO" id="gUC-MU-VXx">
-                                <rect key="frame" x="120" y="99" width="40" height="40"/>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="heart_pink" translatesAutoresizingMaskIntoConstraints="NO" id="gUC-MU-VXx">
+                                <rect key="frame" x="109" y="111" width="38" height="38"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="A4L-7H-75g"/>
                                     <constraint firstAttribute="width" constant="40" id="DQ0-L3-RXz"/>
                                 </constraints>
                             </imageView>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="favoriteheart" translatesAutoresizingMaskIntoConstraints="NO" id="XYq-r8-cMn">
-                                <rect key="frame" x="42" y="52" width="50" height="50"/>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="heart_pink" translatesAutoresizingMaskIntoConstraints="NO" id="XYq-r8-cMn">
+                                <rect key="frame" x="34" y="62" width="67" height="67"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="awd-WV-FD6"/>
                                     <constraint firstAttribute="width" constant="50" id="hZb-hC-5BG"/>
@@ -42,15 +42,15 @@
                                     <constraint firstAttribute="width" constant="150" id="rnh-lP-GQW"/>
                                 </constraints>
                             </imageView>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="favoriteheart" translatesAutoresizingMaskIntoConstraints="NO" id="2wf-d6-HVh">
-                                <rect key="frame" x="60" y="162" width="32" height="32"/>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="favoriteheart" translatesAutoresizingMaskIntoConstraints="NO" id="2wf-d6-HVh">
+                                <rect key="frame" x="74" y="174" width="27" height="27"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="32" id="AVn-Qs-brg"/>
                                     <constraint firstAttribute="width" constant="32" id="lov-Zm-bCC"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.97254901959999995" green="0.73333333329999995" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.94901960784313721" green="0.60392156862745094" blue="0.61960784313725492" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="2wf-d6-HVh" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="60" id="1w8-bh-md3"/>
                             <constraint firstItem="nnT-gR-mMM" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="6OA-MQ-bYS"/>
@@ -65,11 +65,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52.5" y="375"/>
         </scene>
     </scenes>
     <resources>
         <image name="favoriteheart" width="512" height="512"/>
+        <image name="heart_pink" width="512" height="512"/>
         <image name="really_happy_480" width="480" height="480"/>
     </resources>
 </document>
