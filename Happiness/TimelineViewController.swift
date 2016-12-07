@@ -34,6 +34,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         return compilationView
     }()
     var compilationImages = [UIImage]()
+    var compilationImagesCount = 0 //need a count coz some entries do not have images
     var compilationUserProfileImages = [PFFile]()
     var noOfEntriesInCurrentWeek = 0
     
@@ -246,7 +247,13 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
     //for ken burns compilation on entry images
     func loadImagesForCompilation() {
         
+        if(noOfEntriesInCurrentWeek != 0 && noOfEntriesInCurrentWeek == compilationImagesCount){
+            self.presentUserCompilationViewPrompt()
+            return
+        }
+        
         self.compilationImages = [UIImage]()
+        compilationImagesCount = 0
         if let firstSection = sections.first {
             let streakEntries = firstSection.entries
             noOfEntriesInCurrentWeek = streakEntries.count
@@ -262,8 +269,10 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
                             if(image != nil){
                                 self.compilationImages.append(image!)
                                 self.compilationUserProfileImages.append((entry.author?.profileImage)!)
+                                self.compilationImagesCount += 1
+                                
                                 //after loading all images asynchronously check if you got all entries for the week and present compilation
-                                if(self.noOfEntriesInCurrentWeek == self.compilationImages.count){
+                                if(self.noOfEntriesInCurrentWeek == self.compilationImagesCount){
                                     self.presentUserCompilationViewPrompt()
                                 }
                             }
@@ -272,10 +281,15 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
                     
                 } else if(entry.localImage != nil) {
                     self.compilationImages.append(entry.localImage!)
+                    compilationImagesCount += 1
                     //after loading all images asynchronously check if you got all entries for the week and present compilation
-                    if(self.noOfEntriesInCurrentWeek == self.compilationImages.count){
+                    if(self.noOfEntriesInCurrentWeek == self.compilationImagesCount){
                         self.presentUserCompilationViewPrompt()
                     }
+                }
+                else{
+                    // no image just increment the count
+                    compilationImagesCount += 1
                 }
             }
         }
