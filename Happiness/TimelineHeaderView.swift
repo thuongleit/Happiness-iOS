@@ -40,6 +40,8 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
         }
     }
     
+    var bouncingImageView: PFImageView?
+    
     var nestUsers: [User]? {
         didSet {
             // Remove old profile image views
@@ -51,7 +53,7 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
             
             // Set profiles and message label
             for (index, user) in nestUsers!.enumerated() {
-                let imageView = PFImageView(frame: CGRect(x: 10 + index*6 + index*60, y: 34, width: 60, height:60))
+                let imageView = PFImageView(frame: CGRect(x: 12 + index*8 + index*60, y: 34, width: 60, height:60))
                 imageView.contentMode = UIViewContentMode.scaleAspectFit
                 
                 // Set image
@@ -60,29 +62,24 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
                     imageView.load(inBackground: { (image: UIImage?, error: Error?) in
                         
                         if (self.section!.currentUserMadeFirstEntry) {
-                            
+
                             if (user.id == User.currentUser?.id) {
                                 
+                                self.bouncingImageView = imageView
+                            
                                 imageView.layer.borderColor = UIConstants.whiteColor.cgColor
                                 
-                                UIView.animate(withDuration: 0.1, animations: {
+                                imageView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+                                
+                                DispatchQueue.main.async {
+                                    UIView.animate(withDuration: 3, delay: 0, usingSpringWithDamping: 0.1, initialSpringVelocity: 12.0, options: .curveEaseInOut, animations: {
                                     
-                                    imageView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-                                    
-                                }, completion: { (finished) -> Void in
-                                 
-                                    imageView.transform = CGAffineTransform(scaleX: 1, y: 1)
-                                    
-                                    UIView.animate(withDuration: 0.1, animations: {
+                                        self.bouncingImageView?.transform = .identity
                                         
-                                        imageView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
-                                        
-                                    }, completion: { (finished) -> Void in
-                                        
-                                        imageView.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                    }, completion: { (finished) in
                                         
                                     })
-                                })
+                                }
                                 
                                 self.section?.currentUserMadeFirstEntry = false
                             }
@@ -106,6 +103,9 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
                         }
                         
                     })
+                    
+                    
+                    
                     imageView.contentMode = .scaleAspectFill
                     imageView.layer.cornerRadius = imageView.bounds.width / 2.0 // circle
                     imageView.clipsToBounds = true
