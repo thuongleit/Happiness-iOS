@@ -719,11 +719,9 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: UIConstants.CellReuseIdentifier.timelineHeaderCell) as! TimelineHeaderView
         headerView.delegate = self
-        headerView.entryCountByUser = self.sections[section].getEntryCountByUser()
-        headerView.completedUserCount = self.sections[section].getCountOfUsersWithEntries()
+        headerView.section = self.sections[section]
         headerView.nestUsers = self.nestUsers
         headerView.titleLabel.text = sections[section].title
-        headerView.shouldDisplayCompletionEffect = true
         return headerView
     }
     

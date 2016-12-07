@@ -32,6 +32,14 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
     
     var shouldDisplayCompletionEffect: Bool?
     
+    var section: TimelineSection? {
+        didSet {
+            self.entryCountByUser = section?.getEntryCountByUser()
+            self.completedUserCount = section?.getCountOfUsersWithEntries()
+            self.shouldDisplayCompletionEffect = false
+        }
+    }
+    
     var nestUsers: [User]? {
         didSet {
             // Remove old profile image views
@@ -55,24 +63,29 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
                             
                             if (user.id == User.currentUser?.id) {
                                 
-                                
                                 imageView.layer.borderColor = UIConstants.whiteColor.cgColor
                                 
                                 UIView.animate(withDuration: 0.1, animations: {
                                     
-                                    imageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+                                    imageView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
                                     
                                 }, completion: { (finished) -> Void in
                                  
                                     imageView.transform = CGAffineTransform(scaleX: 1, y: 1)
                                     
+                                    UIView.animate(withDuration: 0.1, animations: {
+                                        
+                                        imageView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                        
+                                    }, completion: { (finished) -> Void in
+                                        
+                                        imageView.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                        
+                                    })
                                 })
                                 
                                 self.shouldDisplayCompletionEffect = false
-                                
                             }
-                            
-                            
                             
                         } else {
                             if let image = image {
