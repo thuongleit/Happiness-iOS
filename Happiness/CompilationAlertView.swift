@@ -17,7 +17,11 @@ class CompilationAlertView: UIView {
     @IBOutlet weak var noButton: UIButton!
     
     @IBOutlet weak var yesButton: UIButton!
+    
+    @IBOutlet weak var promptTextLabel: UILabel!
+    
     var compileAlertDelegate: CompilationAlertViewDelegate?
+    
     
     // Our custom view from the XIB file
     var view: UIView!
@@ -48,24 +52,30 @@ class CompilationAlertView: UIView {
         self.translatesAutoresizingMaskIntoConstraints = false
         
         view.layer.cornerRadius = 4.0
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOpacity = 0.2
-        view.layer.shadowRadius = 5.0
-        view.layer.shadowOffset = CGSize(width: 0.0, height: 8.0)
-        //view.layer.borderColor =  UIColor.init(red: 171/255, green: 71/255, blue: 188/255, alpha: 1).cgColor
-        //view.layer.borderWidth = 1.0
         view.clipsToBounds = true
         noButton.layer.cornerRadius = 5.0
         yesButton.layer.cornerRadius = 5.0
+        
+        promptTextLabel.textColor = UIColor.white
+        promptTextLabel.textAlignment = .center
+        promptTextLabel.font = UIFont(name: UIConstants.textFontName, size: 18)
+        promptTextLabel.adjustsFontSizeToFitWidth = true
     }
     
     func displayView(onView: UIView) {
         self.alpha = 0.0
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 1
+        self.layer.shadowRadius = 100.0
+        self.layer.shadowOffset = CGSize.zero
+
         onView.addSubview(self)
         
         onView.addConstraint(NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: onView, attribute: .centerY, multiplier: 1.0, constant: -20.0)) // move it a bit upwards
         onView.addConstraint(NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: onView, attribute: .centerX, multiplier: 1.0, constant: 0.0))
+        onView.addConstraint(NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: onView, attribute: .width, multiplier: 1.0, constant: -50.0))
         onView.needsUpdateConstraints()
+        
         
         // display the view
         transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
@@ -73,11 +83,7 @@ class CompilationAlertView: UIView {
             self.alpha = 1.0
             self.transform = CGAffineTransform.identity
         }, completion: { (finished) -> Void in
-            // When finished wait 1.5 seconds, than hide it
-            let delayTime = DispatchTime.now() + Double(Int64(1.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
-            DispatchQueue.main.asyncAfter(deadline: delayTime) {
-                //self.hideView()
-            }
+           
         })
 
     }
@@ -88,8 +94,8 @@ class CompilationAlertView: UIView {
     override func updateConstraints() {
         super.updateConstraints()
         
-        addConstraint(NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 185.0))
-        addConstraint(NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 280.0))
+        addConstraint(NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 200.0))
+        //addConstraint(NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 280.0))
         addConstraint(NSLayoutConstraint(item: view, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0.0))
         addConstraint(NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0.0))
         addConstraint(NSLayoutConstraint(item: view, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: 0.0))

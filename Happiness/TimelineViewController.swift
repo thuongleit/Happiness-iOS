@@ -33,6 +33,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         return compilationView
     }()
     var compilationImages = [UIImage]()
+    var compilationImagesCount = 0 //need a count coz some entries do not have images
     var compilationUserProfileImages = [PFFile]()
     var noOfEntriesInCurrentWeek = 0
     
@@ -85,7 +86,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
             
             let logoDoubleTap = UITapGestureRecognizer()
             logoDoubleTap.numberOfTapsRequired = 2
-            logoDoubleTap.addTarget(self, action: #selector(triggerCompilationAlert))
+            logoDoubleTap.addTarget(self, action: #selector(loadImagesForCompilation))
             logoImageView.isUserInteractionEnabled = true
             logoImageView.addGestureRecognizer(logoDoubleTap)
             
@@ -244,10 +245,6 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         //NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.unhideBottomTabBars.notification))
     }
     
-    func triggerCompilationAlert() {
-        self.loadImagesForCompilation()
-        self.presentUserCompilationViewPrompt()
-    }
     
     // When the settings is pressed, log out.
     @IBAction func onSettingsButton(_ sender: UIBarButtonItem)
@@ -258,10 +255,19 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
     //for ken burns compilation on entry images
     func loadImagesForCompilation() {
         
-        self.compilationImages = [UIImage]()
         if let firstSection = sections.first {
             let streakEntries = firstSection.entries
             noOfEntriesInCurrentWeek = streakEntries.count
+            
+            if(noOfEntriesInCurrentWeek != 0 && noOfEntriesInCurrentWeek == compilationImagesCount){
+                presentUserCompilationViewPrompt()
+                return
+            }
+            
+            //when last person in the nest posts, images dont have latest, so clear all variables to get latest
+            compilationImages = [UIImage]()
+            compilationUserProfileImages = [PFFile]()
+            compilationImagesCount = 0
             
             for entry in streakEntries {
                 if(entry.media != nil){
@@ -274,8 +280,10 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
                             if(image != nil){
                                 self.compilationImages.append(image!)
                                 self.compilationUserProfileImages.append((entry.author?.profileImage)!)
+                                self.compilationImagesCount += 1
+                                
                                 //after loading all images asynchronously check if you got all entries for the week and present compilation
-                                if(self.noOfEntriesInCurrentWeek == self.compilationImages.count){
+                                if(self.noOfEntriesInCurrentWeek == self.compilationImagesCount){
                                     self.presentUserCompilationViewPrompt()
                                 }
                             }
@@ -283,11 +291,17 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
                     })
                     
                 } else if(entry.localImage != nil) {
-                    self.compilationImages.append(entry.localImage!)
+                    compilationImages.append(entry.localImage!)
+                    compilationUserProfileImages.append((entry.author?.profileImage)!)
+                    compilationImagesCount += 1
                     //after loading all images asynchronously check if you got all entries for the week and present compilation
-                    if(self.noOfEntriesInCurrentWeek == self.compilationImages.count){
-                        self.presentUserCompilationViewPrompt()
+                    if(noOfEntriesInCurrentWeek == compilationImagesCount){
+                        presentUserCompilationViewPrompt()
                     }
+                }
+                else{
+                    // no image just increment the count
+                    compilationImagesCount += 1
                 }
             }
         }
@@ -692,8 +706,6 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         APNUtil.sendConratulations(toNestUsers: nestUsers, completionBlock: {(isSuccess) -> () in
             
         })
-        
-        
     }
 }
 
@@ -701,15 +713,13 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
 extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
 {
     func numberOfSections(in tableView: UITableView) -> Int {
-        
         return sections.count
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: UIConstants.CellReuseIdentifier.timelineHeaderCell) as! TimelineHeaderView
         headerView.delegate = self
-        headerView.entryCountByUser = self.sections[section].getEntryCountByUser()
-        headerView.completedUserCount = self.sections[section].getCountOfUsersWithEntries()
+        headerView.section = self.sections[section]
         headerView.nestUsers = self.nestUsers
         headerView.titleLabel.text = sections[section].title
         return headerView
@@ -811,7 +821,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         let centerPoint = CGPoint(x: actualFrame.minX + profileImageView.bounds.width / 2, y: actualFrame.minY + profileImageView.bounds.height / 2)
         nudgeView.frame = CGRect(x: centerPoint.x, y: centerPoint.y, width: 0, height: 0)
         
-        UIView.animate(withDuration: 0.7, animations: {
+        UIView.animate(withDuration: 0.4, animations: {
 
             let width = UIScreen.main.bounds.width - 50
             let height = 260
