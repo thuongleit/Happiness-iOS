@@ -339,13 +339,17 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         compilationView.profileImage.file = compilationUserProfileImages[index]
         compilationView.profileImage.load { (image: UIImage?, error: Error?) in
             if(error == nil){
-                self.compilationView.profileImage.alpha = 0
-                self.compilationView.profileImage.image = image
-                
-                UIView.animate(withDuration: 0.2, animations: {
-                    self.compilationView.profileImage.alpha = 1
-                })
-                
+                UIView.transition(
+                    with: self.compilationView.profileImage,
+                    duration: 1.0,
+                    options: .transitionCrossDissolve,
+                    animations: { self.compilationView.profileImage.image = image },
+                    completion: nil)
+//                self.compilationView.profileImage.alpha = 0
+//                self.compilationView.profileImage.image = image
+//                UIView.animate(withDuration: 0.2, animations: {
+//                    self.compilationView.profileImage.alpha = 1
+//                })
             }
         }
     }
