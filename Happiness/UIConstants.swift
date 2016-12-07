@@ -34,6 +34,23 @@ class UIConstants: NSObject {
     // dark purple
     static let terciarySelectedThemeColor = UIColor(red: 186/255, green: 102/255, blue: 198/255, alpha: 1)
     
+    // timeline section header: everyone completed. yellow 242,193,46
+//    static let headerEveryoneCompleteColor = UIColor(red: 242/255, green: 193/255, blue: 46/255, alpha: 1)
+//    static let headerEveryoneCompleteColor = UIColor(red: 86/255, green: 217/255, blue: 205/255, alpha: 1) blue
+//    static let headerEveryoneCompleteColor = UIColor(red: 250/255, green: 221/255, blue: 128/255, alpha: 1) light yellow
+//    static let headerEveryoneCompleteColor = UIColor(red: 248/255, green: 205/255, blue: 68/255, alpha: 1)
+//    static let headerEveryoneCompleteColor = UIColor(red: 248/255, green: 211/255, blue: 109/255, alpha: 1)
+    static let headerEveryoneCompleteColor = UIColor(red: 248/255, green: 214/255, blue: 99/255, alpha: 1)
+
+    // timeline section header: # pals didn't write. orange 242,157,53
+//    static let headerSomeoneIncompleteColor = UIColor(red: 242/255, green: 157/255, blue: 53/255, alpha: 1)
+//    static let headerSomeoneIncompleteColor = UIColor(red: 245/255, green: 196/255, blue: 202/255, alpha: 1)
+    static let headerSomeoneIncompleteColor = UIColor(red: 245/255, green: 173/255, blue: 175/255, alpha: 1)
+    
+    // timeline section header: you didn't write. red 242,118,73
+//    static let headerYouIncompleteColor = UIColor(red: 242/255, green: 118/255, blue: 73/255, alpha: 1)
+    static let headerYouIncompleteColor = UIColor(red: 242/255, green: 112/255, blue: 131/255, alpha: 1)
+    
     // timeline white
     static let textLightColor = UIColor(red: 251/255, green: 248/255, blue: 244/255, alpha: 1)
 
