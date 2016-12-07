@@ -15,7 +15,9 @@ class UIConstants: NSObject {
     // MARK: - Colors
 
     // light blue
-    static let primaryThemeColor = UIColor(red: 128/255, green: 222/255, blue: 234/255, alpha: 1)
+    //static let primaryThemeColor = UIColor(red: 128/255, green: 222/255, blue: 234/255, alpha: 1)
+    // "Happy Mom" dark teal
+    static let primaryThemeColor = UIColor(red: 63/255, green: 184/255, blue: 175/255, alpha: 1)
     
     // deep light blue
     static let primarySelectedThemeColor = UIColor(red: 77/255, green: 208/255, blue: 225/255, alpha: 1) // 107, 224, 216
@@ -26,8 +28,14 @@ class UIConstants: NSObject {
     // deep pink
     static let secondarySelectedThemeColor = UIColor(red: 244/255, green: 143/255, blue: 177/255, alpha: 1)
     
-    // white
-    static let textLightColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+    // light purple
+    static let terciaryThemeColor = UIColor(red: 215/255, green: 169/255, blue: 223/255, alpha: 1)
+    
+    // dark purple
+    static let terciarySelectedThemeColor = UIColor(red: 186/255, green: 102/255, blue: 198/255, alpha: 1)
+    
+    // timeline white
+    static let textLightColor = UIColor(red: 251/255, green: 248/255, blue: 244/255, alpha: 1)
 
     // white
     static let whiteColor = UIColor.white
@@ -40,6 +48,9 @@ class UIConstants: NSObject {
     
     // black
     static let blackColor = UIColor.black
+    
+    // emoji yellow
+    static let emojiYellowColor = UIColor(red: 249/255, green: 206/255, blue: 50/255, alpha: 1)
 
     static func happinessLevelColor(_ happinessLevel: HappinessLevel) -> UIColor {
         switch happinessLevel {
@@ -96,23 +107,23 @@ class UIConstants: NSObject {
         errorBanner.frame = CGRect(x: 0, y: -errorBannerHeight, width: errorBannerWidth, height: errorBannerHeight)
         errorMessage.frame = errorBanner.bounds
         
-        errorBanner.backgroundColor = primaryThemeColor
+        errorBanner.backgroundColor = terciarySelectedThemeColor
         
         errorMessage.text = message
-        errorMessage.textColor = secondaryThemeColor
+        errorMessage.textColor = textLightColor
         errorMessage.font = UIFont(name: textFontName, size: 16)
         errorMessage.textAlignment = .center
         
         errorBanner.addSubview(errorMessage)
         view.addSubview(errorBanner)
         
-        UIView.animate(withDuration: 1, animations: {
+        UIView.animate(withDuration: 2, animations: {
             
             errorBanner.center.y = errorBanner.center.y + errorBannerHeight
             
         }, completion: {(value: Bool) in
             
-            UIView.animate(withDuration: 1, delay: 2, options: [], animations: {
+            UIView.animate(withDuration: 1, delay: 4, options: [], animations: {
                 
                 errorBanner.center.y = errorBanner.center.y - errorBannerHeight
                 
@@ -175,6 +186,30 @@ class UIConstants: NSObject {
                     fadeInImage(imageView: imageView, image: image, withDuration: withDuration)
                 }
             }
+        }
+    }
+
+    static func setRoundCornersForAspectFit(imageView: UIImageView, radius: CGFloat)
+    {
+        if let image = imageView.image {
+            
+            let boundsScale = imageView.bounds.size.width / imageView.bounds.size.height
+            let imageScale = image.size.width / image.size.height
+            var drawingRect = imageView.bounds
+            if boundsScale > imageScale {
+                
+                drawingRect.size.width =  drawingRect.size.height * imageScale
+                drawingRect.origin.x = (imageView.bounds.size.width - drawingRect.size.width) / 2
+            }
+            else {
+                
+                drawingRect.size.height = drawingRect.size.width / imageScale
+                drawingRect.origin.y = (imageView.bounds.size.height - drawingRect.size.height) / 2
+            }
+            let path = UIBezierPath(roundedRect: drawingRect, cornerRadius: radius)
+            let mask = CAShapeLayer()
+            mask.path = path.cgPath
+            imageView.layer.mask = mask
         }
     }
 
@@ -312,20 +347,25 @@ class UIConstants: NSObject {
     class CellReuseIdentifier {
         static let timelineHeaderCell = "TimelineHeaderCell"
         static let timelineCell = "TimelineCell"
+        static let viewEntryCell = "ViewEntryCell"
     }
     
     class ClassName {
         static let timelineTableHeaderViewCellXib = "TimelineHeaderView"
         static let timelineTableViewCellXib = "TimelineTableViewCell"
+        static let viewEntryTableViewCellXib = "ViewEntryTableViewCell"
     }
     
     class ImageName {
         static let composeButton = "compose-22"
         static let settingsButton = "settings-22"
+        static let saveButton = "save-22"
+        static let cancelButton = "cancel-22"
+        static let backButton = "back-22"
         static let confettiHappy = "happy-20"
         static let confettiReallyHappy = "really_happy-20"
         static let confettiHeart = "heartRed"
         static let reallyHappy = "really_happy"
     }
-    
 }
+

@@ -67,11 +67,13 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
         }
         
         // Navigation bar save button.
-        let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(EditEntryViewController.saveEntry))
+        let saveButton = UIBarButtonItem(
+            image: UIImage(named: UIConstants.ImageName.saveButton), style: .plain, target: self, action: #selector(EditEntryViewController.saveEntry))
         navigationItem.rightBarButtonItem = saveButton
         
         // Navigation bar cancel button.
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(EditEntryViewController.cancelEntry))
+        let cancelButton = UIBarButtonItem(
+            image: UIImage(named: UIConstants.ImageName.cancelButton), style: .plain, target: self, action: #selector(EditEntryViewController.cancelEntry))
         navigationItem.leftBarButtonItem = cancelButton
         
         // Ask for location permission
@@ -98,6 +100,9 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
         // Style text view
         textView.layer.cornerRadius = 3.0
         textView.clipsToBounds = true
+        
+        // Image button
+        uploadImageButton.imageView?.contentMode = .scaleAspectFit
         
         // If new entry, use current date and current day's question.
         if entry == nil {
@@ -128,6 +133,9 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
                     if error == nil {
                         let photo = UIImage(data: imageData!)
                         self.uploadImageButton.setImage(photo, for: .normal)
+                        if let uploadImageView = self.uploadImageButton.imageView {
+                            UIConstants.setRoundCornersForAspectFit(imageView: uploadImageView, radius: 3.0)
+                        }
                     }
                 })
             }
@@ -190,7 +198,7 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
     // TODO(cboo): Refactor out repetitive code.
     func updateEntry() {
         var entryMedia: [UIImage] = []
-        if uploadImageButton.image(for: .normal) != UIImage.init(named: "image_placeholder") {
+        if uploadImageButton.image(for: .normal) != UIImage.init(named: "camera") {
             entryMedia.append(uploadImageButton.image(for: .normal)!)
         }
         
@@ -234,7 +242,15 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
     @IBAction func onFeelingSliderChange(_ sender: UISlider) {
         let happinessLevelInt = Int(feelingSlider.value)
         let happinessLevel = Entry.getHappinessLevel(happinessLevelInt: happinessLevelInt)
-        feelingImageView.image = UIConstants.happinessLevelImage(happinessLevel)
+        let feelingImage = UIConstants.happinessLevelImage(happinessLevel)
+        if feelingImageView.image != feelingImage {
+            UIView.transition(
+                with: feelingImageView,
+                duration: 0.3,
+                options: .transitionCrossDissolve,
+                animations: { self.feelingImageView.image = feelingImage },
+                completion: nil)
+        }
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -245,8 +261,10 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage //2
         //cameraImageView.contentMode = .scaleAspectFit //3
         //cameraImageView.image = chosenImage //4
-        uploadImageButton.imageView?.contentMode = .scaleAspectFill
         uploadImageButton.setImage(chosenImage, for: .normal)
+        if let uploadImageView = uploadImageButton.imageView {
+            UIConstants.setRoundCornersForAspectFit(imageView: uploadImageView, radius: 3.0)
+        }
         dismiss(animated: true, completion: nil)
     }
     
