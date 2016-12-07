@@ -198,7 +198,7 @@ class EditEntryViewController: ViewControllerBase, UIScrollViewDelegate, UITextV
     // TODO(cboo): Refactor out repetitive code.
     func updateEntry() {
         var entryMedia: [UIImage] = []
-        if uploadImageButton.image(for: .normal) != UIImage.init(named: "image_placeholder") {
+        if uploadImageButton.image(for: .normal) != UIImage.init(named: "camera") {
             entryMedia.append(uploadImageButton.image(for: .normal)!)
         }
         
