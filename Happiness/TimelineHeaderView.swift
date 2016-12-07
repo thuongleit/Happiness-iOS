@@ -36,7 +36,7 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
         didSet {
             self.entryCountByUser = section?.getEntryCountByUser()
             self.completedUserCount = section?.getCountOfUsersWithEntries()
-            self.shouldDisplayCompletionEffect = false
+            self.shouldDisplayCompletionEffect = section?.currentUserMadeFirstEntry
         }
     }
     
@@ -59,7 +59,7 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
                     imageView.file = profileImageFile
                     imageView.load(inBackground: { (image: UIImage?, error: Error?) in
                         
-                        if (self.shouldDisplayCompletionEffect!) {
+                        if (self.section!.currentUserMadeFirstEntry) {
                             
                             if (user.id == User.currentUser?.id) {
                                 
@@ -84,7 +84,7 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
                                     })
                                 })
                                 
-                                self.shouldDisplayCompletionEffect = false
+                                self.section?.currentUserMadeFirstEntry = false
                             }
                             
                         } else {
