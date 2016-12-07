@@ -92,7 +92,7 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
                 messageLabel.text = "Woohoo! Everyone completed! ^_^"
                 // Set text and background colors
                 messageLabel.textColor = UIConstants.whiteColor
-                contentView.backgroundColor = UIConstants.primarySelectedThemeColor
+                contentView.backgroundColor = UIConstants.headerEveryoneCompleteColor
             }
             else if completedUserCount < (nestUsers?.count)! {
                 if let currentUserEntryCount = entryCountByUser?[(User.currentUser?.id)!] {
@@ -101,19 +101,19 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
                         messageLabel.text = "\(userCount - completedUserCount) pal" + (userCount - completedUserCount > 1 ? "s " : " ") + "didn't write!"
                         // Set text and background colors
                         messageLabel.textColor = UIConstants.whiteColor
-                        contentView.backgroundColor = UIConstants.secondaryThemeColor
+                        contentView.backgroundColor = UIConstants.headerSomeoneIncompleteColor
                     } else {
                         messageLabel.text = "You didn't write! :("
                         // Set text and background colors
                         messageLabel.textColor = UIConstants.secondaryThemeColor
-                        contentView.backgroundColor = UIConstants.secondarySelectedThemeColor
+                        contentView.backgroundColor = UIConstants.headerYouIncompleteColor
                     }
                 } else {
                     // You have not completed
                     messageLabel.text = "You didn't write! :("
                     // Set text and background colors
                     messageLabel.textColor = UIConstants.secondaryThemeColor
-                    contentView.backgroundColor = UIConstants.secondarySelectedThemeColor
+                    contentView.backgroundColor = UIConstants.headerYouIncompleteColor
                 }
             }
         }
