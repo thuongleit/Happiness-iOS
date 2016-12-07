@@ -10,7 +10,9 @@ import UIKit
 import ParseUI
 
 @objc protocol TimelineHeaderViewDelegate {
+    
     @objc optional func timelineHeaderView(headerView: TimelineHeaderView, didTapOnProfileImage toNudgeUser: User?, profileImageView: PFImageView)
+    
 }
 
 class TimelineHeaderView: UITableViewHeaderFooterView {
@@ -27,6 +29,16 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
     var entryCountByUser: [String: Int]?
     
     var completedUserCount: Int?
+    
+    var shouldDisplayCompletionEffect: Bool?
+    
+    var section: TimelineSection? {
+        didSet {
+            self.entryCountByUser = section?.getEntryCountByUser()
+            self.completedUserCount = section?.getCountOfUsersWithEntries()
+            self.shouldDisplayCompletionEffect = section?.currentUserMadeFirstEntry
+        }
+    }
     
     var nestUsers: [User]? {
         didSet {
@@ -46,21 +58,53 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
                 if let profileImageFile = user.profileImage {
                     imageView.file = profileImageFile
                     imageView.load(inBackground: { (image: UIImage?, error: Error?) in
-                        if let image = image {
-                            // Blue border if completed entry
-                            if let entryCount = self.entryCountByUser?[user.id!] {
-                                if entryCount > 0 {
-                                    imageView.layer.borderColor = UIConstants.whiteColor.cgColor
+                        
+                        if (self.section!.currentUserMadeFirstEntry) {
+                            
+                            if (user.id == User.currentUser?.id) {
+                                
+                                imageView.layer.borderColor = UIConstants.whiteColor.cgColor
+                                
+                                UIView.animate(withDuration: 0.1, animations: {
+                                    
+                                    imageView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                    
+                                }, completion: { (finished) -> Void in
+                                 
+                                    imageView.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                    
+                                    UIView.animate(withDuration: 0.1, animations: {
+                                        
+                                        imageView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                                        
+                                    }, completion: { (finished) -> Void in
+                                        
+                                        imageView.transform = CGAffineTransform(scaleX: 1, y: 1)
+                                        
+                                    })
+                                })
+                                
+                                self.section?.currentUserMadeFirstEntry = false
+                            }
+                            
+                        } else {
+                            if let image = image {
+                                // Blue border if completed entry
+                                if let entryCount = self.entryCountByUser?[user.id!] {
+                                    if entryCount > 0 {
+                                        imageView.layer.borderColor = UIConstants.whiteColor.cgColor
+                                    } else {
+                                        imageView.image = UIConstants.convertToGrayScale(image: image)
+                                        imageView.layer.borderColor = UIConstants.darkGrayColor.cgColor
+                                    }
                                 } else {
+                                    // Pink border and grayed-out image if not completed entry
                                     imageView.image = UIConstants.convertToGrayScale(image: image)
                                     imageView.layer.borderColor = UIConstants.darkGrayColor.cgColor
                                 }
-                            } else {
-                            // Pink border and grayed-out image if not completed entry
-                                imageView.image = UIConstants.convertToGrayScale(image: image)
-                                imageView.layer.borderColor = UIConstants.darkGrayColor.cgColor
                             }
                         }
+                        
                     })
                     imageView.contentMode = .scaleAspectFill
                     imageView.layer.cornerRadius = imageView.bounds.width / 2.0 // circle
@@ -69,6 +113,7 @@ class TimelineHeaderView: UITableViewHeaderFooterView {
                     // Border
                     imageView.layer.borderWidth = 2
                     imageView.layer.masksToBounds = true
+                    
                 } else {
                     imageView.image = nil
                 }
