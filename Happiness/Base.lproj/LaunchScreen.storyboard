@@ -21,18 +21,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="heart_pink" translatesAutoresizingMaskIntoConstraints="NO" id="gUC-MU-VXx">
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="heart_pink" translatesAutoresizingMaskIntoConstraints="NO" id="gUC-MU-VXx">
                                 <rect key="frame" x="109" y="111" width="38" height="38"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="A4L-7H-75g"/>
-                                    <constraint firstAttribute="width" constant="40" id="DQ0-L3-RXz"/>
+                                    <constraint firstAttribute="height" constant="38" id="0zB-Bx-KR8"/>
+                                    <constraint firstAttribute="width" constant="38" id="GX8-fl-9yy"/>
                                 </constraints>
                             </imageView>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="heart_pink" translatesAutoresizingMaskIntoConstraints="NO" id="XYq-r8-cMn">
                                 <rect key="frame" x="34" y="62" width="67" height="67"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="awd-WV-FD6"/>
-                                    <constraint firstAttribute="width" constant="50" id="hZb-hC-5BG"/>
+                                    <constraint firstAttribute="width" constant="67" id="gnB-iX-OL5"/>
+                                    <constraint firstAttribute="height" constant="67" id="zTS-vC-BSN"/>
                                 </constraints>
                             </imageView>
                             <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="really_happy_480" translatesAutoresizingMaskIntoConstraints="NO" id="nnT-gR-mMM">
@@ -42,8 +42,8 @@
                                     <constraint firstAttribute="width" constant="150" id="rnh-lP-GQW"/>
                                 </constraints>
                             </imageView>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" image="favoriteheart" translatesAutoresizingMaskIntoConstraints="NO" id="2wf-d6-HVh">
-                                <rect key="frame" x="74" y="174" width="27" height="27"/>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="favoriteheart" translatesAutoresizingMaskIntoConstraints="NO" id="2wf-d6-HVh">
+                                <rect key="frame" x="71.5" y="169" width="32" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="32" id="AVn-Qs-brg"/>
                                     <constraint firstAttribute="width" constant="32" id="lov-Zm-bCC"/>
@@ -52,14 +52,14 @@
                         </subviews>
                         <color key="backgroundColor" red="0.94901960784313721" green="0.60392156862745094" blue="0.61960784313725492" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="2wf-d6-HVh" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="60" id="1w8-bh-md3"/>
                             <constraint firstItem="nnT-gR-mMM" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="6OA-MQ-bYS"/>
-                            <constraint firstItem="nnT-gR-mMM" firstAttribute="top" secondItem="2wf-d6-HVh" secondAttribute="bottom" constant="15" id="QJ5-jZ-5B8"/>
-                            <constraint firstItem="nnT-gR-mMM" firstAttribute="top" secondItem="gUC-MU-VXx" secondAttribute="bottom" constant="70" id="bpx-rk-8eJ"/>
+                            <constraint firstItem="gUC-MU-VXx" firstAttribute="centerX" secondItem="nnT-gR-mMM" secondAttribute="centerX" constant="-32" id="7sk-mP-AL7"/>
+                            <constraint firstItem="2wf-d6-HVh" firstAttribute="top" secondItem="XYq-r8-cMn" secondAttribute="bottom" constant="45" id="8kL-Za-Pnq"/>
+                            <constraint firstItem="nnT-gR-mMM" firstAttribute="top" secondItem="gUC-MU-VXx" secondAttribute="bottom" constant="60" id="ECh-PA-tSC"/>
+                            <constraint firstItem="2wf-d6-HVh" firstAttribute="centerX" secondItem="gUC-MU-VXx" secondAttribute="centerX" constant="-40" id="Jhx-iC-MiR"/>
                             <constraint firstItem="nnT-gR-mMM" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="c6c-Ln-BYy"/>
-                            <constraint firstItem="2wf-d6-HVh" firstAttribute="top" secondItem="XYq-r8-cMn" secondAttribute="bottom" constant="60" id="fP0-Dk-hDT"/>
-                            <constraint firstItem="gUC-MU-VXx" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="120" id="ixz-s2-r2B"/>
-                            <constraint firstItem="2wf-d6-HVh" firstAttribute="trailing" secondItem="XYq-r8-cMn" secondAttribute="trailing" id="vec-1h-ocz"/>
+                            <constraint firstItem="nnT-gR-mMM" firstAttribute="top" secondItem="2wf-d6-HVh" secondAttribute="bottom" constant="8" id="dml-9t-qDG"/>
+                            <constraint firstItem="gUC-MU-VXx" firstAttribute="leading" secondItem="XYq-r8-cMn" secondAttribute="trailing" constant="8" id="xqn-up-7dc"/>
                         </constraints>
                     </view>
                 </viewController>

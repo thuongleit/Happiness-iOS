@@ -86,7 +86,7 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
             
             let logoDoubleTap = UITapGestureRecognizer()
             logoDoubleTap.numberOfTapsRequired = 2
-            logoDoubleTap.addTarget(self, action: #selector(triggerCompilationAlert))
+            logoDoubleTap.addTarget(self, action: #selector(loadImagesForCompilation))
             logoImageView.isUserInteractionEnabled = true
             logoImageView.addGestureRecognizer(logoDoubleTap)
             
@@ -245,10 +245,6 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         //NotificationCenter.default.post(Notification(name: AppDelegate.GlobalEventEnum.unhideBottomTabBars.notification))
     }
     
-    func triggerCompilationAlert() {
-        self.loadImagesForCompilation()
-        self.presentUserCompilationViewPrompt()
-    }
     
     // When the settings is pressed, log out.
     @IBAction func onSettingsButton(_ sender: UIBarButtonItem)
@@ -259,16 +255,19 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
     //for ken burns compilation on entry images
     func loadImagesForCompilation() {
         
-        if(noOfEntriesInCurrentWeek != 0 && noOfEntriesInCurrentWeek == compilationImagesCount){
-            self.presentUserCompilationViewPrompt()
-            return
-        }
-        
-        self.compilationImages = [UIImage]()
-        compilationImagesCount = 0
         if let firstSection = sections.first {
             let streakEntries = firstSection.entries
             noOfEntriesInCurrentWeek = streakEntries.count
+            
+            if(noOfEntriesInCurrentWeek != 0 && noOfEntriesInCurrentWeek == compilationImagesCount){
+                presentUserCompilationViewPrompt()
+                return
+            }
+            
+            //when last person in the nest posts, images dont have latest, so clear all variables to get latest
+            compilationImages = [UIImage]()
+            compilationUserProfileImages = [PFFile]()
+            compilationImagesCount = 0
             
             for entry in streakEntries {
                 if(entry.media != nil){
@@ -292,11 +291,12 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
                     })
                     
                 } else if(entry.localImage != nil) {
-                    self.compilationImages.append(entry.localImage!)
+                    compilationImages.append(entry.localImage!)
+                    compilationUserProfileImages.append((entry.author?.profileImage)!)
                     compilationImagesCount += 1
                     //after loading all images asynchronously check if you got all entries for the week and present compilation
-                    if(self.noOfEntriesInCurrentWeek == self.compilationImagesCount){
-                        self.presentUserCompilationViewPrompt()
+                    if(noOfEntriesInCurrentWeek == compilationImagesCount){
+                        presentUserCompilationViewPrompt()
                     }
                 }
                 else{
