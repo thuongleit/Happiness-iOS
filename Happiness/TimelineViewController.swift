@@ -694,8 +694,6 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
         APNUtil.sendConratulations(toNestUsers: nestUsers, completionBlock: {(isSuccess) -> () in
             
         })
-        
-        
     }
 }
 
@@ -703,7 +701,6 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
 extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
 {
     func numberOfSections(in tableView: UITableView) -> Int {
-        
         return sections.count
     }
     
@@ -714,6 +711,7 @@ extension TimelineViewController: UITableViewDataSource, UITableViewDelegate
         headerView.completedUserCount = self.sections[section].getCountOfUsersWithEntries()
         headerView.nestUsers = self.nestUsers
         headerView.titleLabel.text = sections[section].title
+        headerView.shouldDisplayCompletionEffect = true
         return headerView
     }
     
