@@ -81,8 +81,6 @@ class TimelineViewController: ViewControllerBase, TimelineHeaderViewDelegate, JB
             navigationItem.title = nil
             let logoImage = UIImage(named: "happinest_smiley")
             let logoImageView = UIImageView(image: logoImage)
-            logoImageView.frame = CGRect(x: 0, y: 0, width: 35, height: 35)
-            logoImageView.contentMode = .scaleAspectFit
             self.navigationItem.titleView = logoImageView
             
             let logoDoubleTap = UITapGestureRecognizer()
