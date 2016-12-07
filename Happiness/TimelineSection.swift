@@ -14,7 +14,14 @@ class TimelineSection {
     let week: Int
     let year: Int
     let title: String
-    var entries = [Entry]()// why was it private
+    var entries = [Entry]()
+    
+    // If currentUserMadeFirstEntry is true, the current user has created
+    // their first entry for this section. This class never sets
+    // currentUserMadeFirstEntry to false, that is up to the caller.
+    var currentUserMadeFirstEntry = false
+    
+    private var entryIdOfCurrentUsersFirstEntry: String?
     private var userEntryCount = [String: Int]() // maps user IDs to entry counts
     private var _localEntriesCount = 0
     
@@ -23,14 +30,18 @@ class TimelineSection {
         return _localEntriesCount
     }
     
-    var rows: Int {
+    var currentUserEntryCount: Int {
         
-        var currentUserEntryCount = 0
+        var count = 0
         if let currentUserId = User.currentUser?.id,
             let _currentUserEntryCount = userEntryCount[currentUserId] {
             
-            currentUserEntryCount = _currentUserEntryCount
+            count = _currentUserEntryCount
         }
+        return count
+    }
+    
+    var rows: Int {
         
         // Only display entries for milestone if current user created an
         // entry for that milestone.
@@ -63,6 +74,11 @@ class TimelineSection {
     // Add the specified entry to the start of the entries array.
     func prepend(entry: Entry) {
         
+        // Update entryIdOfCurrentUserFirstEntry. We only do this in prepend(),
+        // since prepend() is used to add a new entry, and append() is used
+        // to add an entry from the database.
+        updateEntryIdOfCurrentUsersFirstEntry(entry: entry)
+
         if let userId = entry.author?.id {
             
             userEntryCount[userId] = (userEntryCount[userId] ?? 0) + 1
@@ -74,6 +90,20 @@ class TimelineSection {
         }
         
         entries.insert(entry, at: 0)
+    }
+    
+    // Set entryIdOfCurrentUserFirstEntry if this is the current user's
+    // first entry for this section. This will be a local entry.
+    private func updateEntryIdOfCurrentUsersFirstEntry(entry: Entry) {
+        
+        if let userId = entry.author?.id,
+            let currentUserId = User.currentUser?.id,
+            userId == currentUserId,
+            currentUserEntryCount == 0 {
+            
+            entryIdOfCurrentUsersFirstEntry = entry.id
+            print("First entry ID!!!")
+        }
     }
     
     // Return the specified entry from the entries array.
@@ -124,6 +154,18 @@ class TimelineSection {
             // entries[index] and replacementEntry may or may not reference the
             // same Entry object, so we copy replacementEntry to entries[index].
             entries[index] = replacementEntry
+            
+            // If entryId matches entryIdOfCurrentUsersFirstEntry, then this is
+            // the current user's first non-local entry for this section, so set
+            // currentUserMadeFirstEntry to true.
+            if let entryIdOfCurrentUsersFirstEntry = entryIdOfCurrentUsersFirstEntry,
+                entryId == entryIdOfCurrentUsersFirstEntry {
+                
+                    currentUserMadeFirstEntry = true
+                    self.entryIdOfCurrentUsersFirstEntry = nil
+                    print("First entry!!!")
+            }
+            
             return true
         }
         else {
