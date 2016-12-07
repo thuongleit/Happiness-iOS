@@ -102,7 +102,6 @@ class TimelineSection {
             currentUserEntryCount == 0 {
             
             entryIdOfCurrentUsersFirstEntry = entry.id
-            print("First entry ID!!!")
         }
     }
     
@@ -151,6 +150,15 @@ class TimelineSection {
         
         if let index = getRow(entryWithId: entryId) {
             
+            if entries[index].isLocal {
+                
+                _localEntriesCount = _localEntriesCount - 1
+            }
+            if replacementEntry.isLocal {
+                
+                _localEntriesCount = _localEntriesCount + 1
+            }
+            
             // entries[index] and replacementEntry may or may not reference the
             // same Entry object, so we copy replacementEntry to entries[index].
             entries[index] = replacementEntry
@@ -163,7 +171,6 @@ class TimelineSection {
                 
                     currentUserMadeFirstEntry = true
                     self.entryIdOfCurrentUsersFirstEntry = nil
-                    print("First entry!!!")
             }
             
             return true
