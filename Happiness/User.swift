@@ -52,13 +52,17 @@ final class User: NSObject, NSCoding {
         aCoder.encode(email, forKey: "email")
         aCoder.encode(createdDate, forKey: "createdDate")
         
-        profileImage?.getDataInBackground(block: { (fileData: Data?, error: Error?) in
-            
-            if(error == nil){
-                aCoder.encode(fileData, forKey: "profileImage")
-                  //defaults.synchronize()
-            }
-        })
+        // Must use synchronous getData() rather than asynchronous
+        // getDataInBackground(), since encoding must be done before this
+        // function returns or else the following exception occurs:
+        // "[NSKeyedArchiver encodeObject:forKey:]: archive already finished,
+        // cannot encode anything more"
+        do {
+            let fileData = try profileImage?.getData()
+            aCoder.encode(fileData, forKey: "profileImage")
+        }
+        catch {
+        }
         
         aCoder.encode(nest, forKey: "nest")
     }
@@ -78,17 +82,21 @@ final class User: NSObject, NSCoding {
         set(user){
             _currentUser = user
             
-            let defaults = UserDefaults.standard
-            
-            if let user = user {
-                let savedData = NSKeyedArchiver.archivedData(withRootObject: user)
-                defaults.set(savedData, forKey: currentUserKey)
+            // Do not block the main thread.
+            DispatchQueue.global(qos: .background).async {
+                
+                let defaults = UserDefaults.standard
+                
+                if let user = user {
+                    let savedData = NSKeyedArchiver.archivedData(withRootObject: user)
+                    defaults.set(savedData, forKey: currentUserKey)
+                }
+                else {
+                    defaults.removeObject(forKey: currentUserKey)
+                }
+                
+                defaults.synchronize()
             }
-            else {
-                defaults.removeObject(forKey: currentUserKey)
-            }
-            
-            defaults.synchronize()
         }
     }
 }
