@@ -11,6 +11,7 @@ The following **required** functionality is completed:
    - [x] Make updates to timeline immediately, not waiting for database call to succeed. If database call fails, undo updates.
    - [x] When making updates to timeline immediately, disable pull to refresh, edit, and delete as appropriate.
 - [x] Timeline
+   - [x] Change "Timeline" in nav bar to app icon. 
    - [x] Change image for "Compose" button.
    - [x] Use round corners on images.
 - [x] Create/edit entry
@@ -40,7 +41,7 @@ The following **required** functionality is completed:
 - [x] Bug fixes
    - [x] Fix problem where Timeline is not updated correctly after entry is edited
    - [x] Fix retain cycles and cleaned up reference usage
-   - [ ] Fix User.encode() "archive already finished, cannot encode anything more"
+   - [x] Fix User.encode() "archive already finished, cannot encode anything more"
 
 ## Sprint 2
 
